@@ -1,0 +1,15 @@
+@startuml
+class Car {
+    +engine: Engine
+    +start()
+    +stop()
+    +run()
+}
+ 
+class Engine {
+    +start()
+    +stop()
+}
+ 
+Car *-- Engine
+@enduml

@@ -1,0 +1,38 @@
+@startuml GeekBooks_Homepage  
+skinparam backgroundColor #FFFFFF  
+skinparam defaultFontName Arial  
+skinparam titleFontSize 16  
+skinparam title "GeekBooks 移动端原型"  
+
+rectangle "首页" {  
+  frame "顶部导航" {  
+    card "菜单" as menu #6200EE  
+    card "搜索栏" as search #6200EE  
+    card "收藏" as fav #6200EE  
+  }  
+
+  frame "技术领域分类" {  
+    card "AI" as ai #FFD700  
+    card "区块链" as blockchain  
+    card "云计算" as cloud  
+    card "大数据" as bigdata  
+    card "网络安全" as security  
+    card "更多..." as more  
+  }  
+}  
+
+note right  
+  **验收标准1**：  
+  首页导航栏显示主流分类标签  
+end note  
+
+menu -[hidden]-> search  
+search -[hidden]-> fav  
+
+ai -[hidden]-> blockchain  
+blockchain -[hidden]-> cloud  
+cloud -[hidden]-> bigdata  
+bigdata -[hidden]-> security  
+security -[hidden]-> more  
+
+@enduml

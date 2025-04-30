@@ -1,0 +1,42 @@
+@startuml GeekBooks_技术领域分类浏览用例图  
+
+left to right direction  
+skinparam actorStyle awesome  
+
+actor "AI工程师" as user <<技术从业者>>  
+actor "内容运营团队" as editor <<内部角色>>  
+actor "图书数据库" as db <<系统>>  
+
+rectangle "GeekBooks系统" {  
+  usecase "浏览技术领域分类" as UC1  
+  usecase "显示主流技术标签" as UC2  
+  usecase "展示最新书籍" as UC3  
+  usecase "查看二级分类" as UC4  
+  usecase "维护分类数据" as UC5  
+  usecase "更新出版信息" as UC6  
+  
+  UC1 <|-- UC2 : <<include>>  
+  UC1 <|-- UC3 : <<include>>  
+  UC1 <|-- UC4 : <<extend>>   
+  UC5 <|-- UC6 : <<include>>  
+}  
+
+user --> UC1 : "查找AI领域\n最新书籍"  
+editor --> UC5 : "每周更新\n分类体系"  
+db --> UC6 : "提供出版\n时间数据"  
+
+note right of user  
+  **用户诉求**：  
+  1. 快速定位专业领域内容  
+  2. 确保书籍时效性（近6个月）  
+  3. 层级化细分技术方向  
+end note  
+
+note left of editor  
+  **运营要求**：  
+  1. 主分类不超过8个  
+  2. 二级分类支持动态调整  
+  3. 新书自动打标  
+end note  
+
+@enduml

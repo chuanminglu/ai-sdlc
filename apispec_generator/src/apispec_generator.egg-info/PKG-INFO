@@ -1,0 +1,11 @@
+Metadata-Version: 2.4
+Name: apispec_generator
+Version: 0.1.0
+Summary: API specification generator for user stories
+Author: AIBasic
+Author-email: example@example.com
+Requires-Python: >=3.6
+Dynamic: author
+Dynamic: author-email
+Dynamic: requires-python
+Dynamic: summary
