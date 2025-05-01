@@ -1,0 +1,91 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "能够将审核通过的草稿发布到网站前台 API",
+    "description": "为内容编辑提供能够将审核通过的草稿发布到网站前台管理的 API，目的是及时更新新闻内容并修正错误",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/能够将审核通过的草稿发布到网站前台s/{id}": {
+      "put": {
+        "summary": "更新能够将审核通过的草稿发布到网站前台",
+        "description": "更新指定的能够将审核通过的草稿发布到网站前台",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "能够将审核通过的草稿发布到网站前台ID",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/能够将审核通过的草稿发布到网站前台Update"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "能够将审核通过的草稿发布到网站前台更新成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/能够将审核通过的草稿发布到网站前台"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "能够将审核通过的草稿发布到网站前台不存在"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "能够将审核通过的草稿发布到网站前台": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "能够将审核通过的草稿发布到网站前台ID"
+          },
+          "createTime": {
+            "type": "string",
+            "format": "date-time",
+            "description": "创建时间"
+          },
+          "updateTime": {
+            "type": "string",
+            "format": "date-time",
+            "description": "更新时间"
+          }
+        },
+        "required": [
+          "id"
+        ]
+      },
+      "能够将审核通过的草稿发布到网站前台Create": {
+        "type": "object",
+        "properties": {},
+        "required": []
+      },
+      "能够将审核通过的草稿发布到网站前台Update": {
+        "type": "object",
+        "properties": {}
+      },
+      "能够将审核通过的草稿发布到网站前台Verify": {
+        "type": "object",
+        "properties": {}
+      }
+    }
+  }
+}

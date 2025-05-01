@@ -1,0 +1,239 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "能够将过时的新闻移入归档库 API",
+    "description": "为内容编辑提供能够将过时的新闻移入归档库管理的 API，目的是保持当前内容的时效性而不永久删除",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/能够将过时的新闻移入归档库s": {
+      "get": {
+        "summary": "获取能够将过时的新闻移入归档库列表",
+        "description": "获取能够将过时的新闻移入归档库列表，支持分页和排序",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "description": "页码",
+            "schema": {
+              "type": "integer",
+              "default": 1,
+              "minimum": 1
+            }
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "description": "每页条数",
+            "schema": {
+              "type": "integer",
+              "default": 20,
+              "minimum": 1,
+              "maximum": 100
+            }
+          },
+          {
+            "name": "sortBy",
+            "in": "query",
+            "description": "排序字段",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "order",
+            "in": "query",
+            "description": "排序方向",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "asc",
+                "desc"
+              ],
+              "default": "desc"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "成功获取能够将过时的新闻移入归档库列表",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "total": {
+                      "type": "integer",
+                      "description": "总记录数"
+                    },
+                    "items": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/能够将过时的新闻移入归档库"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/能够将过时的新闻移入归档库s/{id}": {
+      "get": {
+        "summary": "获取能够将过时的新闻移入归档库详情",
+        "description": "根据ID获取能够将过时的新闻移入归档库详细信息",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "能够将过时的新闻移入归档库ID",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "成功获取能够将过时的新闻移入归档库详情",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/能够将过时的新闻移入归档库"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "能够将过时的新闻移入归档库不存在"
+          }
+        }
+      },
+      "delete": {
+        "summary": "删除能够将过时的新闻移入归档库",
+        "description": "删除指定的能够将过时的新闻移入归档库",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "能够将过时的新闻移入归档库ID",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "能够将过时的新闻移入归档库删除成功"
+          },
+          "404": {
+            "description": "能够将过时的新闻移入归档库不存在"
+          }
+        }
+      }
+    },
+    "/能够将过时的新闻移入归档库s/search": {
+      "get": {
+        "summary": "搜索能够将过时的新闻移入归档库",
+        "description": "根据条件搜索能够将过时的新闻移入归档库",
+        "parameters": [
+          {
+            "name": "keyword",
+            "in": "query",
+            "description": "搜索关键词",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "页码",
+            "schema": {
+              "type": "integer",
+              "default": 1,
+              "minimum": 1
+            }
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "description": "每页条数",
+            "schema": {
+              "type": "integer",
+              "default": 20,
+              "minimum": 1,
+              "maximum": 100
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "搜索能够将过时的新闻移入归档库成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "total": {
+                      "type": "integer",
+                      "description": "总记录数"
+                    },
+                    "items": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/能够将过时的新闻移入归档库"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "能够将过时的新闻移入归档库": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "能够将过时的新闻移入归档库ID"
+          },
+          "createTime": {
+            "type": "string",
+            "format": "date-time",
+            "description": "创建时间"
+          },
+          "updateTime": {
+            "type": "string",
+            "format": "date-time",
+            "description": "更新时间"
+          }
+        },
+        "required": [
+          "id"
+        ]
+      },
+      "能够将过时的新闻移入归档库Create": {
+        "type": "object",
+        "properties": {},
+        "required": []
+      },
+      "能够将过时的新闻移入归档库Update": {
+        "type": "object",
+        "properties": {}
+      },
+      "能够将过时的新闻移入归档库Verify": {
+        "type": "object",
+        "properties": {}
+      }
+    }
+  }
+}

@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Product Review API 文档 - Swagger UI</title>
+    <title>API 文档 - Swagger UI</title>
     <link rel="stylesheet" href="https://unpkg.com/swagger-ui-dist@5.11.0/swagger-ui.css" />
     <style>
         body {
@@ -20,8 +20,13 @@
     <script src="https://unpkg.com/swagger-ui-dist@5.11.0/swagger-ui-bundle.js" crossorigin></script>
     <script>
         window.onload = () => {
+            // 从 URL 获取规范文件名
+            const urlParams = new URLSearchParams(window.location.search);
+            const specFile = urlParams.get('spec') || 'api_spec.json';
+            const specPath = specFile.startsWith('api_docs/') ? specFile : `api_docs/${specFile}`;
+            
             window.ui = SwaggerUIBundle({
-                url: './api_spec.json',
+                url: specPath,
                 dom_id: '#swagger-ui',
                 deepLinking: true,
                 presets: [

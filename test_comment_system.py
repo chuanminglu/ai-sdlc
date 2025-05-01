@@ -197,5 +197,77 @@ class TestCommentSystem(unittest.TestCase):
             
         return True
 
+class TestResourceNameRecognition(unittest.TestCase):
+    """测试API资源名称识别功能"""
+    
+    def setUp(self):
+        from apispec_generator.api_generator import APISpecGenerator
+        self.generator = APISpecGenerator()
+
+    def test_article_recognition(self):
+        """测试文章资源识别"""
+        story_data = {
+            "role": "内容编辑",
+            "goal": "创建和管理文章内容",
+            "value": "方便内容管理",
+            "criteria": [
+                "支持创建新文章",
+                "可以编辑文章内容",
+                "必填字段：标题、内容、分类"
+            ]
+        }
+        resource_info = self.generator._analyze_resource_and_actions(story_data['goal'], story_data['criteria'])
+        self.assertEqual(resource_info['resource_name'], "Article")
+        self.assertEqual(resource_info['resource_chinese'], "文章")
+
+    def test_product_recognition(self):
+        """测试商品资源识别"""
+        story_data = {
+            "role": "商家",
+            "goal": "管理商品信息",
+            "value": "及时更新商品状态",
+            "criteria": [
+                "可以添加新商品",
+                "修改商品价格和库存",
+                "必填字段：名称、价格、描述"
+            ]
+        }
+        resource_info = self.generator._analyze_resource_and_actions(story_data['goal'], story_data['criteria'])
+        self.assertEqual(resource_info['resource_name'], "Product")
+        self.assertEqual(resource_info['resource_chinese'], "商品")
+
+    def test_comment_recognition(self):
+        """测试评论资源识别"""
+        story_data = {
+            "role": "用户",
+            "goal": "发表商品评论",
+            "value": "分享使用体验",
+            "criteria": [
+                "可以添加评论内容",
+                "上传评论图片",
+                "必填字段：评分、内容"
+            ]
+        }
+        resource_info = self.generator._analyze_resource_and_actions(story_data['goal'], story_data['criteria'])
+        self.assertEqual(resource_info['resource_name'], "Comment")
+        self.assertEqual(resource_info['resource_chinese'], "评论")
+
+    def test_domain_specific_recognition(self):
+        """测试特定领域资源识别"""
+        story_data = {
+            "role": "餐厅经理",
+            "goal": "管理餐厅菜单",
+            "value": "及时更新菜品信息",
+            "criteria": [
+                "添加新的菜品",
+                "更新菜品价格",
+                "必填字段：菜品名称、价格、描述"
+            ]
+        }
+        resource_info = self.generator._analyze_resource_and_actions(story_data['goal'], story_data['criteria'])
+        self.assertEqual(resource_info['resource_name'], "Dish")
+        self.assertEqual(resource_info['resource_chinese'], "菜品")
+        self.assertEqual(resource_info['domain_type'], "餐饮")
+
 if __name__ == '__main__':
     unittest.main()

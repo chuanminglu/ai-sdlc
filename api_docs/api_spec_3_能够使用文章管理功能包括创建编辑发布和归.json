@@ -1,0 +1,142 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Resource API",
+    "description": "为**内容编辑提供资源管理的 API，目的是**高效地组织、更新和发布新闻内容，确保读者能够快速获取分类清晰、标签明确的新闻信息",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/resources": {
+      "post": {
+        "summary": "创建Resource",
+        "description": "创建新的Resource",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ResourceCreate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Resource创建成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Resource"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/resources/{id}": {
+      "put": {
+        "summary": "更新Resource",
+        "description": "更新指定的Resource",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "ResourceID",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ResourceUpdate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Resource更新成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Resource"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Resource不存在"
+          }
+        }
+      },
+      "delete": {
+        "summary": "删除Resource",
+        "description": "删除指定的Resource",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "ResourceID",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Resource删除成功"
+          },
+          "404": {
+            "description": "Resource不存在"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Resource": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "资源ID"
+          },
+          "createTime": {
+            "type": "string",
+            "format": "date-time",
+            "description": "创建时间"
+          },
+          "updateTime": {
+            "type": "string",
+            "format": "date-time",
+            "description": "更新时间"
+          }
+        },
+        "required": [
+          "id"
+        ]
+      },
+      "ResourceCreate": {
+        "type": "object",
+        "properties": {},
+        "required": []
+      },
+      "ResourceUpdate": {
+        "type": "object",
+        "properties": {}
+      },
+      "ResourceVerify": {
+        "type": "object",
+        "properties": {}
+      }
+    }
+  }
+}

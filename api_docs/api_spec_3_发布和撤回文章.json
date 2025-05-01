@@ -1,0 +1,108 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Article API",
+    "description": "为内容编辑提供文章管理的 API，目的是",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/articles/{id}": {
+      "put": {
+        "summary": "更新Article",
+        "description": "更新指定的Article",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "ArticleID",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ArticleUpdate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Article更新成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Article"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Article不存在"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Article": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "文章ID"
+          },
+          "createTime": {
+            "type": "string",
+            "format": "date-time",
+            "description": "创建时间"
+          },
+          "updateTime": {
+            "type": "string",
+            "format": "date-time",
+            "description": "更新时间"
+          },
+          "段校验": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id"
+        ]
+      },
+      "ArticleCreate": {
+        "type": "object",
+        "properties": {
+          "段校验": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "段校验"
+        ]
+      },
+      "ArticleUpdate": {
+        "type": "object",
+        "properties": {
+          "段校验": {
+            "type": "string"
+          }
+        }
+      },
+      "ArticleVerify": {
+        "type": "object",
+        "properties": {
+          "段校验": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

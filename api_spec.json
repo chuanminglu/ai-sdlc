@@ -1,300 +1,48 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "title": "Product Review API",
-    "description": "为** 普通购物用户提供** 能够在购买商品后对商品进行评价和打分的 API",
+    "title": "article API",
+    "description": "为内容编辑提供文章管理的 API，目的是快速发布内容",
     "version": "1.0.0"
   },
   "paths": {
-    "/comments": {
-      "get": {
-        "summary": "获取商品评论列表",
-        "description": "获取商品的评论列表，支持多种排序方式",
-        "parameters": [
-          {
-            "name": "productId",
-            "in": "query",
-            "required": true,
-            "description": "商品ID",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "sortBy",
-            "in": "query",
-            "description": "排序字段：time（时间）、rating（评分）、usefulness（有用度）",
-            "schema": {
-              "type": "string",
-              "enum": [
-                "time",
-                "rating",
-                "usefulness"
-              ],
-              "default": "time"
-            }
-          },
-          {
-            "name": "order",
-            "in": "query",
-            "description": "排序方向",
-            "schema": {
-              "type": "string",
-              "enum": [
-                "desc",
-                "asc"
-              ],
-              "default": "desc"
-            }
-          },
-          {
-            "name": "page",
-            "in": "query",
-            "description": "页码",
-            "schema": {
-              "type": "integer",
-              "default": 1,
-              "minimum": 1
-            }
-          },
-          {
-            "name": "pageSize",
-            "in": "query",
-            "description": "每页条数",
-            "schema": {
-              "type": "integer",
-              "default": 20,
-              "minimum": 1,
-              "maximum": 100
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "成功获取评论列表",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "total": {
-                      "type": "integer",
-                      "description": "总评论数"
-                    },
-                    "items": {
-                      "type": "array",
-                      "items": {
-                        "$ref": "#/components/schemas/Comment"
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
+    "/articles/create": {
       "post": {
-        "summary": "创建商品评论",
-        "description": "为已购买的商品创建评论",
+        "tags": [
+          "文章"
+        ],
+        "summary": "创建文章",
+        "operationId": "createArticle",
         "requestBody": {
           "required": true,
           "content": {
             "application/json": {
               "schema": {
-                "type": "object",
-                "properties": {
-                  "productId": {
-                    "type": "string",
-                    "description": "商品ID"
-                  },
-                  "rating": {
-                    "type": "number",
-                    "description": "评分",
-                    "minimum": 1,
-                    "maximum": 5
-                  },
-                  "content": {
-                    "type": "string",
-                    "description": "评价内容"
-                  },
-                  "images": {
-                    "type": "array",
-                    "description": "评价图片",
-                    "items": {
-                      "type": "string",
-                      "format": "uri"
-                    }
-                  },
-                  "videos": {
-                    "type": "array",
-                    "description": "评价视频",
-                    "items": {
-                      "type": "string",
-                      "format": "uri"
-                    }
-                  }
-                },
-                "required": [
-                  "productId",
-                  "rating",
-                  "content"
-                ]
+                "$ref": "#/components/schemas/ArticleCreate"
               }
             }
           }
         },
         "responses": {
           "201": {
-            "description": "评论创建成功",
+            "description": "成功创建文章",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Comment"
+                  "$ref": "#/components/schemas/Article"
                 }
               }
             }
           },
-          "403": {
-            "description": "未满足评论条件（如未购买或未收货）"
-          }
-        }
-      }
-    },
-    "/comments/status": {
-      "get": {
-        "summary": "检查评论资格",
-        "description": "检查用户是否可以对指定商品进行评论",
-        "parameters": [
-          {
-            "name": "productId",
-            "in": "query",
-            "required": true,
-            "description": "商品ID",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "成功获取评论资格状态",
+          "400": {
+            "description": "请求参数错误",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "canComment": {
-                      "type": "boolean",
-                      "description": "是否可以评论"
-                    },
-                    "reason": {
-                      "type": "string",
-                      "description": "如果不能评论，说明原因"
-                    }
-                  }
+                  "$ref": "#/components/schemas/Error"
                 }
               }
             }
-          }
-        }
-      }
-    },
-    "/comments/{id}": {
-      "put": {
-        "summary": "修改评论",
-        "description": "修改已发布的评论（仅支持7天内修改）",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "description": "评论ID",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "rating": {
-                    "type": "number",
-                    "description": "评分",
-                    "minimum": 1,
-                    "maximum": 5
-                  },
-                  "content": {
-                    "type": "string",
-                    "description": "评价内容"
-                  },
-                  "images": {
-                    "type": "array",
-                    "description": "评价图片",
-                    "items": {
-                      "type": "string",
-                      "format": "uri"
-                    }
-                  },
-                  "videos": {
-                    "type": "array",
-                    "description": "评价视频",
-                    "items": {
-                      "type": "string",
-                      "format": "uri"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "评论修改成功",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Comment"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "评论已超过7天，不能修改"
-          },
-          "404": {
-            "description": "评论不存在"
-          }
-        }
-      },
-      "delete": {
-        "summary": "删除评论",
-        "description": "删除已发布的评论（仅支持7天内删除）",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "description": "评论ID",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "204": {
-            "description": "评论删除成功"
-          },
-          "403": {
-            "description": "评论已超过7天，不能删除"
-          },
-          "404": {
-            "description": "评论不存在"
           }
         }
       }
@@ -302,88 +50,54 @@
   },
   "components": {
     "schemas": {
-      "Comment": {
+      "Article": {
         "type": "object",
         "properties": {
           "id": {
             "type": "string",
-            "description": "评论ID"
+            "format": "uuid",
+            "description": "唯一标识符"
           },
-          "productId": {
-            "type": "string",
-            "description": "商品ID"
-          },
-          "userId": {
-            "type": "string",
-            "description": "用户ID"
-          },
-          "nickname": {
-            "type": "string",
-            "description": "用户昵称"
-          },
-          "rating": {
-            "type": "number",
-            "description": "评分",
-            "minimum": 1,
-            "maximum": 5
-          },
-          "content": {
-            "type": "string",
-            "description": "评价内容"
-          },
-          "images": {
-            "type": "array",
-            "description": "评价图片",
-            "items": {
-              "type": "string",
-              "format": "uri"
-            }
-          },
-          "videos": {
-            "type": "array",
-            "description": "评价视频",
-            "items": {
-              "type": "string",
-              "format": "uri"
-            }
-          },
-          "usefulness": {
-            "type": "integer",
-            "description": "点赞数量",
-            "minimum": 0
-          },
-          "reply": {
-            "type": "string",
-            "description": "商家回复"
-          },
-          "status": {
-            "type": "string",
-            "description": "评论状态",
-            "enum": [
-              "pending",
-              "approved",
-              "rejected"
-            ]
-          },
-          "createTime": {
+          "createdAt": {
             "type": "string",
             "format": "date-time",
-            "description": "评价时间"
+            "description": "创建时间"
           },
-          "updateTime": {
+          "updatedAt": {
             "type": "string",
             "format": "date-time",
             "description": "更新时间"
           }
         },
         "required": [
-          "id",
-          "productId",
-          "userId",
-          "rating",
-          "content",
-          "createTime"
+          "id"
         ]
+      },
+      "ArticleCreate": {
+        "type": "object",
+        "required": [],
+        "properties": {}
+      },
+      "ArticleUpdate": {
+        "type": "object",
+        "properties": {}
+      },
+      "Error": {
+        "type": "object",
+        "required": [
+          "code",
+          "message"
+        ],
+        "properties": {
+          "code": {
+            "type": "string",
+            "description": "错误代码"
+          },
+          "message": {
+            "type": "string",
+            "description": "错误信息"
+          }
+        }
       }
     }
   }

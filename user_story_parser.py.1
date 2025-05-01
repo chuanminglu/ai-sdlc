@@ -1,0 +1,104 @@
+"""
+用户故事解析模块 (User Story Parser)
+
+该模块负责解析用户故事文本，提取关键信息并构建结构化数据。
+主要功能包括：
+1. 提取用户角色（role）
+2. 提取目标功能（goal）
+3. 提取业务价值（benefit）
+4. 提取验收标准（acceptance criteria）
+"""
+
+import spacy
+import re
+from typing import List, Optional
+from dataclasses import dataclass
+
+@dataclass
+class ParsedStory:
+    """解析后的用户故事数据结构"""
+    role: str
+    goal: str
+    benefit: str
+    acceptance_criteria: List[str]
+    domain_concepts: List[str]
+    priority: str = "medium"
+    complexity: str = "medium"
+    dependencies: List[str] = None
+
+    def __post_init__(self):
+        if self.dependencies is None:
+            self.dependencies = []
+
+class UserStoryParser:
+    def __init__(self):
+        """初始化解析器，加载中文语言模型"""
+        self.nlp = spacy.load("zh_core_web_sm")
+    
+    def parse_story(self, story_text: str) -> ParsedStory:
+        """
+        解析用户故事文本
+        
+        参数：
+            story_text: str - 用户故事文本
+            
+        返回：
+            ParsedStory - 解析后的结构化数据
+        """
+        # 清理文本
+        story_text = story_text.strip()
+        
+        # 分离用户故事主体和验收标准
+        parts = story_text.split('\n')
+        story_lines = []
+        criteria = []
+        
+        in_criteria = False
+        for line in parts:
+            line = line.strip()
+            if not line:
+                continue
+                
+            if line.startswith('-') or line.startswith('验收标准'):
+                in_criteria = True
+                if line.startswith('验收标准'):
+                    continue
+                criteria.append(line.lstrip('- ').strip())
+            else:
+                if not in_criteria:
+                    story_lines.append(line)
+        
+        story_body = ' '.join(story_lines)
+        
+        # 提取角色、目标和价值
+        role = ""
+        goal = ""
+        benefit = ""
+        
+        # 使用正则表达式提取主要部分
+        role_match = re.search(r'作为(.*?)，', story_body)
+        goal_match = re.search(r'我希望(.*?)，', story_body)
+        benefit_match = re.search(r'以便(.*?)。', story_body)
+        
+        if role_match:
+            role = role_match.group(1).strip()
+        if goal_match:
+            goal = goal_match.group(1).strip()
+        if benefit_match:
+            benefit = benefit_match.group(1).strip()
+            
+        # 提取领域概念
+        doc = self.nlp(story_body)
+        domain_concepts = []
+        for token in doc:
+            if token.pos_ in ['NOUN', 'PROPN'] and len(token.text) > 1:
+                domain_concepts.append(token.text)
+        domain_concepts = list(set(domain_concepts))
+        
+        return ParsedStory(
+            role=role,
+            goal=goal,
+            benefit=benefit,
+            acceptance_criteria=criteria,
+            domain_concepts=domain_concepts
+        )

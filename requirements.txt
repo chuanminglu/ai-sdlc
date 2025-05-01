@@ -1,3 +1,17 @@
-spacy>=3.0.0
-requests>=2.25.1
-zh_core_web_sm @ https://github.com/explosion/spacy-models/releases/download/zh_core_web_sm-3.7.0/zh_core_web_sm-3.7.0-py3-none-any.whl
+spacy>=3.7.2
+SpeechRecognition>=3.10.0
+numpy>=2.0.0
+pyaudio>=0.2.14
+requests>=2.31.0
+setuptools>=80.1.0
+wheel>=0.45.1
+mypy>=1.7.0
+pytest>=7.4.0
+black>=23.11.0
+pylint>=3.0.0
+python-dotenv>=1.0.0
+fastapi>=0.104.1
+uvicorn>=0.24.0
+pydantic>=2.5.0
+apispec>=6.3.0
+

@@ -1,0 +1,190 @@
+2025-05-01 16:24:57 - AI-SDLC - INFO - [logger.py:76] - 开始测试
+2025-05-01 16:24:57 - AI-SDLC - INFO - [logger.py:76] - 开始解析用户故事
+2025-05-01 16:24:58 - AI-SDLC - INFO - [logger.py:76] - 完成用户故事解析
+2025-05-01 16:24:58 - AI-SDLC - INFO - [logger.py:76] - 开始生成 API 规范 - 输出路径: api_spec.json
+2025-05-01 17:27:09 - AI-SDLC - INFO - [logger.py:76] - 开始测试
+2025-05-01 17:27:09 - AI-SDLC - INFO - [logger.py:76] - 开始解析用户故事
+2025-05-01 17:27:10 - AI-SDLC - INFO - [logger.py:76] - 完成用户故事解析
+2025-05-01 17:27:10 - AI-SDLC - INFO - [logger.py:76] - 开始生成 API 规范 - 输出路径: api_spec.json
+2025-05-01 17:27:10 - AI-SDLC - INFO - [logger.py:76] - 开始验证 API 规范
+2025-05-01 17:27:10 - AI-SDLC - INFO - [logger.py:76] - API 规范验证通过
+2025-05-01 17:27:10 - AI-SDLC - INFO - [logger.py:76] - 开始验证 API 规范
+2025-05-01 17:27:10 - AI-SDLC - INFO - [logger.py:76] - API 规范验证通过
+2025-05-01 17:27:10 - AI-SDLC - INFO - [logger.py:76] - API规范已保存
+2025-05-01 17:27:10 - AI-SDLC - INFO - [logger.py:76] - 测试完成
+2025-05-01 17:35:19 - AI-SDLC - INFO - [logger.py:76] - 开始批量生成用户故事 - 数量: 3
+2025-05-01 17:35:20 - AI-SDLC - INFO - [logger.py:76] - 开始生成用户故事 - 领域: 新闻管理系统, 角色: 内容编辑
+2025-05-01 17:35:40 - AI-SDLC - INFO - [logger.py:76] - 成功生成用户故事
+2025-05-01 17:35:40 - AI-SDLC - INFO - [logger.py:76] - 开始生成用户故事 - 领域: 新闻管理系统, 角色: 内容编辑
+2025-05-01 17:36:01 - AI-SDLC - INFO - [logger.py:76] - 成功生成用户故事
+2025-05-01 17:36:01 - AI-SDLC - INFO - [logger.py:76] - 开始生成用户故事 - 领域: 新闻管理系统, 角色: 内容编辑
+2025-05-01 17:36:22 - AI-SDLC - INFO - [logger.py:76] - 成功生成用户故事
+2025-05-01 17:36:22 - AI-SDLC - INFO - [logger.py:76] - 完成批量生成，成功生成 3 个故事
+2025-05-01 17:36:29 - AI-SDLC - INFO - [logger.py:76] - 开始解析用户故事
+2025-05-01 17:36:30 - AI-SDLC - INFO - [logger.py:76] - 完成用户故事解析
+2025-05-01 17:36:30 - AI-SDLC - INFO - [logger.py:76] - 开始生成 API 规范 - 输出路径: C:\Programs\ai-sdlc\api_spec.json
+2025-05-01 17:36:35 - AI-SDLC - INFO - [logger.py:76] - 开始解析用户故事
+2025-05-01 17:36:36 - AI-SDLC - INFO - [logger.py:76] - 完成用户故事解析
+2025-05-01 17:36:36 - AI-SDLC - INFO - [logger.py:76] - 开始生成 API 规范 - 输出路径: C:\Programs\ai-sdlc\api_spec.json
+2025-05-01 17:36:47 - AI-SDLC - INFO - [logger.py:76] - 开始解析用户故事
+2025-05-01 17:36:48 - AI-SDLC - INFO - [logger.py:76] - 完成用户故事解析
+2025-05-01 17:36:48 - AI-SDLC - INFO - [logger.py:76] - 开始生成 API 规范 - 输出路径: C:\Programs\ai-sdlc\api_spec.json
+2025-05-01 17:44:01 - AI-SDLC - INFO - [logger.py:76] - 开始测试
+2025-05-01 17:44:01 - AI-SDLC - INFO - [logger.py:76] - 开始解析用户故事
+2025-05-01 17:44:01 - AI-SDLC - INFO - [logger.py:76] - 完成用户故事解析
+2025-05-01 17:44:01 - AI-SDLC - INFO - [logger.py:76] - 开始生成 API 规范 - 输出路径: api_spec.json
+2025-05-01 17:44:01 - AI-SDLC - INFO - [logger.py:76] - 开始验证 API 规范
+2025-05-01 17:44:01 - AI-SDLC - INFO - [logger.py:76] - API 规范验证通过
+2025-05-01 17:44:01 - AI-SDLC - INFO - [logger.py:76] - 开始验证 API 规范
+2025-05-01 17:44:01 - AI-SDLC - INFO - [logger.py:76] - API 规范验证通过
+2025-05-01 17:44:01 - AI-SDLC - INFO - [logger.py:76] - API规范已保存
+2025-05-01 17:44:01 - AI-SDLC - INFO - [logger.py:76] - 测试完成
+2025-05-01 17:45:28 - AI-SDLC - INFO - [logger.py:76] - 开始批量生成用户故事 - 数量: 3
+2025-05-01 17:45:36 - AI-SDLC - INFO - [logger.py:76] - 开始批量生成用户故事 - 数量: 3
+2025-05-01 17:48:26 - AI-SDLC - INFO - [logger.py:76] - 开始批量生成用户故事 - 数量: 3
+2025-05-01 17:48:26 - AI-SDLC - INFO - [logger.py:76] - 开始生成用户故事 - 领域: 新闻管理系统, 角色: 内容编辑
+2025-05-01 17:48:48 - AI-SDLC - INFO - [logger.py:76] - 成功生成用户故事
+2025-05-01 17:48:48 - AI-SDLC - INFO - [logger.py:76] - 开始解析用户故事
+2025-05-01 17:48:48 - AI-SDLC - INFO - [logger.py:76] - 完成用户故事解析
+2025-05-01 17:48:48 - AI-SDLC - INFO - [logger.py:76] - 开始生成用户故事 - 领域: 新闻管理系统, 角色: 内容编辑
+2025-05-01 17:49:05 - AI-SDLC - INFO - [logger.py:76] - 成功生成用户故事
+2025-05-01 17:49:05 - AI-SDLC - INFO - [logger.py:76] - 开始解析用户故事
+2025-05-01 17:49:05 - AI-SDLC - INFO - [logger.py:76] - 完成用户故事解析
+2025-05-01 17:49:05 - AI-SDLC - INFO - [logger.py:76] - 开始生成用户故事 - 领域: 新闻管理系统, 角色: 内容编辑
+2025-05-01 17:49:25 - AI-SDLC - INFO - [logger.py:76] - 成功生成用户故事
+2025-05-01 17:49:25 - AI-SDLC - INFO - [logger.py:76] - 开始解析用户故事
+2025-05-01 17:49:25 - AI-SDLC - INFO - [logger.py:76] - 完成用户故事解析
+2025-05-01 17:49:25 - AI-SDLC - INFO - [logger.py:76] - 完成批量生成，成功生成 3 个故事
+2025-05-01 17:49:52 - AI-SDLC - INFO - [logger.py:76] - 开始解析用户故事
+2025-05-01 17:49:52 - AI-SDLC - INFO - [logger.py:76] - 完成用户故事解析
+2025-05-01 17:49:52 - AI-SDLC - INFO - [logger.py:76] - 开始生成 API 规范 - 输出路径: C:\Programs\ai-sdlc\api_spec.json
+2025-05-01 17:50:01 - AI-SDLC - INFO - [logger.py:76] - 开始解析用户故事
+2025-05-01 17:50:01 - AI-SDLC - INFO - [logger.py:76] - 完成用户故事解析
+2025-05-01 17:50:01 - AI-SDLC - INFO - [logger.py:76] - 开始生成 API 规范 - 输出路径: C:\Programs\ai-sdlc\api_spec.json
+2025-05-01 17:53:03 - AI-SDLC - INFO - [logger.py:76] - 开始批量生成用户故事 - 数量: 3
+2025-05-01 17:53:03 - AI-SDLC - INFO - [logger.py:76] - 开始生成用户故事 - 领域: 新闻管理系统, 角色: 内容编辑
+2025-05-01 17:53:23 - AI-SDLC - INFO - [logger.py:76] - 成功生成用户故事
+2025-05-01 17:53:23 - AI-SDLC - INFO - [logger.py:76] - 开始解析用户故事
+2025-05-01 17:53:23 - AI-SDLC - INFO - [logger.py:76] - 完成用户故事解析
+2025-05-01 17:53:23 - AI-SDLC - INFO - [logger.py:76] - 开始生成用户故事 - 领域: 新闻管理系统, 角色: 内容编辑
+2025-05-01 17:53:43 - AI-SDLC - INFO - [logger.py:76] - 成功生成用户故事
+2025-05-01 17:53:43 - AI-SDLC - INFO - [logger.py:76] - 开始解析用户故事
+2025-05-01 17:53:43 - AI-SDLC - INFO - [logger.py:76] - 完成用户故事解析
+2025-05-01 17:53:43 - AI-SDLC - INFO - [logger.py:76] - 开始生成用户故事 - 领域: 新闻管理系统, 角色: 内容编辑
+2025-05-01 17:54:05 - AI-SDLC - INFO - [logger.py:76] - 成功生成用户故事
+2025-05-01 17:54:05 - AI-SDLC - INFO - [logger.py:76] - 开始解析用户故事
+2025-05-01 17:54:05 - AI-SDLC - INFO - [logger.py:76] - 完成用户故事解析
+2025-05-01 17:54:05 - AI-SDLC - INFO - [logger.py:76] - 完成批量生成，成功生成 3 个故事
+2025-05-01 17:54:46 - AI-SDLC - INFO - [logger.py:76] - 开始解析用户故事
+2025-05-01 17:54:46 - AI-SDLC - INFO - [logger.py:76] - 完成用户故事解析
+2025-05-01 17:54:46 - AI-SDLC - INFO - [logger.py:76] - 开始生成 API 规范 - 输出路径: C:\Programs\ai-sdlc\api_spec.json
+2025-05-01 17:59:32 - AI-SDLC - INFO - [logger.py:76] - 开始批量生成用户故事 - 数量: 3
+2025-05-01 17:59:32 - AI-SDLC - INFO - [logger.py:76] - 开始生成用户故事 - 领域: 新闻管理系统, 角色: 内容编辑
+2025-05-01 17:59:43 - AI-SDLC - INFO - [logger.py:76] - 成功生成用户故事
+2025-05-01 17:59:43 - AI-SDLC - INFO - [logger.py:76] - 开始解析用户故事
+2025-05-01 17:59:43 - AI-SDLC - INFO - [logger.py:76] - 完成用户故事解析
+2025-05-01 17:59:43 - AI-SDLC - INFO - [logger.py:76] - 开始生成用户故事 - 领域: 新闻管理系统, 角色: 内容编辑
+2025-05-01 17:59:55 - AI-SDLC - INFO - [logger.py:76] - 成功生成用户故事
+2025-05-01 17:59:55 - AI-SDLC - INFO - [logger.py:76] - 开始解析用户故事
+2025-05-01 17:59:55 - AI-SDLC - INFO - [logger.py:76] - 完成用户故事解析
+2025-05-01 17:59:55 - AI-SDLC - INFO - [logger.py:76] - 开始生成用户故事 - 领域: 新闻管理系统, 角色: 内容编辑
+2025-05-01 18:00:05 - AI-SDLC - INFO - [logger.py:76] - 成功生成用户故事
+2025-05-01 18:00:05 - AI-SDLC - INFO - [logger.py:76] - 开始解析用户故事
+2025-05-01 18:00:05 - AI-SDLC - INFO - [logger.py:76] - 完成用户故事解析
+2025-05-01 18:00:05 - AI-SDLC - INFO - [logger.py:76] - 完成批量生成，成功生成 3 个故事
+2025-05-01 18:03:38 - AI-SDLC - INFO - [logger.py:76] - 开始批量生成用户故事 - 数量: 3
+2025-05-01 18:03:38 - AI-SDLC - INFO - [logger.py:76] - 开始生成用户故事 - 领域: 新闻管理系统, 角色: 内容编辑
+2025-05-01 18:04:00 - AI-SDLC - INFO - [logger.py:76] - 成功生成用户故事
+2025-05-01 18:04:00 - AI-SDLC - INFO - [logger.py:76] - 开始解析用户故事
+2025-05-01 18:04:00 - AI-SDLC - INFO - [logger.py:76] - 完成用户故事解析
+2025-05-01 18:04:00 - AI-SDLC - INFO - [logger.py:76] - 开始生成用户故事 - 领域: 新闻管理系统, 角色: 内容编辑
+2025-05-01 18:04:18 - AI-SDLC - INFO - [logger.py:76] - 成功生成用户故事
+2025-05-01 18:04:18 - AI-SDLC - INFO - [logger.py:76] - 开始解析用户故事
+2025-05-01 18:04:18 - AI-SDLC - INFO - [logger.py:76] - 完成用户故事解析
+2025-05-01 18:04:18 - AI-SDLC - INFO - [logger.py:76] - 开始生成用户故事 - 领域: 新闻管理系统, 角色: 内容编辑
+2025-05-01 18:04:37 - AI-SDLC - INFO - [logger.py:76] - 成功生成用户故事
+2025-05-01 18:04:37 - AI-SDLC - INFO - [logger.py:76] - 开始解析用户故事
+2025-05-01 18:04:37 - AI-SDLC - INFO - [logger.py:76] - 完成用户故事解析
+2025-05-01 18:04:37 - AI-SDLC - INFO - [logger.py:76] - 完成批量生成，成功生成 3 个故事
+2025-05-01 18:05:03 - AI-SDLC - INFO - [logger.py:76] - 开始批量生成用户故事 - 数量: 2
+2025-05-01 18:05:03 - AI-SDLC - INFO - [logger.py:76] - 开始生成用户故事 - 领域: 新闻管理系统, 角色: 内容编辑
+2025-05-01 18:05:24 - AI-SDLC - INFO - [logger.py:76] - 成功生成用户故事
+2025-05-01 18:05:24 - AI-SDLC - INFO - [logger.py:76] - 开始解析用户故事
+2025-05-01 18:05:24 - AI-SDLC - INFO - [logger.py:76] - 完成用户故事解析
+2025-05-01 18:05:24 - AI-SDLC - INFO - [logger.py:76] - 开始生成用户故事 - 领域: 新闻管理系统, 角色: 内容编辑
+2025-05-01 18:05:41 - AI-SDLC - INFO - [logger.py:76] - 成功生成用户故事
+2025-05-01 18:05:41 - AI-SDLC - INFO - [logger.py:76] - 开始解析用户故事
+2025-05-01 18:05:41 - AI-SDLC - INFO - [logger.py:76] - 完成用户故事解析
+2025-05-01 18:05:41 - AI-SDLC - INFO - [logger.py:76] - 完成批量生成，成功生成 2 个故事
+2025-05-01 18:05:50 - AI-SDLC - INFO - [logger.py:76] - 开始批量生成用户故事 - 数量: 2
+2025-05-01 18:05:50 - AI-SDLC - INFO - [logger.py:76] - 开始生成用户故事 - 领域: 新闻管理系统, 角色: 内容编辑
+2025-05-01 18:06:05 - AI-SDLC - INFO - [logger.py:76] - 成功生成用户故事
+2025-05-01 18:06:05 - AI-SDLC - INFO - [logger.py:76] - 开始解析用户故事
+2025-05-01 18:06:05 - AI-SDLC - INFO - [logger.py:76] - 完成用户故事解析
+2025-05-01 18:06:05 - AI-SDLC - INFO - [logger.py:76] - 开始生成用户故事 - 领域: 新闻管理系统, 角色: 内容编辑
+2025-05-01 18:06:16 - AI-SDLC - INFO - [logger.py:76] - 成功生成用户故事
+2025-05-01 18:06:16 - AI-SDLC - INFO - [logger.py:76] - 开始解析用户故事
+2025-05-01 18:06:16 - AI-SDLC - INFO - [logger.py:76] - 完成用户故事解析
+2025-05-01 18:06:16 - AI-SDLC - INFO - [logger.py:76] - 完成批量生成，成功生成 2 个故事
+2025-05-01 18:09:54 - AI-SDLC - INFO - [logger.py:76] - 开始批量生成用户故事 - 数量: 3
+2025-05-01 18:09:54 - AI-SDLC - INFO - [logger.py:76] - 开始生成用户故事 - 领域: 新闻管理系统, 角色: 内容编辑
+2025-05-01 18:10:09 - AI-SDLC - INFO - [logger.py:76] - 成功生成用户故事
+2025-05-01 18:10:09 - AI-SDLC - INFO - [logger.py:76] - 开始解析用户故事
+2025-05-01 18:10:09 - AI-SDLC - INFO - [logger.py:76] - 完成用户故事解析
+2025-05-01 18:10:09 - AI-SDLC - INFO - [logger.py:76] - 开始生成用户故事 - 领域: 新闻管理系统, 角色: 内容编辑
+2025-05-01 18:10:20 - AI-SDLC - INFO - [logger.py:76] - 成功生成用户故事
+2025-05-01 18:10:20 - AI-SDLC - INFO - [logger.py:76] - 开始解析用户故事
+2025-05-01 18:10:20 - AI-SDLC - INFO - [logger.py:76] - 完成用户故事解析
+2025-05-01 18:10:20 - AI-SDLC - INFO - [logger.py:76] - 开始生成用户故事 - 领域: 新闻管理系统, 角色: 内容编辑
+2025-05-01 18:10:34 - AI-SDLC - INFO - [logger.py:76] - 成功生成用户故事
+2025-05-01 18:10:34 - AI-SDLC - INFO - [logger.py:76] - 开始解析用户故事
+2025-05-01 18:10:34 - AI-SDLC - INFO - [logger.py:76] - 完成用户故事解析
+2025-05-01 18:10:34 - AI-SDLC - INFO - [logger.py:76] - 完成批量生成，成功生成 3 个故事
+2025-05-01 18:10:57 - AI-SDLC - INFO - [logger.py:76] - 开始解析用户故事
+2025-05-01 18:10:58 - AI-SDLC - INFO - [logger.py:76] - 完成用户故事解析
+2025-05-01 18:10:58 - AI-SDLC - INFO - [logger.py:76] - 开始生成 API 规范 - 输出路径: C:\Programs\ai-sdlc\api_spec.json
+2025-05-01 18:10:58 - AI-SDLC - INFO - [logger.py:76] - 开始验证 API 规范
+2025-05-01 18:10:58 - AI-SDLC - INFO - [logger.py:76] - API 规范验证通过
+2025-05-01 18:10:58 - AI-SDLC - INFO - [logger.py:76] - 开始验证 API 规范
+2025-05-01 18:10:58 - AI-SDLC - INFO - [logger.py:76] - API 规范验证通过
+2025-05-01 18:10:58 - AI-SDLC - INFO - [logger.py:76] - API规范已保存
+2025-05-01 18:16:35 - AI-SDLC - INFO - [logger.py:76] - 开始批量生成用户故事 - 数量: 3
+2025-05-01 18:16:35 - AI-SDLC - INFO - [logger.py:76] - 开始生成用户故事 - 领域: 新闻管理系统, 角色: 内容编辑
+2025-05-01 18:16:45 - AI-SDLC - INFO - [logger.py:76] - 成功生成用户故事
+2025-05-01 18:16:45 - AI-SDLC - INFO - [logger.py:76] - 开始解析用户故事
+2025-05-01 18:16:45 - AI-SDLC - INFO - [logger.py:76] - 完成用户故事解析
+2025-05-01 18:16:45 - AI-SDLC - INFO - [logger.py:76] - 开始生成用户故事 - 领域: 新闻管理系统, 角色: 内容编辑
+2025-05-01 18:17:00 - AI-SDLC - INFO - [logger.py:76] - 成功生成用户故事
+2025-05-01 18:17:00 - AI-SDLC - INFO - [logger.py:76] - 开始解析用户故事
+2025-05-01 18:17:00 - AI-SDLC - INFO - [logger.py:76] - 完成用户故事解析
+2025-05-01 18:17:00 - AI-SDLC - INFO - [logger.py:76] - 开始生成用户故事 - 领域: 新闻管理系统, 角色: 内容编辑
+2025-05-01 18:17:12 - AI-SDLC - INFO - [logger.py:76] - 成功生成用户故事
+2025-05-01 18:17:12 - AI-SDLC - INFO - [logger.py:76] - 开始解析用户故事
+2025-05-01 18:17:12 - AI-SDLC - INFO - [logger.py:76] - 完成用户故事解析
+2025-05-01 18:17:12 - AI-SDLC - INFO - [logger.py:76] - 完成批量生成，成功生成 3 个故事
+2025-05-01 18:17:22 - AI-SDLC - INFO - [logger.py:76] - 开始解析用户故事
+2025-05-01 18:17:22 - AI-SDLC - INFO - [logger.py:76] - 完成用户故事解析
+2025-05-01 18:17:22 - AI-SDLC - INFO - [logger.py:76] - 开始生成 API 规范 - 输出路径: C:\Programs\ai-sdlc\api_spec.json
+2025-05-01 18:17:22 - AI-SDLC - INFO - [logger.py:76] - 开始验证 API 规范
+2025-05-01 18:17:22 - AI-SDLC - INFO - [logger.py:76] - API 规范验证通过
+2025-05-01 18:17:22 - AI-SDLC - INFO - [logger.py:76] - 开始验证 API 规范
+2025-05-01 18:17:22 - AI-SDLC - INFO - [logger.py:76] - API 规范验证通过
+2025-05-01 18:17:22 - AI-SDLC - INFO - [logger.py:76] - API规范已保存
+2025-05-01 18:17:36 - AI-SDLC - INFO - [logger.py:76] - 开始解析用户故事
+2025-05-01 18:17:36 - AI-SDLC - INFO - [logger.py:76] - 完成用户故事解析
+2025-05-01 18:17:36 - AI-SDLC - INFO - [logger.py:76] - 开始生成 API 规范 - 输出路径: C:\Programs\ai-sdlc\api_spec.json
+2025-05-01 18:17:36 - AI-SDLC - INFO - [logger.py:76] - 开始验证 API 规范
+2025-05-01 18:17:36 - AI-SDLC - INFO - [logger.py:76] - API 规范验证通过
+2025-05-01 18:17:36 - AI-SDLC - INFO - [logger.py:76] - 开始验证 API 规范
+2025-05-01 18:17:36 - AI-SDLC - INFO - [logger.py:76] - API 规范验证通过
+2025-05-01 18:17:36 - AI-SDLC - INFO - [logger.py:76] - API规范已保存
+2025-05-01 18:18:33 - AI-SDLC - INFO - [logger.py:76] - 开始测试
+2025-05-01 18:18:33 - AI-SDLC - INFO - [logger.py:76] - 开始解析用户故事
+2025-05-01 18:18:33 - AI-SDLC - INFO - [logger.py:76] - 完成用户故事解析
+2025-05-01 18:18:33 - AI-SDLC - INFO - [logger.py:76] - 开始生成 API 规范 - 输出路径: api_spec.json
+2025-05-01 18:18:33 - AI-SDLC - INFO - [logger.py:76] - 开始验证 API 规范
+2025-05-01 18:18:33 - AI-SDLC - INFO - [logger.py:76] - API 规范验证通过
+2025-05-01 18:18:33 - AI-SDLC - INFO - [logger.py:76] - 开始验证 API 规范
+2025-05-01 18:18:33 - AI-SDLC - INFO - [logger.py:76] - API 规范验证通过
+2025-05-01 18:18:33 - AI-SDLC - INFO - [logger.py:76] - API规范已保存
+2025-05-01 18:18:33 - AI-SDLC - INFO - [logger.py:76] - 测试完成
