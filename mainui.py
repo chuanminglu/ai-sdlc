@@ -2,6 +2,8 @@ import tkinter as tk
 from tkinter import ttk, messagebox
 import speech_recognition as sr
 from parseuserstory import generate_user_story, parse_user_story
+from splituserstory import SplitStoryDialog  # 导入拆分用户故事对话框
+from createconstraints import ConstraintsDialog  # 导入约束检查清单对话框
 import re
 import threading
 import time
@@ -147,6 +149,11 @@ class RequirementInputUI:
         self.root.title("需求输入界面")
         self.root.geometry("800x600")
         
+        # 设置默认值
+        self.default_domain = "电商平台"
+        self.default_role = "会员"
+        self.default_feature = "通过商品评论排序筛选商品，要求支持按照评分(1-5星)降序排列，允许选择近3个月的评论，默认显示综合排序(评分*70%+新近度*30%)"
+        
         # 创建消息队列
         self.message_queue = queue.Queue()
         
@@ -189,16 +196,19 @@ class RequirementInputUI:
         ttk.Label(self.main_frame, text="业务领域:").grid(row=0, column=0, sticky=tk.W, pady=5)
         self.domain_entry = ttk.Entry(self.main_frame)
         self.domain_entry.grid(row=0, column=1, columnspan=2, sticky=(tk.W, tk.E), pady=5, padx=5)
+        self.domain_entry.insert(0, self.default_domain)  # 插入默认值
         
         # 用户角色输入
         ttk.Label(self.main_frame, text="用户角色:").grid(row=1, column=0, sticky=tk.W, pady=5)
         self.role_entry = ttk.Entry(self.main_frame)
         self.role_entry.grid(row=1, column=1, columnspan=2, sticky=(tk.W, tk.E), pady=5, padx=5)
+        self.role_entry.insert(0, self.default_role)  # 插入默认值
         
         # 功能特性输入
         ttk.Label(self.main_frame, text="功能特性:").grid(row=2, column=0, sticky=tk.W, pady=5)
         self.feature_text = tk.Text(self.main_frame, height=4)
         self.feature_text.grid(row=2, column=1, columnspan=2, sticky=(tk.W, tk.E), pady=5, padx=5)
+        self.feature_text.insert('1.0', self.default_feature)  # 插入默认值
     
     def create_buttons(self):
         button_frame = ttk.Frame(self.main_frame)
@@ -226,9 +236,32 @@ class RequirementInputUI:
                   command=self.clear_inputs).grid(row=0, column=5, padx=5)
     
     def create_result_area(self):
-        # 结果显示区域
-        ttk.Label(self.main_frame, text="生成的用户故事:").grid(row=4, column=0, 
-                                                          sticky=tk.W, pady=5)
+        # 结果显示区域标题行
+        title_frame = ttk.Frame(self.main_frame)
+        title_frame.grid(row=4, column=0, columnspan=3, sticky=(tk.W, tk.E), pady=5)
+        
+        # 左侧标题
+        ttk.Label(title_frame, text="生成的用户故事:").pack(side=tk.LEFT)
+        
+        # 右侧按钮
+        button_container = ttk.Frame(title_frame)
+        button_container.pack(side=tk.RIGHT)
+        
+        # API规范按钮
+        self.api_button = ttk.Button(button_container, text="创建API规范", 
+                                    command=self.create_api_spec)
+        self.api_button.pack(side=tk.RIGHT, padx=5)
+        
+        # 拆分按钮
+        self.split_button = ttk.Button(button_container, text="拆分用户故事", 
+                                      command=self.split_story)
+        self.split_button.pack(side=tk.RIGHT, padx=5)
+        
+        # 约束检查清单按钮
+        self.constraints_button = ttk.Button(button_container, text="生成约束检查清单", 
+                                           command=self.create_constraints)
+        self.constraints_button.pack(side=tk.RIGHT, padx=5)
+        
         # 创建一个Frame来容纳文本框和滚动条
         result_frame = ttk.Frame(self.main_frame)
         result_frame.grid(row=5, column=0, columnspan=3, sticky=(tk.W, tk.E, tk.N, tk.S))
@@ -323,10 +356,11 @@ class RequirementInputUI:
                 elif action == 'update_parse_result':
                     result = message.get('result')
                     if result:
-                        # 格式化解析结果
+                        # 格式化解析结果，添加价值部分
                         formatted_result = (
                             f"角色: {result['role']}\n"
                             f"目标: {result['goal']}\n"
+                            f"价值: {result.get('value', '')}\n"  # 添加价值显示，使用get方法防止键不存在
                             f"\n验收标准:\n"
                         )
                         for i, criterion in enumerate(result['criteria'], 1):
@@ -439,6 +473,130 @@ class RequirementInputUI:
         
         threading.Thread(target=parse, daemon=True).start()
     
+    def split_story(self):
+        """拆分当前显示的用户故事"""
+        story = self.result_text.get('1.0', tk.END).strip()
+        if not story:
+            messagebox.showerror("错误", "请先生成或输入用户故事")
+            return
+        
+        # 获取当前领域和角色
+        domain = self.domain_entry.get().strip()
+        role = self.role_entry.get().strip()
+        
+        # 显示拆分对话框
+        dialog = SplitStoryDialog(self.root, story)
+        result = dialog.get_result()
+        
+        if not result:
+            return  # 用户取消了操作
+        
+        # 禁用按钮，显示进度条
+        for widget in self.main_frame.winfo_children():
+            if isinstance(widget, ttk.Button):
+                widget.configure(state='disabled')
+        
+        self.show_progress(True)
+        self.progress_var.set("正在拆分用户故事...")
+        
+        # 在新线程中执行拆分
+        def split():
+            try:
+                # 导入拆分功能
+                from parseuserstory import split_user_story
+                
+                # 获取用户选择的拆分数量
+                count = result['count']
+                original_story = result['original_story']
+                
+                # 调用拆分函数
+                stories = split_user_story(original_story, domain, role, count)
+                
+                if stories and len(stories) > 0:
+                    # 创建拆分结果对话框
+                    self.show_split_results(stories)
+                else:
+                    self.message_queue.put({
+                        'action': 'show_error',
+                        'error': "无法拆分用户故事，请检查故事内容或重试"
+                    })
+            except Exception as e:
+                self.message_queue.put({
+                    'action': 'show_error',
+                    'error': str(e)
+                })
+            finally:
+                self.message_queue.put({'action': 'finish_generation'})
+        
+        threading.Thread(target=split, daemon=True).start()
+    
+    def show_split_results(self, stories):
+        """显示拆分后的用户故事"""
+        # 创建新窗口
+        result_window = tk.Toplevel(self.root)
+        result_window.title("用户故事拆分结果")
+        result_window.geometry("800x500")
+        
+        # 使窗口在主窗口之上
+        result_window.transient(self.root)
+        
+        # 居中窗口
+        result_window.update_idletasks()
+        width = result_window.winfo_width()
+        height = result_window.winfo_height()
+        x = (result_window.winfo_screenwidth() // 2) - (width // 2)
+        y = (result_window.winfo_screenheight() // 2) - (height // 2)
+        result_window.geometry(f'{width}x{height}+{x}+{y}')
+        
+        # 创建主框架
+        main_frame = ttk.Frame(result_window, padding="20")
+        main_frame.pack(fill=tk.BOTH, expand=True)
+        
+        # 标题
+        ttk.Label(main_frame, text="用户故事已拆分为以下子故事:", 
+                 font=('Arial', 12, 'bold')).pack(anchor=tk.W, pady=(0, 10))
+        
+        # 创建笔记本控件
+        notebook = ttk.Notebook(main_frame)
+        notebook.pack(fill=tk.BOTH, expand=True)
+        
+        # 为每个拆分的故事创建一个选项卡
+        for i, story in enumerate(stories, 1):
+            # 创建选项卡
+            tab = ttk.Frame(notebook)
+            notebook.add(tab, text=f"故事 {i}")
+            
+            # 创建故事文本框
+            story_text = tk.Text(tab, wrap=tk.WORD)
+            story_text.pack(fill=tk.BOTH, expand=True, padx=5, pady=5)
+            
+            # 添加故事内容
+            story_text.insert('1.0', story)
+            
+            # 添加滚动条
+            scrollbar = ttk.Scrollbar(tab, orient=tk.VERTICAL, command=story_text.yview)
+            scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
+            story_text.configure(yscrollcommand=scrollbar.set)
+        
+        # 底部按钮框架
+        button_frame = ttk.Frame(main_frame)
+        button_frame.pack(fill=tk.X, pady=10)
+        
+        # 用于选择当前选项卡中的故事
+        def select_current_story():
+            current_tab = notebook.index(notebook.select())
+            if current_tab < len(stories):
+                self.result_text.delete('1.0', tk.END)
+                self.result_text.insert('1.0', stories[current_tab])
+                # 自动解析新选择的故事
+                self.parse_story()
+                result_window.destroy()
+        
+        ttk.Button(button_frame, text="选择当前故事", 
+                  command=select_current_story).pack(side=tk.RIGHT, padx=5)
+        ttk.Button(button_frame, text="关闭", 
+                  command=result_window.destroy).pack(side=tk.RIGHT, padx=5)
+    
     def clear_inputs(self):
         """清空所有输入框"""
         self.domain_entry.delete(0, tk.END)
@@ -446,6 +604,140 @@ class RequirementInputUI:
         self.feature_text.delete('1.0', tk.END)
         self.result_text.delete('1.0', tk.END)
         self.parse_result_text.delete('1.0', tk.END)
+    
+    def create_api_spec(self):
+        """创建API规范"""
+        # 首先确保有解析结果
+        # 如果没有解析结果，先解析当前故事
+        story = self.result_text.get('1.0', tk.END).strip()
+        if not story:
+            messagebox.showerror("错误", "请先生成或输入用户故事")
+            return
+        
+        try:
+            # 获取已解析的数据或进行解析
+            parsed_data = None
+            parsed_text = self.parse_result_text.get('1.0', tk.END).strip()
+            
+            # 检查是否已有解析结果
+            if parsed_text:
+                # 尝试从显示的解析文本中重建解析数据
+                lines = parsed_text.split('\n')
+                parsed_data = {}
+                
+                for line in lines:
+                    if line.startswith("角色:"):
+                        parsed_data['role'] = line.replace("角色:", "").strip()
+                    elif line.startswith("目标:"):
+                        parsed_data['goal'] = line.replace("目标:", "").strip()
+                    elif line.startswith("价值:"):
+                        parsed_data['value'] = line.replace("价值:", "").strip()
+                
+                # 提取验收标准
+                criteria = []
+                in_criteria_section = False
+                for line in lines:
+                    if "验收标准:" in line:
+                        in_criteria_section = True
+                        continue
+                    if in_criteria_section and line.strip() and line[0].isdigit():
+                        # 移除数字和点，获取标准内容
+                        criterion = line.split(".", 1)[-1].strip() if "." in line else line.strip()
+                        criteria.append(criterion)
+                
+                parsed_data['criteria'] = criteria
+                
+                # 添加领域信息
+                parsed_data['domain'] = self.domain_entry.get().strip()
+            else:
+                # 如果没有解析结果，现在解析
+                parsed_data = parse_user_story(story)
+                
+                # 添加领域信息
+                parsed_data['domain'] = self.domain_entry.get().strip()
+                
+                # 显示解析结果
+                self.message_queue.put({
+                    'action': 'update_parse_result',
+                    'result': parsed_data
+                })
+            
+            # 导入并显示CreateAPIDialog
+            from createAPIstd import CreateAPIDialog
+            dialog = CreateAPIDialog(self.root, parsed_data)
+            output_path = dialog.run()
+            
+            # 如果有输出路径，表示生成了规范
+            if output_path:
+                self.progress_var.set(f"API规范已生成")
+                
+        except Exception as e:
+            messagebox.showerror("错误", f"创建API规范时发生错误: {str(e)}")
+            self.progress_var.set("")
+    
+    def create_constraints(self):
+        """生成约束检查清单"""
+        # 首先确保有解析结果
+        story = self.result_text.get('1.0', tk.END).strip()
+        if not story:
+            messagebox.showerror("错误", "请先生成或输入用户故事")
+            return
+        
+        try:
+            # 获取已解析的数据或进行解析
+            parsed_data = None
+            parsed_text = self.parse_result_text.get('1.0', tk.END).strip()
+            
+            # 检查是否已有解析结果
+            if parsed_text:
+                # 尝试从显示的解析文本中重建解析数据
+                lines = parsed_text.split('\n')
+                parsed_data = {}
+                
+                for line in lines:
+                    if line.startswith("角色:"):
+                        parsed_data['role'] = line.replace("角色:", "").strip()
+                    elif line.startswith("目标:"):
+                        parsed_data['goal'] = line.replace("目标:", "").strip()
+                    elif line.startswith("价值:"):
+                        parsed_data['value'] = line.replace("价值:", "").strip()
+                
+                # 提取验收标准
+                criteria = []
+                in_criteria_section = False
+                for line in lines:
+                    if "验收标准:" in line:
+                        in_criteria_section = True
+                        continue
+                    if in_criteria_section and line.strip() and line[0].isdigit():
+                        # 移除数字和点，获取标准内容
+                        criterion = line.split(".", 1)[-1].strip() if "." in line else line.strip()
+                        criteria.append(criterion)
+                
+                parsed_data['criteria'] = criteria
+                
+                # 添加领域信息
+                parsed_data['domain'] = self.domain_entry.get().strip()
+            else:
+                # 如果没有解析结果，现在解析
+                parsed_data = parse_user_story(story)
+                
+                # 添加领域信息
+                parsed_data['domain'] = self.domain_entry.get().strip()
+                
+                # 显示解析结果
+                self.message_queue.put({
+                    'action': 'update_parse_result',
+                    'result': parsed_data
+                })
+            
+            # 显示约束检查清单对话框
+            dialog = ConstraintsDialog(self.root, parsed_data)
+            dialog.show()
+                
+        except Exception as e:
+            messagebox.showerror("错误", f"创建约束检查清单时发生错误: {str(e)}")
+            self.progress_var.set("")
     
     def run(self):
         """运行应用程序"""

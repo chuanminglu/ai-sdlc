@@ -113,15 +113,122 @@ def parse_user_story(story):
             goal = goal_text.split("，")[0].split("。")[0].strip()
             break
     
+    # 提取价值（获取"以便"之后到逗号或句号之前的内容）
+    value = ""
+    for sent in doc.sents:
+        if "以便" in sent.text:
+            value_text = sent.text.split("以便")[1]
+            value = value_text.split("，")[0].split("。")[0].strip()
+            break
+    
     # 解析验收标准
     criteria = [line.strip("- ").strip() for line in story.split("\n") if line.strip().startswith("-")]
     
     return {
         "role": role,
         "goal": goal,
+        "value": value,  # 添加价值字段
         "criteria": criteria,
         "timestamp": datetime.now().isoformat()
     }
+
+def split_user_story(story, domain, role, count=3):
+    """
+    将一个大的用户故事拆分成多个小的、更具体的用户故事
+    
+    参数：
+        story (str): 原始用户故事
+        domain (str): 业务领域
+        role (str): 用户角色
+        count (int): 期望拆分的故事数量，默认3
+        
+    返回：
+        list: 拆分后的用户故事列表
+    """
+    # 从配置文件获取 API 密钥
+    API_KEY = get_api_key()
+    
+    API_URL = "https://api.deepseek.com/v1/chat/completions"
+    
+    # 构造提示文本
+    prompt = f"""请将以下用户故事拆分成{count}个更小的、更具体的用户故事，每个故事聚焦于一个明确的功能点：
+
+原始用户故事:
+{story}
+
+要求：
+1. 输出{count}个独立的用户故事
+2. 每个故事都要按照"作为[角色]，我希望[具体功能]，以便[价值/目的]。"的格式
+3. 每个故事都需要包含2-3条具体的验收标准
+4. 每个故事应该聚焦于原始故事中的一个功能点
+5. 确保所有拆分后的故事加起来涵盖了原始故事的所有功能
+
+请按照以下格式输出，用"---"分隔每个故事：
+
+用户故事1:
+作为[角色]，我希望[具体功能1]，以便[价值/目的]。
+
+验收标准:
+- [标准1]
+- [标准2]
+- [标准3]
+
+---
+
+用户故事2:
+作为[角色]，我希望[具体功能2]，以便[价值/目的]。
+
+验收标准:
+- [标准1]
+- [标准2]
+- [标准3]
+
+---
+
+...以此类推，确保输出正好{count}个用户故事
+"""
+    
+    # 准备请求数据
+    headers = {
+        "Content-Type": "application/json",
+        "Authorization": f"Bearer {API_KEY}"
+    }
+    
+    data = {
+        "model": "deepseek-chat",
+        "messages": [
+            {
+                "role": "user",
+                "content": prompt
+            }
+        ],
+        "temperature": 0.7,
+        "max_tokens": 1500
+    }
+    
+    try:
+        # 发送请求
+        response = requests.post(API_URL, headers=headers, json=data)
+        response.raise_for_status()
+        
+        # 解析响应
+        result = response.json()
+        generated_text = result['choices'][0]['message']['content'].strip()
+        
+        # 拆分多个故事
+        stories = []
+        parts = generated_text.split("---")
+        
+        for part in parts:
+            part = part.strip()
+            if part:
+                stories.append(part)
+                
+        return stories
+        
+    except requests.exceptions.RequestException as e:
+        print(f"API 调用出错: {str(e)}")
+        return None
 
 def generate_and_save_api_spec(user_story_data: dict, output_path: str) -> None:
     """
