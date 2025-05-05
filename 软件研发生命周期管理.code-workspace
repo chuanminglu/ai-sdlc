@@ -1,0 +1,37 @@
+{
+  "folders": [
+    {
+      "path": ".",
+      "name": "AI-SDLC工具"
+    },
+    {
+      "path": "../ai-java",
+      "name": "电商评论服务"
+    }
+  ],
+  "settings": {
+    "files.exclude": {
+      "**/__pycache__": true,
+      "**/target": false,
+      "**/*.egg-info": true
+    },
+    "editor.formatOnSave": true,
+    "python.linting.enabled": true,
+    "java.configuration.updateBuildConfiguration": "automatic",
+    "java.format.enabled": true,
+    "workbench.colorCustomizations": {
+      "activityBar.background": "#1A3C55",
+      "titleBar.activeBackground": "#1A3C55",
+      "titleBar.activeForeground": "#FFFFFF"
+    }
+  },
+  "extensions": {
+    "recommendations": [
+      "ms-python.python",
+      "redhat.java",
+      "vscjava.vscode-java-pack",
+      "davidanson.vscode-markdownlint",
+      "antfu.slidev"
+    ]
+  }
+}
