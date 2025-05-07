@@ -24,11 +24,3 @@ ENV/
 
 # 配置文件（包含敏感信息）
 config.ini
-apispec_generator/src/apispec_generator/__pycache__/__init__.cpython-312.pyc
-apispec_generator/src/apispec_generator/__pycache__/api_generator.cpython-312.pyc
-apispec_generator/src/apispec_generator/__pycache__/api_generator.cpython-312.pyc
-apispec_generator/src/apispec_generator/__pycache__/__init__.cpython-312.pyc
-apispec_generator/src/apispec_generator/__pycache__/__init__.cpython-312.pyc
-apispec_generator/src/apispec_generator/__pycache__/__init__.cpython-312.pyc
-apispec_generator/src/apispec_generator/__pycache__/__init__.cpython-312.pyc
-apispec_generator/src/apispec_generator/__pycache__/api_generator.cpython-312.pyc
