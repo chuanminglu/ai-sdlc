@@ -1,5 +1,8 @@
 spacy>=3.0.0
 requests>=2.25.1
-zh_core_web_sm @ https://github.com/explosion/spacy-models/releases/download/zh_core_web_sm-3.7.0/zh_core_web_sm-3.7.0-py3-none-any.whl
+zh_core_web_sm@ https://github.com/explosion/spacy-models/releases/download/zh_core_web_sm-3.7.0/zh_core_web_sm-3.7.0-py3-none-any.whl
 Pillow>=10.0.0
 pyautogui>=0.9.54
+deepseek-api>=1.0.0  # DeepSeek V3 API客户端
+markdown>=3.0.0      # Markdown解析
+PyYAML>=6.0.0       # YAML支持
