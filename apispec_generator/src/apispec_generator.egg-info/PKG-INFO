@@ -1,7 +1,0 @@
-Metadata-Version: 2.1
-Name: apispec-generator
-Version: 0.1.0
-Summary: API specification generator for user stories
-Author: AIBasic
-Author-email: example@example.com
-Requires-Python: >=3.6
