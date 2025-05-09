@@ -1,0 +1,120 @@
+2025-05-09 10:08:02,940 - ConflictDetector - INFO - 初始化需求冲突检测器，使用模型版本: v3
+2025-05-09 10:08:02,941 - ConflictDetector - INFO - 开始检测需求冲突，分析维度: ['功能一致性']
+2025-05-09 10:08:02,941 - ConflictDetector - INFO - 分析维度: 功能一致性
+2025-05-09 10:08:02,942 - ConflictDetector - INFO - 向Deepseek API发送请求，分析维度: 功能一致性
+2025-05-09 10:08:02,942 - ConflictDetector - ERROR - 解析模型响应时出错: Expecting value: line 1 column 1 (char 0)
+2025-05-09 10:08:02,942 - ConflictDetector - ERROR - 原始响应: 模拟的API响应
+2025-05-09 10:08:02,942 - ConflictDetector - INFO - 需求冲突检测完成，共发现 0 个冲突
+2025-05-09 10:09:07,492 - ConflictDetector - INFO - 初始化需求冲突检测器，使用模型版本: v3
+2025-05-09 10:09:07,492 - ConflictDetector - INFO - 开始检测需求冲突，分析维度: ['功能一致性', '用户权限逻辑', '业务流程完整性', '用户体验一致性', '数据一致性', '安全合规性']
+2025-05-09 10:09:07,492 - ConflictDetector - INFO - 分析维度: 功能一致性
+2025-05-09 10:09:07,493 - ConflictDetector - INFO - 向Deepseek API发送请求，分析维度: 功能一致性
+2025-05-09 10:09:07,493 - ConflictDetector - ERROR - 解析模型响应时出错: Expecting value: line 1 column 1 (char 0)
+2025-05-09 10:09:07,493 - ConflictDetector - ERROR - 原始响应: 模拟的API响应
+2025-05-09 10:09:07,493 - ConflictDetector - INFO - 分析维度: 用户权限逻辑
+2025-05-09 10:09:07,493 - ConflictDetector - INFO - 向Deepseek API发送请求，分析维度: 用户权限逻辑
+2025-05-09 10:09:07,493 - ConflictDetector - ERROR - 解析模型响应时出错: Expecting value: line 1 column 1 (char 0)
+2025-05-09 10:09:07,493 - ConflictDetector - ERROR - 原始响应: 模拟的API响应
+2025-05-09 10:09:07,493 - ConflictDetector - INFO - 分析维度: 业务流程完整性
+2025-05-09 10:09:07,493 - ConflictDetector - INFO - 向Deepseek API发送请求，分析维度: 业务流程完整性
+2025-05-09 10:09:07,493 - ConflictDetector - ERROR - 解析模型响应时出错: Expecting value: line 1 column 1 (char 0)
+2025-05-09 10:09:07,493 - ConflictDetector - ERROR - 原始响应: 模拟的API响应
+2025-05-09 10:09:07,493 - ConflictDetector - INFO - 分析维度: 用户体验一致性
+2025-05-09 10:09:07,493 - ConflictDetector - INFO - 向Deepseek API发送请求，分析维度: 用户体验一致性
+2025-05-09 10:09:07,493 - ConflictDetector - ERROR - 解析模型响应时出错: Expecting value: line 1 column 1 (char 0)
+2025-05-09 10:09:07,493 - ConflictDetector - ERROR - 原始响应: 模拟的API响应
+2025-05-09 10:09:07,493 - ConflictDetector - INFO - 分析维度: 数据一致性
+2025-05-09 10:09:07,493 - ConflictDetector - INFO - 向Deepseek API发送请求，分析维度: 数据一致性
+2025-05-09 10:09:07,493 - ConflictDetector - ERROR - 解析模型响应时出错: Expecting value: line 1 column 1 (char 0)
+2025-05-09 10:09:07,493 - ConflictDetector - ERROR - 原始响应: 模拟的API响应
+2025-05-09 10:09:07,493 - ConflictDetector - INFO - 分析维度: 安全合规性
+2025-05-09 10:09:07,493 - ConflictDetector - INFO - 向Deepseek API发送请求，分析维度: 安全合规性
+2025-05-09 10:09:07,493 - ConflictDetector - ERROR - 解析模型响应时出错: Expecting value: line 1 column 1 (char 0)
+2025-05-09 10:09:07,493 - ConflictDetector - ERROR - 原始响应: 模拟的API响应
+2025-05-09 10:09:07,494 - ConflictDetector - INFO - 需求冲突检测完成，共发现 0 个冲突
+2025-05-09 10:14:49,474 - ConflictDetector - ERROR - 读取配置文件 D:\Programs\ai-sdlc\config.ini 出错: 'gbk' codec can't decode byte 0xa7 in position 190: illegal multibyte sequence
+2025-05-09 10:14:49,474 - ConflictDetector - WARNING - 未设置Deepseek API密钥，将使用模拟模式
+2025-05-09 10:14:49,474 - ConflictDetector - INFO - 初始化需求冲突检测器，使用模型版本: v3
+2025-05-09 10:14:49,474 - ConflictDetector - INFO - 开始检测需求冲突，分析维度: ['功能一致性', '用户权限逻辑', '业务流程完整性', '用户体验一致性', '数据一致性', '安全合规性']
+2025-05-09 10:14:49,474 - ConflictDetector - INFO - 分析维度: 功能一致性
+2025-05-09 10:14:49,475 - ConflictDetector - INFO - 向Deepseek API发送请求，分析维度: 功能一致性
+2025-05-09 10:14:49,475 - ConflictDetector - ERROR - 解析模型响应时出错: Expecting value: line 1 column 1 (char 0)
+2025-05-09 10:14:49,475 - ConflictDetector - ERROR - 原始响应: 模拟的API响应
+2025-05-09 10:14:49,475 - ConflictDetector - INFO - 分析维度: 用户权限逻辑
+2025-05-09 10:14:49,475 - ConflictDetector - INFO - 向Deepseek API发送请求，分析维度: 用户权限逻辑
+2025-05-09 10:14:49,475 - ConflictDetector - ERROR - 解析模型响应时出错: Expecting value: line 1 column 1 (char 0)
+2025-05-09 10:14:49,475 - ConflictDetector - ERROR - 原始响应: 模拟的API响应
+2025-05-09 10:14:49,475 - ConflictDetector - INFO - 分析维度: 业务流程完整性
+2025-05-09 10:14:49,475 - ConflictDetector - INFO - 向Deepseek API发送请求，分析维度: 业务流程完整性
+2025-05-09 10:14:49,475 - ConflictDetector - ERROR - 解析模型响应时出错: Expecting value: line 1 column 1 (char 0)
+2025-05-09 10:14:49,475 - ConflictDetector - ERROR - 原始响应: 模拟的API响应
+2025-05-09 10:14:49,475 - ConflictDetector - INFO - 分析维度: 用户体验一致性
+2025-05-09 10:14:49,475 - ConflictDetector - INFO - 向Deepseek API发送请求，分析维度: 用户体验一致性
+2025-05-09 10:14:49,475 - ConflictDetector - ERROR - 解析模型响应时出错: Expecting value: line 1 column 1 (char 0)
+2025-05-09 10:14:49,475 - ConflictDetector - ERROR - 原始响应: 模拟的API响应
+2025-05-09 10:14:49,475 - ConflictDetector - INFO - 分析维度: 数据一致性
+2025-05-09 10:14:49,475 - ConflictDetector - INFO - 向Deepseek API发送请求，分析维度: 数据一致性
+2025-05-09 10:14:49,475 - ConflictDetector - ERROR - 解析模型响应时出错: Expecting value: line 1 column 1 (char 0)
+2025-05-09 10:14:49,475 - ConflictDetector - ERROR - 原始响应: 模拟的API响应
+2025-05-09 10:14:49,475 - ConflictDetector - INFO - 分析维度: 安全合规性
+2025-05-09 10:14:49,475 - ConflictDetector - INFO - 向Deepseek API发送请求，分析维度: 安全合规性
+2025-05-09 10:14:49,475 - ConflictDetector - ERROR - 解析模型响应时出错: Expecting value: line 1 column 1 (char 0)
+2025-05-09 10:14:49,475 - ConflictDetector - ERROR - 原始响应: 模拟的API响应
+2025-05-09 10:14:49,476 - ConflictDetector - INFO - 需求冲突检测完成，共发现 0 个冲突
+2025-05-09 10:14:58,817 - ConflictDetector - ERROR - 读取配置文件 D:\Programs\ai-sdlc\config.ini 出错: 'gbk' codec can't decode byte 0xa7 in position 190: illegal multibyte sequence
+2025-05-09 10:14:58,818 - ConflictDetector - WARNING - 未设置Deepseek API密钥，将使用模拟模式
+2025-05-09 10:14:58,818 - ConflictDetector - INFO - 初始化需求冲突检测器，使用模型版本: v3
+2025-05-09 10:14:58,818 - ConflictDetector - INFO - 开始检测需求冲突，分析维度: ['功能一致性']
+2025-05-09 10:14:58,818 - ConflictDetector - INFO - 分析维度: 功能一致性
+2025-05-09 10:14:58,819 - ConflictDetector - INFO - 向Deepseek API发送请求，分析维度: 功能一致性
+2025-05-09 10:14:58,819 - ConflictDetector - ERROR - 解析模型响应时出错: Expecting value: line 1 column 1 (char 0)
+2025-05-09 10:14:58,819 - ConflictDetector - ERROR - 原始响应: 模拟的API响应
+2025-05-09 10:14:58,819 - ConflictDetector - INFO - 需求冲突检测完成，共发现 0 个冲突
+2025-05-09 10:21:49,904 - ConflictDetector - INFO - 尝试从 D:\Programs\ai-sdlc\config.ini 加载配置
+2025-05-09 10:21:49,905 - ConflictDetector - ERROR - 读取配置文件 D:\Programs\ai-sdlc\config.ini 出错: 'gbk' codec can't decode byte 0xa7 in position 190: illegal multibyte sequence
+2025-05-09 10:21:49,905 - ConflictDetector - WARNING - 未设置Deepseek API密钥，将使用模拟模式
+2025-05-09 10:21:49,905 - ConflictDetector - INFO - 初始化需求冲突检测器，使用模型: deepseek-chat
+2025-05-09 10:21:49,905 - ConflictDetector - INFO - 开始检测需求冲突，分析维度: ['功能一致性', '用户权限逻辑', '业务流程完整性', '用户体验一致性', '数据一致性', '安全合规性']
+2025-05-09 10:21:49,905 - ConflictDetector - INFO - 分析维度: 功能一致性
+2025-05-09 10:21:49,905 - ConflictDetector - INFO - 向Deepseek API发送请求，分析维度: 功能一致性
+2025-05-09 10:21:49,905 - ConflictDetector - INFO - 在'功能一致性'维度下发现 0 个冲突
+2025-05-09 10:21:49,905 - ConflictDetector - INFO - 分析维度: 用户权限逻辑
+2025-05-09 10:21:49,905 - ConflictDetector - INFO - 向Deepseek API发送请求，分析维度: 用户权限逻辑
+2025-05-09 10:21:49,905 - ConflictDetector - INFO - 在'用户权限逻辑'维度下发现 0 个冲突
+2025-05-09 10:21:49,905 - ConflictDetector - INFO - 分析维度: 业务流程完整性
+2025-05-09 10:21:49,905 - ConflictDetector - INFO - 向Deepseek API发送请求，分析维度: 业务流程完整性
+2025-05-09 10:21:49,905 - ConflictDetector - INFO - 在'业务流程完整性'维度下发现 0 个冲突
+2025-05-09 10:21:49,905 - ConflictDetector - INFO - 分析维度: 用户体验一致性
+2025-05-09 10:21:49,905 - ConflictDetector - INFO - 向Deepseek API发送请求，分析维度: 用户体验一致性
+2025-05-09 10:21:49,905 - ConflictDetector - INFO - 在'用户体验一致性'维度下发现 0 个冲突
+2025-05-09 10:21:49,905 - ConflictDetector - INFO - 分析维度: 数据一致性
+2025-05-09 10:21:49,906 - ConflictDetector - INFO - 向Deepseek API发送请求，分析维度: 数据一致性
+2025-05-09 10:21:49,906 - ConflictDetector - INFO - 在'数据一致性'维度下发现 0 个冲突
+2025-05-09 10:21:49,906 - ConflictDetector - INFO - 分析维度: 安全合规性
+2025-05-09 10:21:49,906 - ConflictDetector - INFO - 向Deepseek API发送请求，分析维度: 安全合规性
+2025-05-09 10:21:49,906 - ConflictDetector - INFO - 在'安全合规性'维度下发现 0 个冲突
+2025-05-09 10:21:49,906 - ConflictDetector - INFO - 需求冲突检测完成，共发现 0 个冲突
+2025-05-09 10:34:18,008 - ConflictDetector - INFO - 尝试从 D:\Programs\ai-sdlc\config.ini 加载配置
+2025-05-09 10:34:18,008 - ConflictDetector - INFO - 从配置文件加载API设置: api_base=https://api.deepseek.com/v1, model=deepseek-chat
+2025-05-09 10:34:18,008 - ConflictDetector - INFO - 成功加载API密钥: sk-45...
+2025-05-09 10:34:18,008 - ConflictDetector - INFO - 初始化需求冲突检测器，使用模型: deepseek-chat
+2025-05-09 10:34:18,008 - ConflictDetector - INFO - 开始检测需求冲突，分析维度: ['功能一致性', '用户权限逻辑', '业务流程完整性', '用户体验一致性', '数据一致性', '安全合规性']
+2025-05-09 10:34:18,009 - ConflictDetector - INFO - 分析维度: 功能一致性
+2025-05-09 10:34:18,009 - ConflictDetector - INFO - 向Deepseek API发送请求，分析维度: 功能一致性
+2025-05-09 10:34:50,375 - ConflictDetector - INFO - 在'功能一致性'维度下发现 4 个冲突
+2025-05-09 10:34:50,375 - ConflictDetector - INFO - 分析维度: 用户权限逻辑
+2025-05-09 10:34:50,376 - ConflictDetector - INFO - 向Deepseek API发送请求，分析维度: 用户权限逻辑
+2025-05-09 10:35:18,426 - ConflictDetector - INFO - 在'用户权限逻辑'维度下发现 4 个冲突
+2025-05-09 10:35:18,426 - ConflictDetector - INFO - 分析维度: 业务流程完整性
+2025-05-09 10:35:18,426 - ConflictDetector - INFO - 向Deepseek API发送请求，分析维度: 业务流程完整性
+2025-05-09 10:35:52,732 - ConflictDetector - INFO - 在'业务流程完整性'维度下发现 5 个冲突
+2025-05-09 10:35:52,732 - ConflictDetector - INFO - 分析维度: 用户体验一致性
+2025-05-09 10:35:52,732 - ConflictDetector - INFO - 向Deepseek API发送请求，分析维度: 用户体验一致性
+2025-05-09 10:36:23,240 - ConflictDetector - INFO - 在'用户体验一致性'维度下发现 5 个冲突
+2025-05-09 10:36:23,241 - ConflictDetector - INFO - 分析维度: 数据一致性
+2025-05-09 10:36:23,241 - ConflictDetector - INFO - 向Deepseek API发送请求，分析维度: 数据一致性
+2025-05-09 10:36:48,026 - ConflictDetector - INFO - 在'数据一致性'维度下发现 3 个冲突
+2025-05-09 10:36:48,027 - ConflictDetector - INFO - 分析维度: 安全合规性
+2025-05-09 10:36:48,027 - ConflictDetector - INFO - 向Deepseek API发送请求，分析维度: 安全合规性
+2025-05-09 10:37:19,990 - ConflictDetector - INFO - 在'安全合规性'维度下发现 4 个冲突
+2025-05-09 10:37:19,990 - ConflictDetector - INFO - 需求冲突检测完成，共发现 25 个冲突
