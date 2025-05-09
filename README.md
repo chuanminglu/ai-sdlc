@@ -1,15 +1,18 @@
-# AI-SDLC 用户故事开发助手
+# AI-SDLC 软件开发生命周期智能助手
 
 <div align="center">
     <img src="docs/images/ai-sdlc-logo.png" alt="AI-SDLC Logo" width="200"/>
     <br>
-    <p><strong>人工智能辅助软件开发生命周期工具</strong></p>
+    <p><strong>人工智能辅助软件开发生命周期全流程工具</strong></p>
 </div>
 
 ## 📖 项目概述
 
-AI-SDLC 是一款集成了人工智能能力的软件开发生命周期工具，专注于用户故事解析、API 规范自动生成以及约束条件管理。该工具通过深度学习技术自动分析用户需求，快速转化为规范的 API 文档，大幅提高软件开发效率。
-这是一个完全用AI写的项目，探索如何用AI打通软件开发生命周期中的各个环节，从需求分析到API设计，再到约束条件管理。
+AI-SDLC 是一款集成了人工智能能力的软件开发生命周期工具，专注于用户故事解析、需求冲突分析、API 规范自动生成以及约束条件管理。该工具通过深度学习和自然语言处理技术，自动分析用户需求，发现潜在冲突，并快速转化为规范的 API 文档，大幅提高软件开发效率。
+
+这是一个完全用 AI 驱动的项目，旨在探索如何用人工智能打通软件开发生命周期中的各个环节，从需求分析、冲突检测到 API 设计，再到约束条件管理，构建更可靠的软件产品。
+
+**最新更新：** 新增基于 SpaCy 的需求冲突检测模块，通过 NLP 技术智能识别需求间的潜在冲突（2025年5月）
 
 ## ⭐️ 主要功能
 
@@ -18,17 +21,24 @@ AI-SDLC 是一款集成了人工智能能力的软件开发生命周期工具，
    - 精确提取角色、目标和验收标准
    - 支持中文语音输入，提高效率
 
-2. **📊 API规范自动生成**
+2. **🔄 需求冲突检测（新功能）**
+   - 基于 SpaCy 的自然语言处理技术
+   - 多维度分析：实体识别、名词短语分析、术语一致性检查等
+   - 直观的图形界面展示冲突点
+   - 自动生成详细冲突报告
+   - 支持中文需求文档分析
+
+3. **📊 API规范自动生成**
    - 符合OpenAPI 3.0标准
    - 支持Swagger和Redoc文档界面
    - 自动生成接口定义和示例
 
-3. **🔍 约束条件智能提取**
+4. **🔍 约束条件智能提取**
    - 自动识别性能、安全等约束
    - 生成结构化约束清单
    - 支持导出和共享
 
-4. **📋 PRD文档质量评审**
+5. **📋 PRD文档质量评审**
    - 基于19条专业评审标准进行评估
    - 自动识别文档缺失项
    - 提供具体改进建议
@@ -45,20 +55,67 @@ AI-SDLC 是一款集成了人工智能能力的软件开发生命周期工具，
    - 用户故事解析 (parseuserstory.py)
    - 用户故事分割 (splituserstory.py)
 
-3. **API规范生成模块**
+3. **需求冲突检测模块 (conflict_detector/)**
+   - 冲突检测核心 (requirements_conflict_detector.py)
+   - 冲突检测图形界面 (nlp_conflict_detector_gui.py)
+   - 示例需求文件 (enhanced_requirements.py)
+   - 测试和示例脚本 (test_conflict_detector.py, example_usage.py)
+
+4. **API规范生成模块**
    - API标准创建 (createAPIstd.py)
    - 排序功能实现 (createsort.py)
+   - API规范生成器包 (apispec_generator/)
 
-4. **约束条件管理模块**
+5. **约束条件管理模块**
    - 约束条件生成 (createconstraints.py)
 
-5. **PRD文档评审模块**
+6. **PRD文档评审模块**
    - 评审界面 (prd_check_ui.py)
    - 评审逻辑 (prd_checker.py)
    - 示例PRD生成 (sample_prd.py)
 
-6. **LLM接口模块**
+7. **LLM接口模块**
    - 统一大模型接口 (llm_interface.py)
+
+## 💡 需求冲突检测模块
+
+需求冲突检测是本项目的重要新增功能，它通过先进的自然语言处理技术，从多个维度分析需求文档，识别潜在冲突。
+
+### 核心特性
+
+- **智能冲突检测**：自动识别术语不一致、规则矛盾、时间约束冲突等问题
+- **多维度分析**：结合实体识别、名词短语分析、语义角色标注等NLP技术全面分析需求
+- **可视化界面**：直观展示冲突关系，支持交互式探索
+- **详细报告**：生成结构化冲突报告，提供冲突解释和建议
+
+### 使用示例
+
+```python
+from conflict_detector.requirements_conflict_detector import RequirementConflictDetector
+from conflict_detector.enhanced_requirements import ECOMMERCE_REQUIREMENTS
+
+# 初始化检测器
+detector = RequirementConflictDetector()
+
+# 加载需求
+detector.load_requirements(ECOMMERCE_REQUIREMENTS)
+
+# 检测冲突
+conflicts = detector.detect_conflicts()
+
+# 生成报告
+report = detector.generate_report(conflicts)
+print(report)
+```
+
+### 集成指南
+
+详细的集成和使用指南请参见 `conflict_detector/integration_guide.md`。
+
+## 📚 参考资料
+
+- [需求冲突分析维度](docs/需求冲突分析维度.md)
+- [需求评审标准](docs/需求评审标准.md)
 
 ## 🚀 快速开始
 
@@ -71,6 +128,9 @@ cd ai-sdlc
 
 # 安装依赖
 pip install -r requirements.txt
+
+# 安装SpaCy中文语言模型（用于需求冲突检测）
+python -m spacy download zh_core_web_sm
 
 # 配置API密钥
 cp config.ini.template config.ini
@@ -99,6 +159,27 @@ python mainui.py
 - **输入方式**：
   - 文本输入：直接在界面输入
   - 语音输入：支持中文语音识别
+
+#### 3. 需求冲突检测（新功能）
+
+```bash
+# 运行冲突检测的图形界面
+python conflict_detector/nlp_conflict_detector_gui.py
+```
+
+- **功能特点**：
+  - 分析需求文档中的潜在冲突
+  - 多维度分析：实体识别、术语一致性检查等
+  - 冲突树形可视化展示
+  - 详细的冲突报告生成
+  - 可导出为多种格式（HTML、Markdown、TXT）
+
+- **支持的冲突类型**：
+  - 术语不一致
+  - 规则匹配冲突
+  - 时间约束潜在冲突
+  - 安全隐私潜在冲突
+  - 功能重叠潜在冲突
   - 默认模板：常见场景快速填充
 
 - **操作步骤**：
@@ -256,12 +337,18 @@ AI-SDLC 内置了多个精心设计的提示词模板，用于不同的功能模
    - 自动提取关键信息
    - 确保需求完整性
 
-2. **API设计阶段**
+2. **需求冲突检测阶段**
+   - 自动识别需求冲突点
+   - 防止项目早期缺陷
+   - 减少后期返工成本
+   - 提高需求质量
+
+3. **API设计阶段**
    - 自动生成API文档
    - 统一接口规范
    - 提高开发效率
 
-3. **质量管理阶段**
+4. **质量管理阶段**
    - 识别关键约束
    - 生成检查清单
    - 确保实现质量
@@ -282,19 +369,26 @@ AI-SDLC 内置了多个精心设计的提示词模板，用于不同的功能模
 - [ ] 多语言支持
 - [ ] 离线模型支持
 
-## 📞 联系方式
+## 👨‍💻 贡献指南
 
-- 作者：windlu
-- 邮箱：windlu@Itlead.com.cn
-- Issues：[GitHub Issues](https://github.com/windlu/ai-sdlc/issues)
+欢迎对 AI-SDLC 项目做出贡献！
+
+1. Fork 仓库并克隆到本地
+2. 创建新的功能分支：`git checkout -b feature/amazing-feature`
+3. 提交更改：`git commit -m 'Add some amazing feature'`
+4. 推送到分支：`git push origin feature/amazing-feature`
+5. 提交 Pull Request
 
 ## 📄 许可证
 
-本项目采用 MIT 许可证，详见 [LICENSE](LICENSE) 文件。
+本项目采用 MIT 许可证。详情请参阅 LICENSE 文件。
+
+## 📞 联系方式
+
+如有问题或建议，请联系项目维护者或提交 Issue。
 
 ---
 
 <div align="center">
-    <p>由 windlu ❤️ 和 AI 共同打造</p>
-    <p>最后更新: 2025年5月7日</p>
+    <p>AI-SDLC — 让软件开发更高效、更智能</p>
 </div>

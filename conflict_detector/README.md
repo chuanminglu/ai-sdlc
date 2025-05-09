@@ -1,6 +1,11 @@
 # 基于SpaCy的需求冲突检测模块
 
-这个模块使用自然语言处理(NLP)技术来分析需求文档，识别潜在冲突点。通过对需求文本的多维度分析，帮助项目团队在早期发现和解决需求间的矛盾和不一致。
+这个模块使用自然语言处理(NLP)技术来分析需求文档，识别潜在冲突点。通过对需求文本的多维度分析，帮助项目团队在早期发现和解决需求间的矛盾和不一致，提高需求质量和软件开发效率。
+
+![版本](https://img.shields.io/badge/版本-1.0.0-blue)
+![SpaCy](https://img.shields.io/badge/SpaCy-3.0+-green)
+![Python](https://img.shields.io/badge/Python-3.7+-yellow)
+![更新日期](https://img.shields.io/badge/更新日期-2025.05.09-orange)
 
 ## 功能特点
 
