@@ -88,14 +88,60 @@ jobs:
                 }
               }
             `;
-            
-            try {
+              try {
+              // 先检查项目是否存在
               const projectData = await github.graphql(projectQuery);
-              const project = projectData.repository.projectsV2.nodes[0];
+              let project = projectData.repository.projectsV2.nodes[0];
               
+              // 如果项目不存在，创建新项目
               if (!project) {
-                console.log('未找到项目看板，可能需要先创建项目');
-                return;
+                console.log('正在创建新的项目看板...');
+                const createProjectMutation = `
+                  mutation {
+                    createProjectV2(input: {
+                      ownerId: "${context.repo.owner}",
+                      title: "需求管理",
+                      repositoryId: "${context.repo.id}"
+                    }) {
+                      projectV2 {
+                        id
+                      }
+                    }
+                  }
+                `;
+                
+                const createResult = await github.graphql(createProjectMutation);
+                project = { id: createResult.createProjectV2.projectV2.id };
+                
+                // 创建状态字段
+                const createFieldMutation = `
+                  mutation {
+                    createProjectV2Field(input: {
+                      projectId: "${project.id}",
+                      dataType: SINGLE_SELECT,
+                      name: "状态",
+                      singleSelectOptions: [
+                        { name: "待分类", color: "GRAY" },
+                        { name: "需求评审", color: "YELLOW" },
+                        { name: "已接受", color: "GREEN" },
+                        { name: "已拒绝", color: "RED" },
+                        { name: "进行中", color: "BLUE" },
+                        { name: "已完成", color: "PURPLE" }
+                      ]
+                    }) {
+                      projectV2Field {
+                        id
+                      }
+                    }
+                  }
+                `;
+                
+                await github.graphql(createFieldMutation);
+                console.log('项目看板创建完成');
+                
+                // 重新获取项目数据
+                const refreshData = await github.graphql(projectQuery);
+                project = refreshData.repository.projectsV2.nodes[0];
               }
               
               // 查找状态字段
@@ -112,13 +158,12 @@ jobs:
               const reviewOption = statusField.options.find(option => 
                 option.name === "需求评审"
               );
-              
-              // 将Issue添加到项目
+                // 将Issue添加到项目
               const addToProjectMutation = `
                 mutation {
                   addProjectV2ItemById(input: {
                     projectId: "${project.id}"
-                    contentId: "${github.context.payload.issue.node_id}"
+                    contentId: "${github.event.issue.node_id}"
                   }) {
                     item {
                       id
