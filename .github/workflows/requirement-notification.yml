@@ -64,15 +64,14 @@ jobs:
       - name: Update project board
         uses: actions/github-script@v6
         with:
-          github-token: ${{ secrets.GH_PAT }}  # 使用具有更高权限的个人访问令牌
+          github-token: ${{ secrets.GH_PAT }}
           script: |
             async function run() {
               try {
-                // 首先获取用户的节点ID
-                const userQuery = await github.graphql(`
-                  query($owner: String!) {
-                    user(login: $owner) {
-                      id
+                // 查找仓库的项目
+                const projects = await github.graphql(`
+                  query($owner: String!, $repo: String!) {
+                    repository(owner: $owner, name: $repo) {
                       projectsV2(first: 20) {
                         nodes {
                           id
@@ -83,138 +82,58 @@ jobs:
                     }
                   }
                 `, {
-                  owner: context.repo.owner
+                  owner: context.repo.owner,
+                  repo: context.repo.repo
                 });
 
-                if (!userQuery.user) {
-                  throw new Error(`未找到用户：${context.repo.owner}`);
+                console.log('查询到的项目列表:', JSON.stringify(projects, null, 2));
+
+                if (!projects?.repository?.projectsV2?.nodes) {
+                  throw new Error('未能获取仓库的项目列表');
                 }
 
-                const userId = userQuery.user.id;
-                const projects = userQuery.user.projectsV2.nodes || [];
-                const existingProject = projects.find(p => p.title === '需求管理');
-
-                let projectId = null;
-                if (existingProject) {
-                  projectId = existingProject.id;
-                  console.log('找到现有项目:', existingProject.title);
-                } else {
-                  console.log('创建新项目...');
-                  // 创建新项目
-                  const newProject = await github.graphql(`
-                    mutation($input: CreateProjectV2Input!) {
-                      createProjectV2(input: $input) {
-                        projectV2 {
-                          id
-                        }
-                      }
-                    }
-                  `, {
-                    input: {
-                      ownerId: userId,
-                      title: '需求管理'
-                    }
-                  });
-
-                  if (!newProject.createProjectV2) {
-                    throw new Error('创建项目失败');
-                  }
-
-                  projectId = newProject.createProjectV2.projectV2.id;
-                  console.log('新项目已创建');
-
-                  // 创建状态字段
-                  try {
-                    console.log('创建状态字段...');
-                    // 首先创建字段
-                    const field = await github.graphql(`
-                      mutation($input: CreateProjectV2FieldInput!) {
-                        createProjectV2Field(input: $input) {
-                          field {
-                            id
-                            name
-                          }
-                        }
-                      }
-                    `, {
-                      input: {
-                        projectId: projectId,
-                        dataType: 'SINGLE_SELECT',
-                        name: '状态'
-                      }
-                    });
-
-                    if (field.createProjectV2Field?.field?.id) {
-                      console.log('状态字段已创建，正在添加选项...');
-                      const fieldId = field.createProjectV2Field.field.id;
-                      
-                      // 添加选项
-                      const options = ['待分类', '需求评审', '已接受', '已拒绝', '进行中', '已完成'];
-                      for (const option of options) {
-                        await github.graphql(`
-                          mutation($input: UpdateProjectV2Input!) {
-                            updateProjectV2(input: $input) {
-                              projectV2 {
-                                id
-                              }
-                            }
-                          }
-                        `, {
-                          input: {
-                            projectId: projectId,
-                            field: {
-                              singleSelectField: {
-                                id: fieldId,
-                                options: [{
-                                  name: option,
-                                  color: 'GRAY'
-                                }]
-                              }
-                            }
-                          }
-                        });
-                      }
-                      console.log('状态字段选项已添加');
-                    }
-                  } catch (fieldError) {
-                    console.error('创建状态字段失败:', fieldError);
-                    // 继续执行，不中断流程
-                  }
+                const project = projects.repository.projectsV2.nodes.find(p => p.title === '需求管理');
+                if (!project) {
+                  throw new Error('未找到"需求管理"项目，请先在仓库中创建该项目');
                 }
+
+                console.log('找到项目:', project.title, '项目ID:', project.id, '项目编号:', project.number);
 
                 // 将Issue添加到项目
                 console.log('添加Issue到项目...');
                 const addedItem = await github.graphql(`
-                  mutation($projectId: ID!, $contentId: ID!) {
-                    addProjectV2ItemById(input: {
-                      projectId: $projectId
-                      contentId: $contentId
-                    }) {
+                  mutation($input: AddProjectV2ItemByIdInput!) {
+                    addProjectV2ItemById(input: $input) {
                       item {
                         id
                       }
                     }
                   }
                 `, {
-                  projectId: projectId,
-                  contentId: context.payload.issue.node_id
+                  input: {
+                    projectId: project.id,
+                    contentId: context.payload.issue.node_id
+                  }
                 });
 
-                if (!addedItem.addProjectV2ItemById) {
-                  throw new Error('添加Issue到项目失败');
+                if (!addedItem?.addProjectV2ItemById?.item?.id) {
+                  throw new Error('添加Issue到项目失败，返回结果：' + JSON.stringify(addedItem));
                 }
 
-                console.log('Issue已添加到项目');
+                console.log('Issue已添加到项目，项目项ID:', addedItem.addProjectV2ItemById.item.id);
 
                 // 添加成功评论
                 await github.rest.issues.createComment({
                   owner: context.repo.owner,
                   repo: context.repo.repo,
                   issue_number: context.issue.number,
-                  body: `✅ 此需求已被添加到新版项目看板。\n\n当前处理状态：\n- [x] 发送邮件通知\n- [x] 添加到项目看板\n- [x] 设置评审状态`
+                  body: `✅ 需求已添加到项目看板。\n\n- Issue编号: #${context.issue.number}\n- 项目名称: ${project.title}\n- 项目编号: ${project.number}`
                 });
+
+                console.log('操作完成');
               } catch (error) {
                 console.error('操作失败:', error);
+                console.error('错误详情:', JSON.stringify(error, null, 2));
                 await github.rest.issues.createComment({
                   owner: context.repo.owner,
                   repo: context.repo.repo,
