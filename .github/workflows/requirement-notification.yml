@@ -1,4 +1,4 @@
-name: 需求变更邮件通知  
+name: 需求变更邮件通知
 
 # 触发条件：当Issue被创建、编辑、标签变更或重新打开时
 on:
@@ -14,66 +14,51 @@ on:
 #    - 找到"POP3/SMTP服务"并开启
 #    - 按提示生成授权码并保存
 
-jobs:  
-  notify-requirement-change:  
-    runs-on: ubuntu-latest  
+jobs:
+  notify-requirement-change:
+    runs-on: ubuntu-latest
     
-    # 仅当Issue包含"requirement"或"feature"标签时运行  
+    # 仅当Issue包含"requirement"或"feature"标签时运行
     if: contains(github.event.issue.labels.*.name, 'requirement') || contains(github.event.issue.labels.*.name, 'feature')
     
-    steps:  
-      # 步骤1: 检出代码仓库  
-      - name: Checkout code  
-        uses: actions/checkout@v3  
+    steps:
+      # 步骤1: 检出代码仓库
+      - name: Checkout code
+        uses: actions/checkout@v3
       
-      # 步骤2: 获取Issue详细信息  
-      - name: Get issue details  
-        id: issue-info  
-        run: |  
-          echo "ISSUE_TITLE=${{ github.event.issue.title }}" >> $GITHUB_ENV  
-          echo "ISSUE_NUMBER=${{ github.event.issue.number }}" >> $GITHUB_ENV  
-          echo "ISSUE_URL=${{ github.event.issue.html_url }}" >> $GITHUB_ENV  
-          echo "ISSUE_BODY<<EOF" >> $GITHUB_ENV  
-          echo "${{ github.event.issue.body }}" >> $GITHUB_ENV  
-          echo "EOF" >> $GITHUB_ENV  
-          echo "ISSUE_AUTHOR=${{ github.event.issue.user.login }}" >> $GITHUB_ENV  
-          echo "EVENT_TYPE=${{ github.event.action }}" >> $GITHUB_ENV  
-      
-      # 步骤3: 发送邮件通知      - name: Send email notification  
-        uses: dawidd6/action-send-mail@v3  
-        with:  
-          server_address: smtp.qq.com  
+      # 步骤2: 发送邮件通知
+      - name: Send email notification
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: smtp.qq.com
           server_port: 465
-          secure: true  # 启用SSL加密
-          username: ${{ secrets.EMAIL_USERNAME }}  
-          password: ${{ secrets.EMAIL_PASSWORD }}  # 使用QQ邮箱授权码
-          subject: "🔔 需求变更通知: ${{ env.ISSUE_TITLE }} (#${{ env.ISSUE_NUMBER }})"
+          secure: true
+          username: ${{ secrets.EMAIL_USERNAME }}
+          password: ${{ secrets.EMAIL_PASSWORD }}
+          to: 52148@qq.com
+          from: GitHub Actions <${{ secrets.EMAIL_USERNAME }}>
+          subject: 🔔 需求变更通知：${{ github.event.issue.title }}
           html_body: |
             <h2>需求变更通知</h2>
-            
-            <p><strong>状态:</strong> 
-            ${{ env.EVENT_TYPE == 'opened' && '新增需求' ||
-                env.EVENT_TYPE == 'edited' && '需求已编辑' ||
-                env.EVENT_TYPE == 'labeled' && '需求新增标签' ||
-                env.EVENT_TYPE == 'unlabeled' && '需求移除标签' ||
-                env.EVENT_TYPE == 'reopened' && '需求重新打开' ||
+            <p><strong>状态：</strong> 
+            ${{ github.event.action == 'opened' && '新增需求' ||
+                github.event.action == 'edited' && '需求已编辑' ||
+                github.event.action == 'labeled' && '需求新增标签' ||
+                github.event.action == 'unlabeled' && '需求移除标签' ||
+                github.event.action == 'reopened' && '需求重新打开' ||
                 '需求已更新' }}
             </p>
-            
-            <p><strong>标题:</strong> ${{ env.ISSUE_TITLE }}</p>
-            <p><strong>编号:</strong> #${{ env.ISSUE_NUMBER }}</p>
-            <p><strong>提交者:</strong> ${{ env.ISSUE_AUTHOR }}</p>
-            <p><strong>标签:</strong> ${{ join(github.event.issue.labels.*.name, ', ') }}</p>
-            
-            <h3>需求描述:</h3>
+            <p><strong>标题：</strong> ${{ github.event.issue.title }}</p>
+            <p><strong>编号：</strong> #${{ github.event.issue.number }}</p>
+            <p><strong>提交者：</strong> ${{ github.event.issue.user.login }}</p>
+            <p><strong>标签：</strong> ${{ join(github.event.issue.labels.*.name, ', ') }}</p>
+            <h3>需求描述：</h3>
             <pre>
-            ${{ env.ISSUE_BODY }}
+            ${{ github.event.issue.body }}
             </pre>
-            
-            <p><a href="${{ env.ISSUE_URL }}">查看详情</a></p>          to: 52148@qq.com  
-          from: GitHub Actions <${{ secrets.EMAIL_USERNAME }}>  
-          
-      # 步骤4: 更新项目看板
+            <p><a href="${{ github.event.issue.html_url }}">查看详情</a></p>
+      
+      # 步骤3: 更新项目看板
       - name: Update project board
         uses: actions/github-script@v6
         with:
@@ -133,7 +118,7 @@ jobs:
                 mutation {
                   addProjectV2ItemById(input: {
                     projectId: "${project.id}"
-                    contentId: "${context.payload.issue.node_id}"
+                    contentId: "${github.context.payload.issue.node_id}"
                   }) {
                     item {
                       id
