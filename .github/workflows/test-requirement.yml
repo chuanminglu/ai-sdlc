@@ -22,7 +22,7 @@ jobs:
               });
 
               // 2. 查找需求管理项目
-              const { data: { user } } = await github.graphql(`
+              const result = await github.graphql(`
                 query($owner: String!) {
                   user(login: $owner) {
                     projectsV2(first: 20) {
@@ -37,8 +37,16 @@ jobs:
                 owner: context.repo.owner
               });
 
-              const project = user.projectsV2.nodes.find(p => p.title === '需求管理');
-              if (!project) throw new Error('未找到需求管理项目');
+              if (!result?.user?.projectsV2?.nodes) {
+                throw new Error('未能获取用户的项目列表');
+              }
+
+              const project = result.user.projectsV2.nodes.find(p => p.title === '需求管理');
+              if (!project) {
+                throw new Error('未找到"需求管理"项目，请先创建该项目');
+              }
+
+              console.log('找到项目:', project.title);
 
               // 3. 将Issue添加到项目
               await github.graphql(`
