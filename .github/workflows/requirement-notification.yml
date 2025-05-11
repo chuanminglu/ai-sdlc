@@ -6,13 +6,13 @@ on:
     types: [opened, edited, labeled, unlabeled, reopened]
 
 # GitHub Secrets 配置说明：
-# 1. EMAIL_USERNAME: 你的完整Outlook/Live邮箱地址（例如：windlu@live.com）
-# 2. EMAIL_PASSWORD: 你的应用密码（App Password），不是邮箱密码
-#    获取应用密码步骤：
-#    - 访问 https://account.microsoft.com/security 
-#    - 确保已开启双重认证
-#    - 在"安全信息"页面添加应用密码
-#    - 复制生成的16位应用密码（格式：xxxx-xxxx-xxxx-xxxx）
+# 1. EMAIL_USERNAME: 你的QQ邮箱地址（52148@qq.com）
+# 2. EMAIL_PASSWORD: 你的QQ邮箱授权码，不是QQ密码
+#    获取QQ邮箱授权码步骤：
+#    - 登录QQ邮箱网页版
+#    - 点击"设置" -> "账户"
+#    - 找到"POP3/SMTP服务"并开启
+#    - 按提示生成授权码并保存
 
 jobs:  
   notify-requirement-change:  
@@ -39,16 +39,14 @@ jobs:
           echo "ISSUE_AUTHOR=${{ github.event.issue.user.login }}" >> $GITHUB_ENV  
           echo "EVENT_TYPE=${{ github.event.action }}" >> $GITHUB_ENV  
       
-      # 步骤3: 发送邮件通知  
-      - name: Send email notification  
+      # 步骤3: 发送邮件通知      - name: Send email notification  
         uses: dawidd6/action-send-mail@v3  
         with:  
-          server_address: smtp.office365.com  
-          server_port: 587
-          encryption: tls
-          secure: true  # 启用TLS加密
+          server_address: smtp.qq.com  
+          server_port: 465
+          secure: true  # 启用SSL加密
           username: ${{ secrets.EMAIL_USERNAME }}  
-          password: ${{ secrets.EMAIL_PASSWORD }}  # 使用应用密码而不是邮箱密码
+          password: ${{ secrets.EMAIL_PASSWORD }}  # 使用QQ邮箱授权码
           subject: "🔔 需求变更通知: ${{ env.ISSUE_TITLE }} (#${{ env.ISSUE_NUMBER }})"
           html_body: |
             <h2>需求变更通知</h2>
@@ -72,8 +70,7 @@ jobs:
             ${{ env.ISSUE_BODY }}
             </pre>
             
-            <p><a href="${{ env.ISSUE_URL }}">查看详情</a></p>
-          to: windlu@live.com  
+            <p><a href="${{ env.ISSUE_URL }}">查看详情</a></p>          to: 52148@qq.com  
           from: GitHub Actions <${{ secrets.EMAIL_USERNAME }}>  
           
       # 步骤4: 更新项目看板
