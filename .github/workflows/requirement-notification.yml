@@ -60,91 +60,94 @@ jobs:
             </pre>
             <p><a href="${{ github.event.issue.html_url }}">查看详情</a></p>
       
-      # 步骤2: 更新项目看板
+      # 步骤2: 更新项目看板（使用新版 GitHub Projects API）
       - name: Update project board
         uses: actions/github-script@v6
         with:
           github-token: ${{ secrets.GH_PAT }}  # 使用具有更高权限的个人访问令牌
           script: |
-            // 使用REST API获取仓库信息
-            const { data: repo } = await github.rest.repos.get({
-              owner: context.repo.owner,
-              repo: context.repo.repo
-            });
-
-            // 获取或创建项目
-            async function getOrCreateProject() {
+            async function run() {
               try {
-                // 首先尝试获取已存在的项目
-                const { data: projects } = await github.rest.projects.listForRepo({
+                // 查询组织的项目列表
+                const findProject = await github.graphql(`
+                  query($owner: String!) {
+                    organization(login: $owner) {
+                      projectsV2(first: 20) {
+                        nodes {
+                          id
+                          title
+                          number
+                        }
+                      }
+                    }
+                  }
+                `, {
+                  owner: context.repo.owner
+                });
+
+                let projectId = null;
+                const projects = findProject.organization?.projectsV2.nodes || [];
+                const existingProject = projects.find(p => p.title === '需求管理');
+
+                if (existingProject) {
+                  projectId = existingProject.id;
+                } else {
+                  // 创建新项目
+                  const newProject = await github.graphql(`
+                    mutation($input: CreateProjectV2Input!) {
+                      createProjectV2(input: $input) {
+                        projectV2 {
+                          id
+                        }
+                      }
+                    }
+                  `, {
+                    input: {
+                      ownerId: context.repo.owner,
+                      title: '需求管理'
+                    }
+                  });
+                  projectId = newProject.createProjectV2.projectV2.id;
+
+                  // 设置项目字段（可选）
+                  // 这里可以添加自定义字段，如状态、优先级等
+                }
+
+                // 将Issue添加到项目
+                await github.graphql(`
+                  mutation($projectId: ID!, $contentId: ID!) {
+                    addProjectV2ItemById(input: {
+                      projectId: $projectId
+                      contentId: $contentId
+                    }) {
+                      item {
+                        id
+                      }
+                    }
+                  }
+                `, {
+                  projectId: projectId,
+                  contentId: github.context.payload.issue.node_id
+                });
+
+                // 添加成功评论
+                await github.rest.issues.createComment({
                   owner: context.repo.owner,
                   repo: context.repo.repo,
-                  state: 'open'
+                  issue_number: context.issue.number,
+                  body: `✅ 此需求已被添加到新版项目看板。\n\n当前处理状态：\n- [x] 发送邮件通知\n- [x] 添加到项目看板\n- [x] 设置评审状态`
                 });
-                
-                let project = projects.find(p => p.name === '需求管理');
-                
-                if (!project) {
-                  // 如果项目不存在，创建新项目
-                  const { data: newProject } = await github.rest.projects.createForRepo({
-                    owner: context.repo.owner,
-                    repo: context.repo.repo,
-                    name: '需求管理',
-                    body: '需求管理项目看板'
-                  });
-                  project = newProject;
-                  
-                  // 创建所需的列
-                  const columns = ['待分类', '需求评审', '已接受', '已拒绝', '进行中', '已完成'];
-                  for (const columnName of columns) {
-                    await github.rest.projects.createColumn({
-                      project_id: project.id,
-                      name: columnName
-                    });
-                  }
-                }
-                
-                return project;
               } catch (error) {
-                console.log('项目操作失败:', error);
+                console.error('操作失败:', error);
+                await github.rest.issues.createComment({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  issue_number: context.issue.number,
+                  body: `❌ 处理此需求时发生错误: ${error.message}\n\n请确保:\n1. 已正确设置GH_PAT密钥\n2. PAT具有适当的权限（管理项目和Issue权限）`
+                });
                 throw error;
               }
             }
 
-            try {
-              const project = await getOrCreateProject();
-              
-              // 获取"需求评审"列
-              const { data: columns } = await github.rest.projects.listColumns({
-                project_id: project.id
-              });
-              
-              const reviewColumn = columns.find(c => c.name === '需求评审');
-              if (!reviewColumn) {
-                throw new Error('未找到需求评审列');
-              }
-              
-              // 将Issue添加到"需求评审"列
-              await github.rest.projects.createCard({
-                column_id: reviewColumn.id,
-                content_id: github.context.payload.issue.id,
-                content_type: 'Issue'
-              });
-              
-              // 添加成功评论
-              await github.rest.issues.createComment({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                issue_number: context.issue.number,
-                body: `✅ 此需求已被添加到项目看板的"需求评审"列。\n\n当前处理状态：\n- [x] 发送邮件通知\n- [x] 添加到项目看板\n- [x] 设置评审状态`
-              });
-              
-            } catch (error) {
-              console.log('操作失败:', error);
-              await github.rest.issues.createComment({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                issue_number: context.issue.number,
-                body: `❌ 处理此需求时发生错误: ${error.message}\n\n请确保:\n1. 已正确设置GH_PAT密钥\n2. PAT具有适当的权限（repo权限）`
-              });
-            }
+            // 执行主函数
+            await run();
