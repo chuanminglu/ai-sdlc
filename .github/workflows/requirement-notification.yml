@@ -1,43 +1,54 @@
-name: 需求变更邮件通知
+name: 需求变更邮件通知  
 
 # 触发条件：当Issue被创建、编辑、标签变更或重新打开时
 on:
   issues:
     types: [opened, edited, labeled, unlabeled, reopened]
 
-jobs:
-  notify-requirement-change:
-    runs-on: ubuntu-latest
+# GitHub Secrets 配置说明：
+# 1. EMAIL_USERNAME: 你的完整Outlook/Live邮箱地址（例如：windlu@live.com）
+# 2. EMAIL_PASSWORD: 你的应用密码（App Password），不是邮箱密码
+#    获取应用密码步骤：
+#    - 访问 https://account.microsoft.com/security 
+#    - 确保已开启双重认证
+#    - 在"安全信息"页面添加应用密码
+#    - 复制生成的16位应用密码（格式：xxxx-xxxx-xxxx-xxxx）
+
+jobs:  
+  notify-requirement-change:  
+    runs-on: ubuntu-latest  
     
-    # 仅当Issue包含"requirement"或"feature"标签时运行
+    # 仅当Issue包含"requirement"或"feature"标签时运行  
     if: contains(github.event.issue.labels.*.name, 'requirement') || contains(github.event.issue.labels.*.name, 'feature')
     
-    steps:
-      # 步骤1: 检出代码仓库
-      - name: Checkout code
-        uses: actions/checkout@v3
+    steps:  
+      # 步骤1: 检出代码仓库  
+      - name: Checkout code  
+        uses: actions/checkout@v3  
       
-      # 步骤2: 获取Issue详细信息
-      - name: Get issue details
-        id: issue-info
-        run: |
-          echo "ISSUE_TITLE=${{ github.event.issue.title }}" >> $GITHUB_ENV
-          echo "ISSUE_NUMBER=${{ github.event.issue.number }}" >> $GITHUB_ENV
-          echo "ISSUE_URL=${{ github.event.issue.html_url }}" >> $GITHUB_ENV
-          echo "ISSUE_BODY<<EOF" >> $GITHUB_ENV
-          echo "${{ github.event.issue.body }}" >> $GITHUB_ENV
-          echo "EOF" >> $GITHUB_ENV
-          echo "ISSUE_AUTHOR=${{ github.event.issue.user.login }}" >> $GITHUB_ENV
-          echo "EVENT_TYPE=${{ github.event.action }}" >> $GITHUB_ENV
-          
-      # 步骤3: 发送邮件通知
-      - name: Send email notification
-        uses: dawidd6/action-send-mail@v3
-        with:
-          server_address: smtp.office365.com
+      # 步骤2: 获取Issue详细信息  
+      - name: Get issue details  
+        id: issue-info  
+        run: |  
+          echo "ISSUE_TITLE=${{ github.event.issue.title }}" >> $GITHUB_ENV  
+          echo "ISSUE_NUMBER=${{ github.event.issue.number }}" >> $GITHUB_ENV  
+          echo "ISSUE_URL=${{ github.event.issue.html_url }}" >> $GITHUB_ENV  
+          echo "ISSUE_BODY<<EOF" >> $GITHUB_ENV  
+          echo "${{ github.event.issue.body }}" >> $GITHUB_ENV  
+          echo "EOF" >> $GITHUB_ENV  
+          echo "ISSUE_AUTHOR=${{ github.event.issue.user.login }}" >> $GITHUB_ENV  
+          echo "EVENT_TYPE=${{ github.event.action }}" >> $GITHUB_ENV  
+      
+      # 步骤3: 发送邮件通知  
+      - name: Send email notification  
+        uses: dawidd6/action-send-mail@v3  
+        with:  
+          server_address: smtp.office365.com  
           server_port: 587
-          username: ${{ secrets.EMAIL_USERNAME }}
-          password: ${{ secrets.EMAIL_PASSWORD }}
+          encryption: tls
+          secure: true  # 启用TLS加密
+          username: ${{ secrets.EMAIL_USERNAME }}  
+          password: ${{ secrets.EMAIL_PASSWORD }}  # 使用应用密码而不是邮箱密码
           subject: "🔔 需求变更通知: ${{ env.ISSUE_TITLE }} (#${{ env.ISSUE_NUMBER }})"
           html_body: |
             <h2>需求变更通知</h2>
@@ -62,8 +73,8 @@ jobs:
             </pre>
             
             <p><a href="${{ env.ISSUE_URL }}">查看详情</a></p>
-          to: windlu@live.com
-          from: GitHub Actions <${{ secrets.EMAIL_USERNAME }}>
+          to: windlu@live.com  
+          from: GitHub Actions <${{ secrets.EMAIL_USERNAME }}>  
           
       # 步骤4: 更新项目看板
       - name: Update project board
