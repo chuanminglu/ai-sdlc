@@ -112,8 +112,7 @@ jobs:
                   `, {
                     input: {
                       ownerId: userId,
-                      title: '需求管理',
-                      repositoryId: null  // 移除这个字段，因为它是可选的
+                      title: '需求管理'
                     }
                   });
 
@@ -127,25 +126,56 @@ jobs:
                   // 创建状态字段
                   try {
                     console.log('创建状态字段...');
-                    await github.graphql(`
-                      mutation($projectId: ID!) {
-                        createProjectV2Field(
-                          input: {
-                            dataType: SINGLE_SELECT,
-                            name: "状态",
-                            projectId: $projectId,
-                            options: ["待分类", "需求评审", "已接受", "已拒绝", "进行中", "已完成"]
-                          }
-                        ) {
-                          projectField {
+                    // 首先创建字段
+                    const field = await github.graphql(`
+                      mutation($input: CreateProjectV2FieldInput!) {
+                        createProjectV2Field(input: $input) {
+                          field {
                             id
+                            name
                           }
                         }
                       }
                     `, {
-                      projectId: projectId
+                      input: {
+                        projectId: projectId,
+                        dataType: 'SINGLE_SELECT',
+                        name: '状态'
+                      }
                     });
-                    console.log('状态字段已创建');
+
+                    if (field.createProjectV2Field?.field?.id) {
+                      console.log('状态字段已创建，正在添加选项...');
+                      const fieldId = field.createProjectV2Field.field.id;
+                      
+                      // 添加选项
+                      const options = ['待分类', '需求评审', '已接受', '已拒绝', '进行中', '已完成'];
+                      for (const option of options) {
+                        await github.graphql(`
+                          mutation($input: UpdateProjectV2Input!) {
+                            updateProjectV2(input: $input) {
+                              projectV2 {
+                                id
+                              }
+                            }
+                          }
+                        `, {
+                          input: {
+                            projectId: projectId,
+                            field: {
+                              singleSelectField: {
+                                id: fieldId,
+                                options: [{
+                                  name: option,
+                                  color: 'GRAY'
+                                }]
+                              }
+                            }
+                          }
+                        });
+                      }
+                      console.log('状态字段选项已添加');
+                    }
                   } catch (fieldError) {
                     console.error('创建状态字段失败:', fieldError);
                     // 继续执行，不中断流程
