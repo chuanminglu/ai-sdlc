@@ -5,6 +5,12 @@ on:
   issues:
     types: [opened, edited, labeled, unlabeled, reopened]
 
+permissions:
+  contents: read    # 用于读取仓库内容
+  issues: write     # 用于创建和评论Issue
+  metadata: read    # 用于读取仓库元数据
+  repository-projects: write # 用于管理项目
+
 # GitHub Secrets 配置说明：
 # 1. EMAIL_USERNAME: 你的QQ邮箱地址（52148@qq.com）
 # 2. EMAIL_PASSWORD: 你的QQ邮箱授权码，不是QQ密码
@@ -22,11 +28,7 @@ jobs:
     if: contains(github.event.issue.labels.*.name, 'requirement') || contains(github.event.issue.labels.*.name, 'feature')
     
     steps:
-      # 步骤1: 检出代码仓库
-      - name: Checkout code
-        uses: actions/checkout@v3
-      
-      # 步骤2: 发送邮件通知
+      # 步骤1: 发送邮件通知
       - name: Send email notification
         uses: dawidd6/action-send-mail@v3
         with:
@@ -58,159 +60,91 @@ jobs:
             </pre>
             <p><a href="${{ github.event.issue.html_url }}">查看详情</a></p>
       
-      # 步骤3: 更新项目看板
+      # 步骤2: 更新项目看板
       - name: Update project board
         uses: actions/github-script@v6
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+          github-token: ${{ secrets.GH_PAT }}  # 使用具有更高权限的个人访问令牌
           script: |
-            // 获取项目ID (使用GraphQL API)
-            const projectQuery = `
-              query {
-                repository(owner: "${context.repo.owner}", name: "${context.repo.repo}") {
-                  projectsV2(first: 1) {
-                    nodes {
-                      id
-                      fields(first: 20) {
-                        nodes {
-                          ... on ProjectV2SingleSelectField {
-                            id
-                            name
-                            options {
-                              id
-                              name
-                            }
-                          }
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-            `;
+            // 使用REST API获取仓库信息
+            const { data: repo } = await github.rest.repos.get({
+              owner: context.repo.owner,
+              repo: context.repo.repo
+            });
+
+            // 获取或创建项目
+            async function getOrCreateProject() {
               try {
-              // 先检查项目是否存在
-              const projectData = await github.graphql(projectQuery);
-              let project = projectData.repository.projectsV2.nodes[0];
-              
-              // 如果项目不存在，创建新项目
-              if (!project) {
-                console.log('正在创建新的项目看板...');
-                const createProjectMutation = `
-                  mutation {
-                    createProjectV2(input: {
-                      ownerId: "${context.repo.owner}",
-                      title: "需求管理",
-                      repositoryId: "${context.repo.id}"
-                    }) {
-                      projectV2 {
-                        id
-                      }
-                    }
-                  }
-                `;
+                // 首先尝试获取已存在的项目
+                const { data: projects } = await github.rest.projects.listForRepo({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  state: 'open'
+                });
                 
-                const createResult = await github.graphql(createProjectMutation);
-                project = { id: createResult.createProjectV2.projectV2.id };
+                let project = projects.find(p => p.name === '需求管理');
                 
-                // 创建状态字段
-                const createFieldMutation = `
-                  mutation {
-                    createProjectV2Field(input: {
-                      projectId: "${project.id}",
-                      dataType: SINGLE_SELECT,
-                      name: "状态",
-                      singleSelectOptions: [
-                        { name: "待分类", color: "GRAY" },
-                        { name: "需求评审", color: "YELLOW" },
-                        { name: "已接受", color: "GREEN" },
-                        { name: "已拒绝", color: "RED" },
-                        { name: "进行中", color: "BLUE" },
-                        { name: "已完成", color: "PURPLE" }
-                      ]
-                    }) {
-                      projectV2Field {
-                        id
-                      }
-                    }
-                  }
-                `;
-                
-                await github.graphql(createFieldMutation);
-                console.log('项目看板创建完成');
-                
-                // 重新获取项目数据
-                const refreshData = await github.graphql(projectQuery);
-                project = refreshData.repository.projectsV2.nodes[0];
-              }
-              
-              // 查找状态字段
-              const statusField = project.fields.nodes.find(field => 
-                field.name.toLowerCase() === "status" || field.name === "状态"
-              );
-              
-              if (!statusField) {
-                console.log('未找到状态字段，将仅添加到项目而不设置状态');
-                return;
-              }
-              
-              // 查找"需求评审"选项
-              const reviewOption = statusField.options.find(option => 
-                option.name === "需求评审"
-              );
-                // 将Issue添加到项目
-              const addToProjectMutation = `
-                mutation {
-                  addProjectV2ItemById(input: {
-                    projectId: "${project.id}"
-                    contentId: "${github.event.issue.node_id}"
-                  }) {
-                    item {
-                      id
-                    }
+                if (!project) {
+                  // 如果项目不存在，创建新项目
+                  const { data: newProject } = await github.rest.projects.createForRepo({
+                    owner: context.repo.owner,
+                    repo: context.repo.repo,
+                    name: '需求管理',
+                    body: '需求管理项目看板'
+                  });
+                  project = newProject;
+                  
+                  // 创建所需的列
+                  const columns = ['待分类', '需求评审', '已接受', '已拒绝', '进行中', '已完成'];
+                  for (const columnName of columns) {
+                    await github.rest.projects.createColumn({
+                      project_id: project.id,
+                      name: columnName
+                    });
                   }
                 }
-              `;
-              
-              const result = await github.graphql(addToProjectMutation);
-              const itemId = result.addProjectV2ItemById.item.id;
-              
-              // 设置状态为"需求评审"
-              if (reviewOption) {
-                const updateFieldMutation = `
-                  mutation {
-                    updateProjectV2ItemFieldValue(input: {
-                      projectId: "${project.id}"
-                      itemId: "${itemId}"
-                      fieldId: "${statusField.id}"
-                      value: { 
-                        singleSelectOptionId: "${reviewOption.id}"
-                      }
-                    }) {
-                      projectV2Item {
-                        id
-                      }
-                    }
-                  }
-                `;
                 
-                await github.graphql(updateFieldMutation);
+                return project;
+              } catch (error) {
+                console.log('项目操作失败:', error);
+                throw error;
+              }
+            }
+
+            try {
+              const project = await getOrCreateProject();
+              
+              // 获取"需求评审"列
+              const { data: columns } = await github.rest.projects.listColumns({
+                project_id: project.id
+              });
+              
+              const reviewColumn = columns.find(c => c.name === '需求评审');
+              if (!reviewColumn) {
+                throw new Error('未找到需求评审列');
               }
               
-              // 添加评论
+              // 将Issue添加到"需求评审"列
+              await github.rest.projects.createCard({
+                column_id: reviewColumn.id,
+                content_id: github.context.payload.issue.id,
+                content_type: 'Issue'
+              });
+              
+              // 添加成功评论
               await github.rest.issues.createComment({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
                 issue_number: context.issue.number,
-                body: `✅ 此需求已被添加到项目看板并标记为"需求评审"状态。\n\n当前处理状态：\n- [x] 发送邮件通知\n- [x] 添加到项目看板\n- [x] 设置评审状态`
+                body: `✅ 此需求已被添加到项目看板的"需求评审"列。\n\n当前处理状态：\n- [x] 发送邮件通知\n- [x] 添加到项目看板\n- [x] 设置评审状态`
               });
               
             } catch (error) {
-              console.log(`更新项目看板失败: ${error.message}`);
+              console.log('操作失败:', error);
               await github.rest.issues.createComment({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
                 issue_number: context.issue.number,
-                body: `❌ 尝试添加此需求到项目看板时发生错误: ${error.message}`
+                body: `❌ 处理此需求时发生错误: ${error.message}\n\n请确保:\n1. 已正确设置GH_PAT密钥\n2. PAT具有适当的权限（repo权限）`
               });
             }
