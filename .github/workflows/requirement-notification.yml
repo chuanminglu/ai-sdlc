@@ -68,10 +68,11 @@ jobs:
           script: |
             async function run() {
               try {
-                // 查询用户的项目列表
-                const findProject = await github.graphql(`
+                // 首先获取用户的节点ID
+                const userQuery = await github.graphql(`
                   query($owner: String!) {
                     user(login: $owner) {
+                      id
                       projectsV2(first: 20) {
                         nodes {
                           id
@@ -85,13 +86,20 @@ jobs:
                   owner: context.repo.owner
                 });
 
-                let projectId = null;
-                const projects = findProject.user?.projectsV2.nodes || [];
+                if (!userQuery.user) {
+                  throw new Error(`未找到用户：${context.repo.owner}`);
+                }
+
+                const userId = userQuery.user.id;
+                const projects = userQuery.user.projectsV2.nodes || [];
                 const existingProject = projects.find(p => p.title === '需求管理');
 
+                let projectId = null;
                 if (existingProject) {
                   projectId = existingProject.id;
+                  console.log('找到现有项目:', existingProject.title);
                 } else {
+                  console.log('创建新项目...');
                   // 创建新项目
                   const newProject = await github.graphql(`
                     mutation($input: CreateProjectV2Input!) {
@@ -103,35 +111,49 @@ jobs:
                     }
                   `, {
                     input: {
-                      ownerId: context.repo.owner,
+                      ownerId: userId,
                       title: '需求管理',
-                      repositoryId: context.repo.repo
+                      repositoryId: null  // 移除这个字段，因为它是可选的
                     }
                   });
+
+                  if (!newProject.createProjectV2) {
+                    throw new Error('创建项目失败');
+                  }
+
                   projectId = newProject.createProjectV2.projectV2.id;
+                  console.log('新项目已创建');
 
                   // 创建状态字段
-                  const addField = await github.graphql(`
-                    mutation($projectId: ID!) {
-                      createProjectV2Field(
-                        input: {
-                          dataType: SINGLE_SELECT,
-                          name: "状态",
-                          projectId: $projectId,
-                          options: ["待分类", "需求评审", "已接受", "已拒绝", "进行中", "已完成"]
-                        }
-                      ) {
-                        projectField {
-                          id
+                  try {
+                    console.log('创建状态字段...');
+                    await github.graphql(`
+                      mutation($projectId: ID!) {
+                        createProjectV2Field(
+                          input: {
+                            dataType: SINGLE_SELECT,
+                            name: "状态",
+                            projectId: $projectId,
+                            options: ["待分类", "需求评审", "已接受", "已拒绝", "进行中", "已完成"]
+                          }
+                        ) {
+                          projectField {
+                            id
+                          }
                         }
                       }
-                    }
-                  `, {
-                    projectId: projectId
-                  });
+                    `, {
+                      projectId: projectId
+                    });
+                    console.log('状态字段已创建');
+                  } catch (fieldError) {
+                    console.error('创建状态字段失败:', fieldError);
+                    // 继续执行，不中断流程
+                  }
                 }
 
                 // 将Issue添加到项目
+                console.log('添加Issue到项目...');
                 const addedItem = await github.graphql(`
                   mutation($projectId: ID!, $contentId: ID!) {
                     addProjectV2ItemById(input: {
@@ -148,6 +170,12 @@ jobs:
                   contentId: context.payload.issue.node_id
                 });
 
+                if (!addedItem.addProjectV2ItemById) {
+                  throw new Error('添加Issue到项目失败');
+                }
+
+                console.log('Issue已添加到项目');
+
                 // 添加成功评论
                 await github.rest.issues.createComment({
                   owner: context.repo.owner,
@@ -161,7 +189,7 @@ jobs:
                   owner: context.repo.owner,
                   repo: context.repo.repo,
                   issue_number: context.issue.number,
-                  body: `❌ 处理此需求时发生错误: ${error.message}\n\n请确保:\n1. 已正确设置GH_PAT密钥\n2. PAT具有适当的权限（管理项目和Issue权限）\n\n详细错误信息：${error.message}`
+                  body: `❌ 处理此需求时发生错误: ${error.message}\n\n请确保:\n1. 已正确设置GH_PAT密钥\n2. PAT具有适当的权限（管理项目和Issue权限）\n\n详细错误信息：${error.stack || error.message}`
                 });
                 throw error;
               }
