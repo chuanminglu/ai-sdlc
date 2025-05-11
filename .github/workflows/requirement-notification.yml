@@ -1,9 +1,9 @@
 name: 需求变更邮件通知
 
-# 触发条件：当Issue被创建、编辑、标签变更或重新打开时
+# 触发条件：当Issue被创建、编辑或重新打开时（新建时必须带标签）
 on:
   issues:
-    types: [opened, edited, labeled, unlabeled, reopened]
+    types: [opened, edited, reopened]
 
 permissions:
   contents: read    # 用于读取仓库内容
