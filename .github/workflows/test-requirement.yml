@@ -1,0 +1,64 @@
+name: 创建测试需求
+
+on: workflow_dispatch # 手动触发
+
+jobs:
+  create-test-requirement:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Create test requirement and add to project
+        uses: actions/github-script@v6
+        with:
+          github-token: ${{ secrets.GH_PAT }}
+          script: |
+            try {
+              // 1. 创建测试需求Issue
+              const { data: issue } = await github.rest.issues.create({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                title: '【测试需求】新用户注册功能',
+                body: '作为一个新用户，我希望能够注册账号，以便使用系统功能。\n\n验收标准：\n- 能够使用邮箱注册\n- 密码需要符合安全要求\n- 注册成功后自动登录',
+                labels: ['requirement']
+              });
+
+              // 2. 查找需求管理项目
+              const { data: { user } } = await github.graphql(`
+                query($owner: String!) {
+                  user(login: $owner) {
+                    projectsV2(first: 20) {
+                      nodes {
+                        id
+                        title
+                      }
+                    }
+                  }
+                }
+              `, {
+                owner: context.repo.owner
+              });
+
+              const project = user.projectsV2.nodes.find(p => p.title === '需求管理');
+              if (!project) throw new Error('未找到需求管理项目');
+
+              // 3. 将Issue添加到项目
+              await github.graphql(`
+                mutation($projectId: ID!, $contentId: ID!) {
+                  addProjectV2ItemById(input: {
+                    projectId: $projectId
+                    contentId: $contentId
+                  }) {
+                    item {
+                      id
+                    }
+                  }
+                }
+              `, {
+                projectId: project.id,
+                contentId: issue.node_id
+              });
+
+              console.log('测试需求已创建并添加到项目看板');
+            } catch (error) {
+              console.error('操作失败:', error);
+              throw error;
+            }
