@@ -8,7 +8,7 @@ on:
 permissions:
   contents: read    # 用于读取仓库内容
   issues: write     # 用于创建和评论Issue
-  metadata: read    # 用于读取仓库元数据
+  pull-requests: read # 用于读取仓库元数据
   repository-projects: write # 用于管理项目
 
 # GitHub Secrets 配置说明：
