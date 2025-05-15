@@ -1,0 +1,95 @@
+name: 创建测试需求
+
+on: workflow_dispatch # 手动触发
+
+jobs:
+  create-test-requirement:
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+      repository-projects: write
+    steps:
+      - name: Create test requirement and add to project
+        uses: actions/github-script@v6
+        with:
+          github-token: ${{ secrets.GH_PAT }}
+          script: |
+            try {
+              // 1. 创建测试需求Issue
+              const { data: issue } = await github.rest.issues.create({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                title: '【测试需求】新用户注册功能',
+                body: '作为一个新用户，我希望能够注册账号，以便使用系统功能。\n\n验收标准：\n- 能够使用邮箱注册\n- 密码需要符合安全要求\n- 注册成功后自动登录',
+                labels: ['requirement']
+              });
+
+              console.log('Issue创建成功，ID:', issue.node_id);
+
+              // 2. 查找仓库的项目
+              const projects = await github.graphql(`
+                query($owner: String!, $repo: String!) {
+                  repository(owner: $owner, name: $repo) {
+                    projectsV2(first: 20) {
+                      nodes {
+                        id
+                        title
+                        number
+                      }
+                    }
+                  }
+                }
+              `, {
+                owner: context.repo.owner,
+                repo: context.repo.repo
+              });
+
+              console.log('查询到的项目列表:', JSON.stringify(projects, null, 2));
+
+              if (!projects?.repository?.projectsV2?.nodes) {
+                throw new Error('未能获取仓库的项目列表');
+              }
+
+              const project = projects.repository.projectsV2.nodes.find(p => p.title === '需求管理');
+              if (!project) {
+                throw new Error('未找到"需求管理"项目，请先在仓库中创建该项目');
+              }
+
+              console.log('找到项目:', project.title, '项目ID:', project.id, '项目编号:', project.number);
+
+              // 3. 将Issue添加到项目
+              const added = await github.graphql(`
+                mutation($input: AddProjectV2ItemByIdInput!) {
+                  addProjectV2ItemById(input: $input) {
+                    item {
+                      id
+                    }
+                  }
+                }
+              `, {
+                input: {
+                  projectId: project.id,
+                  contentId: issue.node_id
+                }
+              });
+
+              if (!added?.addProjectV2ItemById?.item?.id) {
+                throw new Error('添加Issue到项目失败，返回结果：' + JSON.stringify(added));
+              }
+
+              console.log('Issue成功添加到项目，项目项ID:', added.addProjectV2ItemById.item.id);
+
+              // 4. 添加成功评论
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: issue.number,
+                body: `✅ 需求已添加到项目看板。\n\n- Issue编号: #${issue.number}\n- 项目名称: ${project.title}\n- 项目编号: ${project.number}`
+              });
+
+              console.log('操作完成');
+            } catch (error) {
+              console.error('操作失败:', error);
+              console.error('错误详情:', JSON.stringify(error, null, 2));
+              throw error;
+            }

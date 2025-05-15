@@ -1,0 +1,148 @@
+name: 需求变更邮件通知
+
+# 触发条件：当Issue被创建、编辑或重新打开时（新建时必须带标签）
+on:
+  issues:
+    types: [opened, edited, reopened]
+
+permissions:
+  contents: read    # 用于读取仓库内容
+  issues: write     # 用于创建和评论Issue
+  pull-requests: read # 用于读取仓库元数据
+  repository-projects: write # 用于管理项目
+
+# GitHub Secrets 配置说明：
+# 1. EMAIL_USERNAME: 你的QQ邮箱地址（52148@qq.com）
+# 2. EMAIL_PASSWORD: 你的QQ邮箱授权码，不是QQ密码
+#    获取QQ邮箱授权码步骤：
+#    - 登录QQ邮箱网页版
+#    - 点击"设置" -> "账户"
+#    - 找到"POP3/SMTP服务"并开启
+#    - 按提示生成授权码并保存
+
+jobs:
+  notify-requirement-change:
+    runs-on: ubuntu-latest
+    
+    # 仅当Issue包含"requirement"或"feature"标签时运行
+    if: contains(github.event.issue.labels.*.name, 'requirement') || contains(github.event.issue.labels.*.name, 'feature')
+    
+    steps:
+      # 步骤1: 发送邮件通知
+      - name: Send email notification
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: smtp.qq.com
+          server_port: 465
+          secure: true
+          username: ${{ secrets.EMAIL_USERNAME }}
+          password: ${{ secrets.EMAIL_PASSWORD }}
+          to: 52148@qq.com
+          from: GitHub Actions <${{ secrets.EMAIL_USERNAME }}>
+          subject: 🔔 需求变更通知：${{ github.event.issue.title }}
+          html_body: |
+            <h2>需求变更通知</h2>
+            <p><strong>状态：</strong> 
+            ${{ github.event.action == 'opened' && '新增需求' ||
+                github.event.action == 'edited' && '需求已编辑' ||
+                github.event.action == 'labeled' && '需求新增标签' ||
+                github.event.action == 'unlabeled' && '需求移除标签' ||
+                github.event.action == 'reopened' && '需求重新打开' ||
+                '需求已更新' }}
+            </p>
+            <p><strong>标题：</strong> ${{ github.event.issue.title }}</p>
+            <p><strong>编号：</strong> #${{ github.event.issue.number }}</p>
+            <p><strong>提交者：</strong> ${{ github.event.issue.user.login }}</p>
+            <p><strong>标签：</strong> ${{ join(github.event.issue.labels.*.name, ', ') }}</p>
+            <h3>需求描述：</h3>
+            <pre>
+            ${{ github.event.issue.body }}
+            </pre>
+            <p><a href="${{ github.event.issue.html_url }}">查看详情</a></p>
+      
+      # 步骤2: 更新项目看板（使用新版 GitHub Projects API）
+      - name: Update project board
+        uses: actions/github-script@v6
+        with:
+          github-token: ${{ secrets.GH_PAT }}
+          script: |
+            async function run() {
+              try {
+                // 查找仓库的项目
+                const projects = await github.graphql(`
+                  query($owner: String!, $repo: String!) {
+                    repository(owner: $owner, name: $repo) {
+                      projectsV2(first: 20) {
+                        nodes {
+                          id
+                          title
+                          number
+                        }
+                      }
+                    }
+                  }
+                `, {
+                  owner: context.repo.owner,
+                  repo: context.repo.repo
+                });
+
+                console.log('查询到的项目列表:', JSON.stringify(projects, null, 2));
+
+                if (!projects?.repository?.projectsV2?.nodes) {
+                  throw new Error('未能获取仓库的项目列表');
+                }
+
+                const project = projects.repository.projectsV2.nodes.find(p => p.title === '需求管理');
+                if (!project) {
+                  throw new Error('未找到"需求管理"项目，请先在仓库中创建该项目');
+                }
+
+                console.log('找到项目:', project.title, '项目ID:', project.id, '项目编号:', project.number);
+
+                // 将Issue添加到项目
+                console.log('添加Issue到项目...');
+                const addedItem = await github.graphql(`
+                  mutation($input: AddProjectV2ItemByIdInput!) {
+                    addProjectV2ItemById(input: $input) {
+                      item {
+                        id
+                      }
+                    }
+                  }
+                `, {
+                  input: {
+                    projectId: project.id,
+                    contentId: context.payload.issue.node_id
+                  }
+                });
+
+                if (!addedItem?.addProjectV2ItemById?.item?.id) {
+                  throw new Error('添加Issue到项目失败，返回结果：' + JSON.stringify(addedItem));
+                }
+
+                console.log('Issue已添加到项目，项目项ID:', addedItem.addProjectV2ItemById.item.id);
+
+                // 添加成功评论
+                await github.rest.issues.createComment({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  issue_number: context.issue.number,
+                  body: `✅ 需求已添加到项目看板。\n\n- Issue编号: #${context.issue.number}\n- 项目名称: ${project.title}\n- 项目编号: ${project.number}`
+                });
+
+                console.log('操作完成');
+              } catch (error) {
+                console.error('操作失败:', error);
+                console.error('错误详情:', JSON.stringify(error, null, 2));
+                await github.rest.issues.createComment({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  issue_number: context.issue.number,
+                  body: `❌ 处理此需求时发生错误: ${error.message}\n\n请确保:\n1. 已正确设置GH_PAT密钥\n2. PAT具有适当的权限（管理项目和Issue权限）\n\n详细错误信息：${error.stack || error.message}`
+                });
+                throw error;
+              }
+            }
+
+            // 执行主函数
+            await run();

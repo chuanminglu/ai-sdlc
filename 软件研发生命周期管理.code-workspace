@@ -3,6 +3,9 @@
 		{
 			"name": "ai-sdlc",
 			"path": "."
+		},
+		{
+			"path": "../ai-java"
 		}
 	],
 	"settings": {}
