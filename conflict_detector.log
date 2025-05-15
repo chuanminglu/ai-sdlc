@@ -1,9 +1,4 @@
-2025-05-09 10:52:14,613 - ConflictDetector - INFO - 尝试从 D:\Programs\ai-sdlc\config.ini 加载配置
-2025-05-09 10:52:14,614 - ConflictDetector - INFO - 从配置文件加载API设置: api_base=https://api.deepseek.com/v1, model=deepseek-chat
-2025-05-09 10:52:14,614 - ConflictDetector - INFO - 成功加载API密钥: sk-45...
-2025-05-09 10:52:14,614 - ConflictDetector - INFO - 初始化需求冲突检测器，使用模型: deepseek-chat
-2025-05-09 10:52:23,825 - ConflictDetector - INFO - 开始检测需求冲突，分析维度: ['功能一致性']
-2025-05-09 10:52:23,825 - ConflictDetector - INFO - 分析维度: 功能一致性
-2025-05-09 10:52:23,826 - ConflictDetector - INFO - 向Deepseek API发送请求，分析维度: 功能一致性
-2025-05-09 10:52:55,905 - ConflictDetector - INFO - 在'功能一致性'维度下发现 4 个冲突
-2025-05-09 10:52:55,906 - ConflictDetector - INFO - 需求冲突检测完成，共发现 4 个冲突
+2025-05-15 13:31:31,702 - ConflictDetector - INFO - 尝试从 D:\Programs\ai-sdlc\config.ini 加载配置
+2025-05-15 13:31:31,703 - ConflictDetector - INFO - 从配置文件加载API设置: api_base=https://api.deepseek.com/v1, model=deepseek-chat
+2025-05-15 13:31:31,703 - ConflictDetector - INFO - 成功加载API密钥: sk-45...
+2025-05-15 13:31:31,703 - ConflictDetector - INFO - 初始化需求冲突检测器，使用模型: deepseek-chat
