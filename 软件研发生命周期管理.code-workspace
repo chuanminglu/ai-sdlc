@@ -8,5 +8,8 @@
 			"path": "../ai-java"
 		}
 	],
-	"settings": {}
+	"settings": {
+		"java.compile.nullAnalysis.mode": "automatic",
+		"powershell.cwd": "ai-java"
+	}
 }
