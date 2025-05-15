@@ -63,11 +63,14 @@ class MainMenuGUI(QMainWindow):
         subtitle_label.setFont(subtitle_font)
         subtitle_label.setAlignment(Qt.AlignCenter)
         main_layout.addWidget(subtitle_label)
-        
-        # 添加应用启动按钮
+          # 添加应用启动按钮
         self.add_app_button(main_layout, "用户故事管理工具", 
                           "启动用户故事解析、生成、拆分和约束管理工具",
                           self.launch_mainui)
+                          
+        self.add_app_button(main_layout, "PRD文档检查工具", 
+                          "启动产品需求文档(PRD)检查与验证工具",
+                          self.launch_prd_checker)
         
         self.add_app_button(main_layout, "传统需求冲突检测", 
                           "启动基于规则的需求冲突检测工具",
@@ -116,7 +119,7 @@ class MainMenuGUI(QMainWindow):
         except Exception as e:
             self.statusBar().showMessage(f"启动失败: {str(e)}")
             QMessageBox.critical(self, "启动错误", f"无法启动传统需求冲突检测工具: {str(e)}")
-    
+
     def launch_nlp_conflict_detector(self):
         """启动NLP需求冲突检测工具"""
         self.statusBar().showMessage("正在启动NLP需求冲突检测工具...")
@@ -127,6 +130,17 @@ class MainMenuGUI(QMainWindow):
         except Exception as e:
             self.statusBar().showMessage(f"启动失败: {str(e)}")
             QMessageBox.critical(self, "启动错误", f"无法启动NLP需求冲突检测工具: {str(e)}")
+    
+    def launch_prd_checker(self):
+        """启动PRD文档检查工具"""
+        self.statusBar().showMessage("正在启动PRD文档检查工具...")
+        try:
+            # 使用subprocess启动PRD检查器UI
+            subprocess.Popen([sys.executable, os.path.join(get_project_root(), "prd_check_ui.py")])
+            self.statusBar().showMessage("已启动PRD文档检查工具")
+        except Exception as e:
+            self.statusBar().showMessage(f"启动失败: {str(e)}")
+            QMessageBox.critical(self, "启动错误", f"无法启动PRD文档检查工具: {str(e)}")
 
 
 def get_project_root():
