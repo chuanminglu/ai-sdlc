@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ColorMates - 首页</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .trending-palettes {
+            margin-bottom: 20px;
+        }
+        .section-title {
+            font-size: 22px;
+            font-weight: 700;
+            margin: 20px 0 15px;
+        }
+        .search-bar {
+            position: relative;
+            margin: 15px 0;
+        }
+        .search-bar input {
+            width: 100%;
+            padding: 12px 40px 12px 40px;
+            border: none;
+            border-radius: 10px;
+            background-color: #f2f2f7;
+            font-size: 16px;
+        }
+        .search-bar i {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #8e8e93;
+        }
+        .filters {
+            display: flex;
+            gap: 10px;
+            margin: 15px 0;
+            overflow-x: auto;
+            padding-bottom: 5px;
+        }
+        .filter-chip {
+            padding: 8px 15px;
+            background-color: #f2f2f7;
+            border-radius: 16px;
+            white-space: nowrap;
+            font-size: 14px;
+            color: #3a3a3c;
+        }
+        .filter-chip.active {
+            background-color: #007aff;
+            color: white;
+        }
+        .palette-name {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        .palette-stats {
+            display: flex;
+            font-size: 12px;
+            color: #8e8e93;
+            gap: 10px;
+        }
+        .welcome-header {
+            margin: 15px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .welcome-text h1 {
+            font-size: 24px;
+            font-weight: 700;
+        }
+        .welcome-text p {
+            color: #8e8e93;
+            margin-bottom: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <!-- iOS 状态栏 -->
+        <div class="status-bar">
+            <span class="time">10:30</span>
+            <div class="right-items">
+                <i class="fas fa-signal"></i>
+                <i class="fas fa-wifi"></i>
+                <i class="fas fa-battery-full"></i>
+            </div>
+        </div>
+        
+        <!-- 内容区域 -->
+        <div class="content">
+            <div class="welcome-header">
+                <div class="welcome-text">
+                    <h1>ColorMates</h1>
+                    <p>发现完美配色方案</p>
+                </div>
+                <div class="notification-icon">
+                    <i class="far fa-bell fa-lg"></i>
+                </div>
+            </div>
+            
+            <div class="search-bar">
+                <i class="fas fa-search"></i>
+                <input type="text" placeholder="搜索配色方案">
+            </div>
+            
+            <div class="filters">
+                <div class="filter-chip active">全部</div>
+                <div class="filter-chip">流行</div>
+                <div class="filter-chip">明亮</div>
+                <div class="filter-chip">冷色调</div>
+                <div class="filter-chip">暖色调</div>
+                <div class="filter-chip">对比度高</div>
+                <div class="filter-chip">柔和</div>
+            </div>
+            
+            <h2 class="section-title">流行配色</h2>
+            
+            <div class="trending-palettes">
+                <div class="palette-card">
+                    <div class="color-palette">
+                        <div class="color-item" style="background-color: #FF6B6B;"></div>
+                        <div class="color-item" style="background-color: #4ECDC4;"></div>
+                        <div class="color-item" style="background-color: #1A535C;"></div>
+                        <div class="color-item" style="background-color: #F7FFF7;"></div>
+                        <div class="color-item" style="background-color: #FF6B6B;"></div>
+                    </div>
+                    <div class="mt-2">
+                        <div class="palette-name">珊瑚海</div>
+                        <div class="palette-stats">
+                            <span><i class="far fa-heart"></i> 2.4k</span>
+                            <span><i class="far fa-bookmark"></i> 1.2k</span>
+                        </div>
+                    </div>
+                    <div class="action-buttons">
+                        <div class="action-button">
+                            <i class="far fa-heart"></i> 收藏
+                        </div>
+                        <div class="action-button">
+                            <i class="fas fa-share"></i> 分享
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="palette-card">
+                    <div class="color-palette">
+                        <div class="color-item" style="background-color: #845EC2;"></div>
+                        <div class="color-item" style="background-color: #D65DB1;"></div>
+                        <div class="color-item" style="background-color: #FF6F91;"></div>
+                        <div class="color-item" style="background-color: #FF9671;"></div>
+                        <div class="color-item" style="background-color: #FFC75F;"></div>
+                    </div>
+                    <div class="mt-2">
+                        <div class="palette-name">落日余晖</div>
+                        <div class="palette-stats">
+                            <span><i class="far fa-heart"></i> 3.1k</span>
+                            <span><i class="far fa-bookmark"></i> 1.8k</span>
+                        </div>
+                    </div>
+                    <div class="action-buttons">
+                        <div class="action-button">
+                            <i class="far fa-heart"></i> 收藏
+                        </div>
+                        <div class="action-button">
+                            <i class="fas fa-share"></i> 分享
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="palette-card">
+                    <div class="color-palette">
+                        <div class="color-item" style="background-color: #00B8A9;"></div>
+                        <div class="color-item" style="background-color: #F8F3D4;"></div>
+                        <div class="color-item" style="background-color: #FCCB69;"></div>
+                        <div class="color-item" style="background-color: #F88F72;"></div>
+                        <div class="color-item" style="background-color: #3C4245;"></div>
+                    </div>
+                    <div class="mt-2">
+                        <div class="palette-name">热带风情</div>
+                        <div class="palette-stats">
+                            <span><i class="far fa-heart"></i> 1.7k</span>
+                            <span><i class="far fa-bookmark"></i> 950</span>
+                        </div>
+                    </div>
+                    <div class="action-buttons">
+                        <div class="action-button">
+                            <i class="far fa-heart"></i> 收藏
+                        </div>
+                        <div class="action-button">
+                            <i class="fas fa-share"></i> 分享
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 底部导航栏 -->
+        <div class="tab-bar">
+            <a href="home.html" class="tab-item active">
+                <i class="fas fa-home"></i>
+                <span>首页</span>
+            </a>
+            <a href="create.html" class="tab-item">
+                <i class="fas fa-plus"></i>
+                <span>创建</span>
+            </a>
+            <a href="saved.html" class="tab-item">
+                <i class="far fa-heart"></i>
+                <span>收藏</span>
+            </a>
+            <a href="explore.html" class="tab-item">
+                <i class="fas fa-compass"></i>
+                <span>探索</span>
+            </a>
+            <a href="profile.html" class="tab-item">
+                <i class="far fa-user"></i>
+                <span>我的</span>
+            </a>
+        </div>
+    </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

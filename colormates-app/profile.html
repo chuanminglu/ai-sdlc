@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ColorMates - 个人</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .profile-header {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 20px 0 30px;
+        }
+        .avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 50px;
+            overflow: hidden;
+            margin-bottom: 15px;
+            border: 3px solid #fff;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        .avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .user-name {
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+        .user-info {
+            color: #8e8e93;
+            margin-bottom: 15px;
+        }
+        .stats {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 10px;
+        }
+        .stat-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .stat-number {
+            font-size: 20px;
+            font-weight: 700;
+            color: #000;
+        }
+        .stat-label {
+            color: #8e8e93;
+            font-size: 14px;
+        }
+        .menu-list {
+            margin-top: 20px;
+        }
+        .menu-item {
+            display: flex;
+            align-items: center;
+            background-color: #fff;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 12px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        }
+        .menu-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            color: white;
+            font-size: 18px;
+        }
+        .menu-content {
+            flex: 1;
+        }
+        .menu-title {
+            font-weight: 600;
+            margin-bottom: 3px;
+        }
+        .menu-subtitle {
+            color: #8e8e93;
+            font-size: 14px;
+        }
+        .menu-arrow {
+            color: #c7c7cc;
+        }
+        .section-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin: 25px 0 15px;
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <!-- iOS 状态栏 -->
+        <div class="status-bar">
+            <span class="time">10:30</span>
+            <div class="right-items">
+                <i class="fas fa-signal"></i>
+                <i class="fas fa-wifi"></i>
+                <i class="fas fa-battery-full"></i>
+            </div>
+        </div>
+        
+        <!-- 内容区域 -->
+        <div class="content">
+            <div class="profile-header">
+                <div class="avatar">
+                    <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="用户头像">
+                </div>
+                <div class="user-name">李小颜</div>
+                <div class="user-info">设计师 @ 色彩研究所</div>
+                <button class="btn btn-primary btn-sm">编辑个人资料</button>
+                
+                <div class="stats">
+                    <div class="stat-item">
+                        <div class="stat-number">45</div>
+                        <div class="stat-label">配色方案</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">1.2k</div>
+                        <div class="stat-label">粉丝</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">280</div>
+                        <div class="stat-label">关注</div>
+                    </div>
+                </div>
+            </div>
+            
+            <h2 class="section-title">我的账户</h2>
+            <div class="menu-list">
+                <div class="menu-item">
+                    <div class="menu-icon" style="background-color: #007aff;">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div class="menu-content">
+                        <div class="menu-title">个人资料</div>
+                        <div class="menu-subtitle">管理您的个人信息</div>
+                    </div>
+                    <div class="menu-arrow">
+                        <i class="fas fa-chevron-right"></i>
+                    </div>
+                </div>
+                
+                <div class="menu-item">
+                    <div class="menu-icon" style="background-color: #5856d6;">
+                        <i class="fas fa-bell"></i>
+                    </div>
+                    <div class="menu-content">
+                        <div class="menu-title">通知设置</div>
+                        <div class="menu-subtitle">管理推送和邮件通知</div>
+                    </div>
+                    <div class="menu-arrow">
+                        <i class="fas fa-chevron-right"></i>
+                    </div>
+                </div>
+                
+                <div class="menu-item">
+                    <div class="menu-icon" style="background-color: #ff2d55;">
+                        <i class="fas fa-heart"></i>
+                    </div>
+                    <div class="menu-content">
+                        <div class="menu-title">我的收藏</div>
+                        <div class="menu-subtitle">查看所有收藏的配色方案</div>
+                    </div>
+                    <div class="menu-arrow">
+                        <i class="fas fa-chevron-right"></i>
+                    </div>
+                </div>
+                
+                <div class="menu-item">
+                    <div class="menu-icon" style="background-color: #ff9500;">
+                        <i class="fas fa-history"></i>
+                    </div>
+                    <div class="menu-content">
+                        <div class="menu-title">历史记录</div>
+                        <div class="menu-subtitle">最近浏览的配色方案</div>
+                    </div>
+                    <div class="menu-arrow">
+                        <i class="fas fa-chevron-right"></i>
+                    </div>
+                </div>
+            </div>
+            
+            <h2 class="section-title">应用设置</h2>
+            <div class="menu-list">
+                <div class="menu-item">
+                    <div class="menu-icon" style="background-color: #34c759;">
+                        <i class="fas fa-cog"></i>
+                    </div>
+                    <div class="menu-content">
+                        <div class="menu-title">应用偏好</div>
+                        <div class="menu-subtitle">主题、语言和默认设置</div>
+                    </div>
+                    <div class="menu-arrow">
+                        <i class="fas fa-chevron-right"></i>
+                    </div>
+                </div>
+                
+                <div class="menu-item">
+                    <div class="menu-icon" style="background-color: #ff3b30;">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <div class="menu-content">
+                        <div class="menu-title">隐私与安全</div>
+                        <div class="menu-subtitle">账户安全和数据隐私</div>
+                    </div>
+                    <div class="menu-arrow">
+                        <i class="fas fa-chevron-right"></i>
+                    </div>
+                </div>
+                
+                <div class="menu-item">
+                    <div class="menu-icon" style="background-color: #8e8e93;">
+                        <i class="fas fa-info-circle"></i>
+                    </div>
+                    <div class="menu-content">
+                        <div class="menu-title">关于 ColorMates</div>
+                        <div class="menu-subtitle">版本信息和开发者信息</div>
+                    </div>
+                    <div class="menu-arrow">
+                        <i class="fas fa-chevron-right"></i>
+                    </div>
+                </div>
+                
+                <div class="menu-item">
+                    <div class="menu-icon" style="background-color: #5ac8fa;">
+                        <i class="fas fa-question-circle"></i>
+                    </div>
+                    <div class="menu-content">
+                        <div class="menu-title">帮助与支持</div>
+                        <div class="menu-subtitle">常见问题和联系支持</div>
+                    </div>
+                    <div class="menu-arrow">
+                        <i class="fas fa-chevron-right"></i>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="text-center mt-4 mb-5">
+                <a href="#" class="btn btn-outline-danger">退出登录</a>
+            </div>
+        </div>
+        
+        <!-- 底部导航栏 -->
+        <div class="tab-bar">
+            <a href="home.html" class="tab-item">
+                <i class="fas fa-home"></i>
+                <span>首页</span>
+            </a>
+            <a href="create.html" class="tab-item">
+                <i class="fas fa-plus"></i>
+                <span>创建</span>
+            </a>
+            <a href="saved.html" class="tab-item">
+                <i class="far fa-heart"></i>
+                <span>收藏</span>
+            </a>
+            <a href="explore.html" class="tab-item">
+                <i class="fas fa-compass"></i>
+                <span>探索</span>
+            </a>
+            <a href="profile.html" class="tab-item active">
+                <i class="far fa-user"></i>
+                <span>我的</span>
+            </a>
+        </div>
+    </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

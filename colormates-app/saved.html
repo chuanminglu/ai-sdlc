@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ColorMates - 收藏</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .page-title {
+            font-size: 24px;
+            font-weight: 700;
+            margin: 20px 0 15px;
+        }
+        .saved-empty {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 60px 20px;
+            text-align: center;
+        }
+        .empty-icon {
+            width: 80px;
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #f2f2f7;
+            border-radius: 40px;
+            margin-bottom: 20px;
+            font-size: 32px;
+            color: #8e8e93;
+        }
+        .empty-text h3 {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+        .empty-text p {
+            color: #8e8e93;
+            font-size: 15px;
+            margin-bottom: 20px;
+        }
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        .section-header h2 {
+            font-size: 22px;
+            font-weight: 700;
+            margin: 0;
+        }
+        .section-header .view-all {
+            color: #007aff;
+            font-size: 14px;
+            text-decoration: none;
+        }
+        .palette-card {
+            margin-bottom: 20px;
+            position: relative;
+        }
+        .palette-options {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: rgba(255, 255, 255, 0.8);
+            border-radius: 20px;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .tab-buttons {
+            display: flex;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        .tab-button {
+            flex: 1;
+            text-align: center;
+            padding: 12px 0;
+            font-weight: 600;
+            color: #8e8e93;
+            position: relative;
+        }
+        .tab-button.active {
+            color: #007aff;
+        }
+        .tab-button.active::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 25%;
+            width: 50%;
+            height: 3px;
+            background-color: #007aff;
+            border-radius: 1.5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <!-- iOS 状态栏 -->
+        <div class="status-bar">
+            <span class="time">10:30</span>
+            <div class="right-items">
+                <i class="fas fa-signal"></i>
+                <i class="fas fa-wifi"></i>
+                <i class="fas fa-battery-full"></i>
+            </div>
+        </div>
+        
+        <!-- 内容区域 -->
+        <div class="content">
+            <h1 class="page-title">我的收藏</h1>
+            
+            <div class="tab-buttons">
+                <div class="tab-button active">配色方案</div>
+                <div class="tab-button">单色</div>
+                <div class="tab-button">心愿单</div>
+            </div>
+            
+            <div class="section-header">
+                <h2>最近收藏</h2>
+                <a href="#" class="view-all">查看全部</a>
+            </div>
+            
+            <div class="saved-palettes">
+                <div class="palette-card">
+                    <div class="palette-options">
+                        <i class="fas fa-ellipsis-v"></i>
+                    </div>
+                    <div class="color-palette">
+                        <div class="color-item" style="background-color: #845EC2;"></div>
+                        <div class="color-item" style="background-color: #D65DB1;"></div>
+                        <div class="color-item" style="background-color: #FF6F91;"></div>
+                        <div class="color-item" style="background-color: #FF9671;"></div>
+                        <div class="color-item" style="background-color: #FFC75F;"></div>
+                    </div>
+                    <div class="mt-2">
+                        <div class="palette-name">落日余晖</div>
+                        <div class="palette-stats">
+                            <span>2025-5-14 收藏</span>
+                        </div>
+                    </div>
+                    <div class="action-buttons">
+                        <div class="action-button">
+                            <i class="fas fa-edit"></i> 编辑
+                        </div>
+                        <div class="action-button">
+                            <i class="fas fa-share"></i> 分享
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="palette-card">
+                    <div class="palette-options">
+                        <i class="fas fa-ellipsis-v"></i>
+                    </div>
+                    <div class="color-palette">
+                        <div class="color-item" style="background-color: #00B8A9;"></div>
+                        <div class="color-item" style="background-color: #F8F3D4;"></div>
+                        <div class="color-item" style="background-color: #FCCB69;"></div>
+                        <div class="color-item" style="background-color: #F88F72;"></div>
+                        <div class="color-item" style="background-color: #3C4245;"></div>
+                    </div>
+                    <div class="mt-2">
+                        <div class="palette-name">热带风情</div>
+                        <div class="palette-stats">
+                            <span>2025-5-13 收藏</span>
+                        </div>
+                    </div>
+                    <div class="action-buttons">
+                        <div class="action-button">
+                            <i class="fas fa-edit"></i> 编辑
+                        </div>
+                        <div class="action-button">
+                            <i class="fas fa-share"></i> 分享
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="palette-card">
+                    <div class="palette-options">
+                        <i class="fas fa-ellipsis-v"></i>
+                    </div>
+                    <div class="color-palette">
+                        <div class="color-item" style="background-color: #B5EAD7;"></div>
+                        <div class="color-item" style="background-color: #C7CEEA;"></div>
+                        <div class="color-item" style="background-color: #E2F0CB;"></div>
+                        <div class="color-item" style="background-color: #FFDAC1;"></div>
+                        <div class="color-item" style="background-color: #FFB7B2;"></div>
+                    </div>
+                    <div class="mt-2">
+                        <div class="palette-name">柔和粉彩</div>
+                        <div class="palette-stats">
+                            <span>2025-5-10 收藏</span>
+                        </div>
+                    </div>
+                    <div class="action-buttons">
+                        <div class="action-button">
+                            <i class="fas fa-edit"></i> 编辑
+                        </div>
+                        <div class="action-button">
+                            <i class="fas fa-share"></i> 分享
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 可以切换到这个视图，如果用户没有收藏 -->
+            <!-- 
+            <div class="saved-empty">
+                <div class="empty-icon">
+                    <i class="far fa-heart"></i>
+                </div>
+                <div class="empty-text">
+                    <h3>还没有收藏</h3>
+                    <p>浏览配色方案并保存您喜欢的颜色组合</p>
+                    <button class="btn btn-primary">
+                        <i class="fas fa-search"></i> 探索配色方案
+                    </button>
+                </div>
+            </div>
+            -->
+        </div>
+        
+        <!-- 底部导航栏 -->
+        <div class="tab-bar">
+            <a href="home.html" class="tab-item">
+                <i class="fas fa-home"></i>
+                <span>首页</span>
+            </a>
+            <a href="create.html" class="tab-item">
+                <i class="fas fa-plus"></i>
+                <span>创建</span>
+            </a>
+            <a href="saved.html" class="tab-item active">
+                <i class="far fa-heart"></i>
+                <span>收藏</span>
+            </a>
+            <a href="explore.html" class="tab-item">
+                <i class="fas fa-compass"></i>
+                <span>探索</span>
+            </a>
+            <a href="profile.html" class="tab-item">
+                <i class="far fa-user"></i>
+                <span>我的</span>
+            </a>
+        </div>
+    </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

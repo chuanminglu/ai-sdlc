@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ColorMates - 探索</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .page-title {
+            font-size: 24px;
+            font-weight: 700;
+            margin: 20px 0 15px;
+        }
+        .featured-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 20px 0 15px;
+        }
+        .featured-header h2 {
+            font-size: 22px;
+            font-weight: 700;
+            margin: 0;
+        }
+        .category-chips {
+            display: flex;
+            overflow-x: auto;
+            gap: 10px;
+            margin-bottom: 20px;
+            padding-bottom: 5px;
+        }
+        .category-chip {
+            padding: 10px 18px;
+            background-color: #f2f2f7;
+            border-radius: 20px;
+            white-space: nowrap;
+            font-size: 14px;
+        }
+        .category-chip.active {
+            background-color: #007aff;
+            color: white;
+        }
+        .color-trend {
+            display: flex;
+            overflow-x: auto;
+            gap: 15px;
+            padding-bottom: 15px;
+        }
+        .trend-card {
+            width: 250px;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            flex-shrink: 0;
+        }
+        .trend-img {
+            height: 150px;
+            background-size: cover;
+            background-position: center;
+        }
+        .trend-colors {
+            display: flex;
+            height: 40px;
+        }
+        .trend-color {
+            flex: 1;
+        }
+        .trend-footer {
+            padding: 10px;
+            background-color: white;
+        }
+        .trend-footer h4 {
+            font-size: 15px;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        .trend-footer p {
+            color: #8e8e93;
+            font-size: 12px;
+            margin-bottom: 0;
+        }
+        .tab-buttons {
+            display: flex;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        .tab-button {
+            flex: 1;
+            text-align: center;
+            padding: 12px 0;
+            font-weight: 600;
+            color: #8e8e93;
+            position: relative;
+        }
+        .tab-button.active {
+            color: #007aff;
+        }
+        .tab-button.active::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 25%;
+            width: 50%;
+            height: 3px;
+            background-color: #007aff;
+            border-radius: 1.5px;
+        }
+        .daily-palette {
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            margin-bottom: 20px;
+        }
+        .daily-palette-header {
+            padding: 15px;
+            background-color: white;
+        }
+        .daily-palette-header h4 {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        .daily-palette-header p {
+            color: #8e8e93;
+            margin-bottom: 0;
+        }
+        .daily-palette-img {
+            height: 200px;
+            background-size: cover;
+            background-position: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <!-- iOS 状态栏 -->
+        <div class="status-bar">
+            <span class="time">10:30</span>
+            <div class="right-items">
+                <i class="fas fa-signal"></i>
+                <i class="fas fa-wifi"></i>
+                <i class="fas fa-battery-full"></i>
+            </div>
+        </div>
+        
+        <!-- 内容区域 -->
+        <div class="content">
+            <h1 class="page-title">探索</h1>
+            
+            <div class="tab-buttons">
+                <div class="tab-button active">灵感</div>
+                <div class="tab-button">趋势</div>
+                <div class="tab-button">艺术家</div>
+            </div>
+            
+            <div class="daily-palette">
+                <div class="daily-palette-header">
+                    <h4>每日精选</h4>
+                    <p>基于北欧设计风格的配色</p>
+                </div>
+                <div class="daily-palette-img" style="background-image: url('https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?ixlib=rb-4.0.3');">
+                </div>
+                <div class="trend-colors">
+                    <div class="trend-color" style="background-color: #CBCBD4;"></div>
+                    <div class="trend-color" style="background-color: #F2E9DC;"></div>
+                    <div class="trend-color" style="background-color: #BCB6A9;"></div>
+                    <div class="trend-color" style="background-color: #97A599;"></div>
+                    <div class="trend-color" style="background-color: #223843;"></div>
+                </div>
+            </div>
+            
+            <div class="category-chips">
+                <div class="category-chip active">所有</div>
+                <div class="category-chip">网页设计</div>
+                <div class="category-chip">UI/UX</div>
+                <div class="category-chip">室内设计</div>
+                <div class="category-chip">时尚</div>
+                <div class="category-chip">插画</div>
+            </div>
+            
+            <div class="featured-header">
+                <h2>色彩趋势</h2>
+            </div>
+            
+            <div class="color-trend">
+                <div class="trend-card">
+                    <div class="trend-img" style="background-image: url('https://images.unsplash.com/photo-1618220179428-22790b461013?ixlib=rb-4.0.3');">
+                    </div>
+                    <div class="trend-colors">
+                        <div class="trend-color" style="background-color: #FFA69E;"></div>
+                        <div class="trend-color" style="background-color: #FAF3DD;"></div>
+                        <div class="trend-color" style="background-color: #B8F2E6;"></div>
+                        <div class="trend-color" style="background-color: #AED9E0;"></div>
+                        <div class="trend-color" style="background-color: #5E6472;"></div>
+                    </div>
+                    <div class="trend-footer">
+                        <h4>柔和粉彩</h4>
+                        <p>2025 春夏流行色</p>
+                    </div>
+                </div>
+                
+                <div class="trend-card">
+                    <div class="trend-img" style="background-image: url('https://images.unsplash.com/photo-1460039230329-eb070fc6c77c?ixlib=rb-4.0.3');">
+                    </div>
+                    <div class="trend-colors">
+                        <div class="trend-color" style="background-color: #004E89;"></div>
+                        <div class="trend-color" style="background-color: #1A659E;"></div>
+                        <div class="trend-color" style="background-color: #3CAEA3;"></div>
+                        <div class="trend-color" style="background-color: #F6D55C;"></div>
+                        <div class="trend-color" style="background-color: #ED553B;"></div>
+                    </div>
+                    <div class="trend-footer">
+                        <h4>自然活力</h4>
+                        <p>热带风情色彩</p>
+                    </div>
+                </div>
+                
+                <div class="trend-card">
+                    <div class="trend-img" style="background-image: url('https://images.unsplash.com/photo-1549490349-8643362247b5?ixlib=rb-4.0.3');">
+                    </div>
+                    <div class="trend-colors">
+                        <div class="trend-color" style="background-color: #F9F7F7;"></div>
+                        <div class="trend-color" style="background-color: #DBE2EF;"></div>
+                        <div class="trend-color" style="background-color: #3F72AF;"></div>
+                        <div class="trend-color" style="background-color: #112D4E;"></div>
+                        <div class="trend-color" style="background-color: #112D4E;"></div>
+                    </div>
+                    <div class="trend-footer">
+                        <h4>冬日宁静</h4>
+                        <p>简约北欧风格</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="featured-header">
+                <h2>设计灵感</h2>
+            </div>
+            
+            <div class="row g-3">
+                <div class="col-6">
+                    <div class="card h-100">
+                        <img src="https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?ixlib=rb-4.0.3" class="card-img-top" alt="灵感图像">
+                        <div class="card-body p-2">
+                            <h5 class="card-title fs-6 mb-1">工作空间</h5>
+                            <p class="card-text small text-muted">现代简约风格</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="card h-100">
+                        <img src="https://images.unsplash.com/photo-1511920170033-f8396924c348?ixlib=rb-4.0.3" class="card-img-top" alt="灵感图像">
+                        <div class="card-body p-2">
+                            <h5 class="card-title fs-6 mb-1">咖啡馆</h5>
+                            <p class="card-text small text-muted">温暖色调</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="card h-100">
+                        <img src="https://images.unsplash.com/photo-1529316365064-76d761d29aae?ixlib=rb-4.0.3" class="card-img-top" alt="灵感图像">
+                        <div class="card-body p-2">
+                            <h5 class="card-title fs-6 mb-1">海滩风情</h5>
+                            <p class="card-text small text-muted">夏日配色</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="card h-100">
+                        <img src="https://images.unsplash.com/photo-1608571423539-e951a50f7723?ixlib=rb-4.0.3" class="card-img-top" alt="灵感图像">
+                        <div class="card-body p-2">
+                            <h5 class="card-title fs-6 mb-1">冬季公园</h5>
+                            <p class="card-text small text-muted">冷色调组合</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 底部导航栏 -->
+        <div class="tab-bar">
+            <a href="home.html" class="tab-item">
+                <i class="fas fa-home"></i>
+                <span>首页</span>
+            </a>
+            <a href="create.html" class="tab-item">
+                <i class="fas fa-plus"></i>
+                <span>创建</span>
+            </a>
+            <a href="saved.html" class="tab-item">
+                <i class="far fa-heart"></i>
+                <span>收藏</span>
+            </a>
+            <a href="explore.html" class="tab-item active">
+                <i class="fas fa-compass"></i>
+                <span>探索</span>
+            </a>
+            <a href="profile.html" class="tab-item">
+                <i class="far fa-user"></i>
+                <span>我的</span>
+            </a>
+        </div>
+    </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

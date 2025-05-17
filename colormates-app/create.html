@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ColorMates - 创建配色</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .page-title {
+            font-size: 24px;
+            font-weight: 700;
+            margin: 20px 0 15px;
+        }
+        .create-options {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        .option-card {
+            display: flex;
+            align-items: center;
+            background-color: #fff;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+        .option-icon {
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #f2f2f7;
+            border-radius: 12px;
+            margin-right: 15px;
+            color: #007aff;
+            font-size: 20px;
+        }
+        .option-content {
+            flex: 1;
+        }
+        .option-content h3 {
+            font-size: 17px;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        .option-content p {
+            color: #8e8e93;
+            font-size: 14px;
+            margin-bottom: 0;
+        }
+        .option-arrow {
+            color: #c7c7cc;
+            font-size: 18px;
+        }
+        .color-creator {
+            margin-top: 25px;
+        }
+        .color-display {
+            height: 200px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            background: linear-gradient(to right, #FF6B6B, #4ECDC4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 18px;
+            font-weight: 600;
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+        }
+        .color-sliders .slider-row {
+            margin-bottom: 15px;
+        }
+        .slider-row label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+        .color-code {
+            display: flex;
+            align-items: center;
+            background-color: #f2f2f7;
+            border-radius: 8px;
+            padding: 10px;
+            font-family: monospace;
+            margin-bottom: 15px;
+        }
+        .color-code input {
+            background: none;
+            border: none;
+            flex: 1;
+            font-size: 16px;
+        }
+        .color-code button {
+            background: none;
+            border: none;
+            color: #007aff;
+            font-weight: 500;
+        }
+        .palette-preview {
+            display: flex;
+            gap: 5px;
+            margin-top: 20px;
+        }
+        .palette-color {
+            height: 40px;
+            flex: 1;
+            border-radius: 6px;
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <!-- iOS 状态栏 -->
+        <div class="status-bar">
+            <span class="time">10:30</span>
+            <div class="right-items">
+                <i class="fas fa-signal"></i>
+                <i class="fas fa-wifi"></i>
+                <i class="fas fa-battery-full"></i>
+            </div>
+        </div>
+        
+        <!-- 内容区域 -->
+        <div class="content">
+            <h1 class="page-title">创建配色</h1>
+            
+            <div class="create-options">
+                <div class="option-card">
+                    <div class="option-icon">
+                        <i class="fas fa-image"></i>
+                    </div>
+                    <div class="option-content">
+                        <h3>从图片中提取</h3>
+                        <p>上传图片，自动提取配色方案</p>
+                    </div>
+                    <div class="option-arrow">
+                        <i class="fas fa-chevron-right"></i>
+                    </div>
+                </div>
+                
+                <div class="option-card">
+                    <div class="option-icon" style="color: #FF6B6B;">
+                        <i class="fas fa-random"></i>
+                    </div>
+                    <div class="option-content">
+                        <h3>随机生成</h3>
+                        <p>一键生成随机配色方案</p>
+                    </div>
+                    <div class="option-arrow">
+                        <i class="fas fa-chevron-right"></i>
+                    </div>
+                </div>
+                
+                <div class="option-card">
+                    <div class="option-icon" style="color: #845EC2;">
+                        <i class="fas fa-magic"></i>
+                    </div>
+                    <div class="option-content">
+                        <h3>颜色规则</h3>
+                        <p>使用色彩理论规则创建配色方案</p>
+                    </div>
+                    <div class="option-arrow">
+                        <i class="fas fa-chevron-right"></i>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="color-creator">
+                <h2 class="section-title">自定义颜色</h2>
+                
+                <div class="color-display">
+                    #FF6B6B
+                </div>
+                
+                <div class="color-code">
+                    <input type="text" value="#FF6B6B" readonly>
+                    <button>复制</button>
+                </div>
+                
+                <div class="color-sliders">
+                    <div class="slider-row">
+                        <label>红色 (R): 255</label>
+                        <input type="range" class="form-range" min="0" max="255" value="255">
+                    </div>
+                    
+                    <div class="slider-row">
+                        <label>绿色 (G): 107</label>
+                        <input type="range" class="form-range" min="0" max="255" value="107">
+                    </div>
+                    
+                    <div class="slider-row">
+                        <label>蓝色 (B): 107</label>
+                        <input type="range" class="form-range" min="0" max="255" value="107">
+                    </div>
+                </div>
+                
+                <button class="btn btn-primary w-100 mt-3">
+                    <i class="fas fa-plus"></i> 添加到配色方案
+                </button>
+                
+                <h3 class="section-title mt-4">当前配色方案</h3>
+                <div class="palette-preview">
+                    <div class="palette-color" style="background-color: #FF6B6B;"></div>
+                    <div class="palette-color" style="background-color: #4ECDC4;"></div>
+                    <div class="palette-color" style="background-color: #1A535C;"></div>
+                    <div class="palette-color" style="background-color: #F7FFF7;"></div>
+                    <div class="palette-color" style="background-color: transparent; border: 1px dashed #8e8e93;"></div>
+                </div>
+                
+                <div class="d-flex gap-2 mt-3">
+                    <button class="btn btn-primary flex-grow-1">保存方案</button>
+                    <button class="btn btn-secondary flex-grow-1">分享</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 底部导航栏 -->
+        <div class="tab-bar">
+            <a href="home.html" class="tab-item">
+                <i class="fas fa-home"></i>
+                <span>首页</span>
+            </a>
+            <a href="create.html" class="tab-item active">
+                <i class="fas fa-plus"></i>
+                <span>创建</span>
+            </a>
+            <a href="saved.html" class="tab-item">
+                <i class="far fa-heart"></i>
+                <span>收藏</span>
+            </a>
+            <a href="explore.html" class="tab-item">
+                <i class="fas fa-compass"></i>
+                <span>探索</span>
+            </a>
+            <a href="profile.html" class="tab-item">
+                <i class="far fa-user"></i>
+                <span>我的</span>
+            </a>
+        </div>
+    </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
