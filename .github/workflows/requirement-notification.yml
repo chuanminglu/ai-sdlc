@@ -1,6 +1,6 @@
 name: 需求变更邮件通知
 
-# 触发条件：当Issue被创建、编辑或重新打开时（新建时必须带标签）
+# 触发条件：当Issue被创建、编辑或重新打开时
 on:
   issues:
     types: [opened, edited, reopened]
@@ -27,8 +27,7 @@ jobs:
     # 仅当Issue包含"requirement"或"feature"标签时运行
     if: contains(github.event.issue.labels.*.name, 'requirement') || contains(github.event.issue.labels.*.name, 'feature')
     
-    steps:
-      # 步骤1: 发送邮件通知
+    steps:      # 步骤1: 发送邮件通知
       - name: Send email notification
         uses: dawidd6/action-send-mail@v3
         with:
@@ -40,6 +39,7 @@ jobs:
           to: 52148@qq.com
           from: GitHub Actions <${{ secrets.EMAIL_USERNAME }}>
           subject: 🔔 需求变更通知：${{ github.event.issue.title }}
+          body: 需求变更通知
           html_body: |
             <h2>需求变更通知</h2>
             <p><strong>状态：</strong> 
@@ -59,12 +59,11 @@ jobs:
             ${{ github.event.issue.body }}
             </pre>
             <p><a href="${{ github.event.issue.html_url }}">查看详情</a></p>
-      
-      # 步骤2: 更新项目看板（使用新版 GitHub Projects API）
+        # 步骤2: 更新项目看板（使用新版 GitHub Projects API）
       - name: Update project board
         uses: actions/github-script@v6
         with:
-          github-token: ${{ secrets.GH_PAT }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             async function run() {
               try {
