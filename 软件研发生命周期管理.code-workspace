@@ -6,10 +6,14 @@
 		},
 		{
 			"path": "../ai-java"
+		},
+		{
+			"path": "../ai-quality"
 		}
 	],
 	"settings": {
 		"java.compile.nullAnalysis.mode": "automatic",
-		"powershell.cwd": "ai-java"
+		"powershell.cwd": "ai-java",
+		"git.ignoreLimitWarning": true
 	}
 }
