@@ -9,11 +9,44 @@
 		},
 		{
 			"path": "../ai-quality"
+		},
+		{
+			"path": "../ai-operations"
 		}
 	],
 	"settings": {
 		"java.compile.nullAnalysis.mode": "automatic",
 		"powershell.cwd": "ai-java",
-		"git.ignoreLimitWarning": true
+		"git.ignoreLimitWarning": true,
+		"sqltools.connections": [
+			{
+				"previewLimit": 50,
+				"server": "localhost",
+				"port": 5432,
+				"driver": "PostgreSQL",
+				"database": "commentdb",
+				"username": "postgres",
+				"name": "commentConnection"
+			},
+			{
+				"previewLimit": 50,
+				"server": "localhost",
+				"port": 5432,
+				"driver": "PostgreSQL",
+				"name": "postgresconnection",
+				"database": "postgres",
+				"username": "postgres"
+			},
+			{
+				"previewLimit": 50,
+				"server": "localhost",
+				"port": 5432,
+				"driver": "PostgreSQL",
+				"name": "orderdbconnection",
+				"database": "orderdb",
+				"username": "postgres",
+				"password": "password"
+			}
+		]
 	}
 }
