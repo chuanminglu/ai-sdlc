@@ -27,3 +27,8 @@ ENV/
 config.ini
 conflict_detector.log
 llm_interface.log
+conflict_detector.log
+llm_interface.log
+.github/workflows/requirement-notification-new.yml
+llm_interface.log
+llm_interface.log
