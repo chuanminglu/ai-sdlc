@@ -6,3 +6,5 @@ pyautogui>=0.9.54
 deepseek-api>=1.0.0  # DeepSeek V3 API客户端
 markdown>=3.0.0      # Markdown解析
 PyYAML>=6.0.0       # YAML支持
+SpeechRecognition>=3.10.0  # 语音识别库
+pyaudio>=0.2.11     # 音频输入输出库
