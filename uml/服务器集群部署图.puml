@@ -1,0 +1,75 @@
+@startuml ServerClusterDeployment
+!theme blueprint
+skinparam backgroundColor #FFFFFF
+skinparam defaultFontName Arial
+skinparam titleFontSize 16
+title "服务器集群部署架构图"
+
+' 定义节点样式
+skinparam node {
+    BackgroundColor #E3F2FD
+    BorderColor #1976D2
+    FontColor #1976D2
+}
+
+skinparam component {
+    BackgroundColor #FFF3E0
+    BorderColor #F57C00
+    FontColor #E65100
+}
+
+skinparam cloud {
+    BackgroundColor #E8F5E8
+    BorderColor #4CAF50
+    FontColor #2E7D32
+}
+
+' 外部用户和服务
+cloud "外部用户" as users
+
+
+' 集群框架
+package "服务器集群" as cluster <<Node>> #F5F5F5 {
+    
+    ' 服务器158
+    node "服务器158" as server158 {
+        component "单点登录组件1" as sso1_158
+        component "单点登录组件2" as sso2_158
+        component "单点登录组件3" as sso3_158
+        component "统一干警桌面" as desktop_158
+    }
+    
+    ' 服务器196
+    node "服务器196" as server196 {
+        component "单点登录组件1" as sso1_196
+        component "单点登录组件2" as sso2_196
+        component "单点登录组件3" as sso3_196
+        component "统一桌面组件" as desktop_196
+    }
+}
+
+' 负载均衡器
+node "负载均衡器" as loadbalancer {
+    component "LB组件" as lb_component
+}
+
+' 连接关系
+users --> loadbalancer : "HTTPS请求"
+loadbalancer --> server158 : "分发请求"
+loadbalancer --> server196 : "分发请求"
+
+
+
+' 组件内部关系
+sso1_158 --> desktop_158 : "认证"
+sso2_158 --> desktop_158 : "认证"
+sso3_158 --> desktop_158 : "认证"
+
+sso1_196 --> desktop_196 : "认证"
+sso2_196 --> desktop_196 : "认证"
+sso3_196 --> desktop_196 : "认证"
+
+' 
+
+
+@enduml
