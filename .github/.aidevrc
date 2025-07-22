@@ -8,7 +8,7 @@ PROJECT_TYPE="python"
 
 # 虚拟环境配置 - 强制要求
 VIRTUAL_ENV_REQUIRED=true
-VIRTUAL_ENV_PATH=".venv"
+VIRTUAL_ENV_PATH="venv"
 PYTHON_VERSION="3.12"
 
 # Agent模式配置
@@ -35,7 +35,7 @@ WORKING_DIRECTORY="d:\Programs\ai-sdlc"
 
 # 环境变量
 export PYTHONPATH="${WORKING_DIRECTORY}:$PYTHONPATH"
-export PYTHON_ENV=".venv"
+export PYTHON_ENV="venv"
 
 # 验证命令
 VERIFY_VENV_CMD="python -c \"import sys; print('虚拟环境:', sys.prefix)\""
@@ -44,8 +44,8 @@ VERIFY_PACKAGES_CMD="pip list | grep -E '(spacy|requests|Pillow)'"
 # 项目初始化指令
 INIT_COMMANDS=(
     "cd ${WORKING_DIRECTORY}"
-    "python -m venv .venv"
-    ".venv\\Scripts\\activate"
+    "python -m venv venv"
+    "venv\\Scripts\\activate"
     "python -m pip install --upgrade pip"
     "pip install -r requirements.txt"
     "python -m spacy download zh_core_web_sm"
@@ -54,14 +54,14 @@ INIT_COMMANDS=(
 # 项目启动指令
 START_COMMANDS=(
     "cd ${WORKING_DIRECTORY}"
-    ".venv\\Scripts\\activate"
+    "venv\\Scripts\\activate"
     "python mainmenu_gui.py"
 )
 
 # 测试指令
 TEST_COMMANDS=(
     "cd ${WORKING_DIRECTORY}"
-    ".venv\\Scripts\\activate"
+    "venv\\Scripts\\activate"
     "python test_comment_system.py"
     "python test_sort.py"
 )
@@ -86,7 +86,7 @@ LOG_MAX_SIZE="10MB"
 # 提示信息
 INFO_MESSAGES=(
     "🚀 AI-SDLC 项目环境配置"
-    "📋 请确保在 .venv 虚拟环境中运行所有命令"
+    "📋 请确保在 venv 虚拟环境中运行所有命令"
     "🔧 Agent模式已启用，将在当前终端执行命令"
     "💡 主要模块: mainui.py (主界面), mainmenu_gui.py (菜单)"
 )
