@@ -11,6 +11,7 @@ skinparam direction left to right
 
 start
 
+split
 partition "市场分析阶段" #F0F8FF {
   :市场调研;
   note right
@@ -31,6 +32,7 @@ partition "市场分析阶段" #F0F8FF {
   end note
 }
 
+split again
 partition "业务建模阶段" #E8F5E8 {
   :业务现状分析;
   note right
@@ -60,6 +62,7 @@ partition "业务建模阶段" #E8F5E8 {
   end note
 }
 
+split again
 partition "业务需求阶段" #FCE4EC {
   :确认产品目标;
   note right
@@ -89,6 +92,7 @@ partition "业务需求阶段" #FCE4EC {
   end note
 }
 
+split again
 partition "用户需求阶段" #E8F4FD {
   :用户分类;
   note right
@@ -136,6 +140,7 @@ partition "用户需求阶段" #E8F4FD {
   end note
 }
 
+split again
 partition "软件需求开发" #E1F5FE {
   repeat
     :需求开发;
@@ -204,6 +209,7 @@ note right
   知识库自动更新
 end note
 
+end split
 stop
 
 
