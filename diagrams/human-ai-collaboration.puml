@@ -1,0 +1,50 @@
+@startuml 人机协作模式图
+!theme materia 
+
+title 大模型与人在需求工程中的协作模式
+
+actor "需求分析师" as Analyst
+participant "大模型助手" as AI
+participant "业务用户" as User
+database "需求知识库" as KB
+
+== 需求收集阶段 ==
+User -> Analyst: 提出业务需求
+Analyst -> AI: 生成调研问卷模板
+AI -> Analyst: 返回标准化问卷
+Analyst -> User: 开展深度访谈
+User -> Analyst: 提供详细信息
+
+== 需求分析阶段 ==
+Analyst -> AI: 输入原始需求信息
+AI -> KB: 查询历史经验
+KB -> AI: 返回相似案例
+AI -> Analyst: 生成初步分析报告
+Analyst -> Analyst: 人工审核和优化
+Analyst -> AI: 完善需求文档
+AI -> Analyst: 标准化文档格式
+
+== 需求验证阶段 ==
+Analyst -> AI: 需求一致性检查
+AI -> Analyst: 返回检查结果
+Analyst -> User: 需求确认
+User -> Analyst: 反馈修改意见
+Analyst -> AI: 更新需求文档
+
+note right of Analyst
+  人负责：
+  - 业务判断
+  - 创新思考
+  - 复杂沟通
+  - 最终决策
+end note
+
+note left of AI
+  AI负责：
+  - 文档标准化
+  - 数据分析
+  - 一致性检查
+  - 模板生成
+end note
+
+@enduml

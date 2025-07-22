@@ -1,0 +1,21 @@
+@startuml
+!theme materia
+
+title B端软件需求工程活动流程
+
+start
+:市场分析;
+:业务调研;
+:生成故事清单;
+:需求开发;
+:需求评审;
+if (评审通过?) then (是)
+  :需求基线确立;
+else (否)
+  :返回修正;
+  :需求开发;
+endif
+:需求交付;
+stop
+
+@enduml
