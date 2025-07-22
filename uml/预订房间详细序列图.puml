@@ -1,0 +1,88 @@
+@startuml 预订房间详细序列图
+participant "客户" as Guest
+participant "前端界面" as UI
+participant "预订控制器" as Controller
+participant "预订服务" as ReservationService
+participant "房间服务" as RoomService
+participant "支付服务" as PaymentService
+participant "通知服务" as NotificationService
+participant "预订仓储" as ReservationRepo
+participant "房间仓储" as RoomRepo
+participant "支付网关" as PaymentGateway
+participant "数据库" as Database
+
+== 预订初始化阶段 ==
+Guest -> UI: 选择房间和日期
+UI -> Controller: GET /api/rooms/availability?roomId=1&checkIn=2025-08-01&checkOut=2025-08-03
+Controller -> RoomService: checkAvailability(roomId, checkIn, checkOut)
+RoomService -> RoomRepo: findOverlappingReservations(roomId, dates)
+RoomRepo -> Database: SELECT查询重叠预订
+Database --> RoomRepo: 返回查询结果
+RoomRepo --> RoomService: 返回重叠预订列表
+RoomService --> Controller: 返回可用性状态
+Controller --> UI: 返回房间可用信息
+UI --> Guest: 显示房间可用，展示价格
+
+== 预订创建阶段 ==
+Guest -> UI: 填写预订信息并提交
+UI -> Controller: POST /api/reservations
+note right of Controller: 请求体包含:\n- roomId\n- checkIn/checkOut\n- guestCount\n- paymentInfo
+Controller -> ReservationService: createReservation(reservationRequest)
+
+ReservationService -> ReservationService: validateRequest(request)
+note right of ReservationService: 验证:\n- 日期有效性\n- 客人数量\n- 支付信息
+
+== 房间锁定阶段 ==
+ReservationService -> RoomService: lockRoom(roomId, checkIn, checkOut)
+RoomService -> RoomRepo: lockDateRange(roomId, dates)
+RoomRepo -> Database: UPDATE room_availability SET locked=true
+Database --> RoomRepo: 确认锁定
+RoomRepo --> RoomService: 锁定成功
+RoomService --> ReservationService: 房间已锁定
+
+== 价格计算阶段 ==
+ReservationService -> RoomService: calculatePrice(roomId, checkIn, checkOut)
+RoomService -> RoomService: applySeasonalPricing()
+RoomService -> RoomService: applyDiscounts()
+RoomService --> ReservationService: 返回总价格
+
+== 预订记录创建 ==
+ReservationService -> ReservationService: createReservationEntity(request, totalPrice)
+ReservationService -> ReservationRepo: save(reservation)
+ReservationRepo -> Database: INSERT INTO reservations
+Database --> ReservationRepo: 返回保存的预订ID
+ReservationRepo --> ReservationService: 返回预订对象
+
+== 支付处理阶段 ==
+ReservationService -> PaymentService: processPayment(paymentRequest)
+PaymentService -> PaymentService: validatePaymentInfo()
+PaymentService -> PaymentGateway: 调用第三方支付API
+PaymentGateway --> PaymentService: 返回支付结果
+
+alt 支付成功
+    PaymentService --> ReservationService: PaymentResult(SUCCESS)
+    ReservationService -> ReservationRepo: updateStatus(reservationId, CONFIRMED)
+    ReservationRepo -> Database: UPDATE reservations SET status='CONFIRMED'
+    Database --> ReservationRepo: 更新成功
+    
+    == 通知发送阶段 ==
+    ReservationService -> NotificationService: sendConfirmation(reservation)
+    NotificationService -> NotificationService: sendEmail(user, confirmationTemplate)
+    NotificationService -> NotificationService: sendSMS(user, confirmationMessage)
+    
+    ReservationService --> Controller: ReservationResponse(SUCCESS)
+    Controller --> UI: 返回成功响应
+    UI --> Guest: 显示预订成功页面
+
+else 支付失败
+    PaymentService --> ReservationService: PaymentResult(FAILED)
+    ReservationService -> ReservationRepo: updateStatus(reservationId, CANCELLED)
+    ReservationService -> RoomService: unlockRoom(roomId, checkIn, checkOut)
+    RoomService -> RoomRepo: unlockDateRange(roomId, dates)
+    
+    ReservationService --> Controller: ReservationResponse(PAYMENT_FAILED)
+    Controller --> UI: 返回支付失败响应
+    UI --> Guest: 显示支付失败信息
+end
+
+@enduml

@@ -1,0 +1,168 @@
+@startuml 预订用例核心类图
+!define ENTITY class
+!define INTERFACE interface
+!define ABSTRACT abstract
+
+package "预订领域模型" {
+    
+    INTERFACE ReservationService {
+        + createReservation(request: ReservationRequest): ReservationResponse
+        + checkAvailability(roomId: Long, checkIn: Date, checkOut: Date): boolean
+        + calculatePrice(roomId: Long, checkIn: Date, checkOut: Date): BigDecimal
+        + cancelReservation(reservationId: Long): boolean
+        + getReservationById(reservationId: Long): Reservation
+        + getReservationsByUser(userId: Long): List<Reservation>
+    }
+    
+    ENTITY ReservationServiceImpl {
+        - roomService: RoomService
+        - paymentService: PaymentService
+        - notificationService: NotificationService
+        - reservationRepository: ReservationRepository
+        + createReservation(request: ReservationRequest): ReservationResponse
+        + checkAvailability(roomId: Long, checkIn: Date, checkOut: Date): boolean
+        + calculatePrice(roomId: Long, checkIn: Date, checkOut: Date): BigDecimal
+        - validateReservationRequest(request: ReservationRequest): void
+        - lockRoom(roomId: Long, checkIn: Date, checkOut: Date): void
+        - unlockRoom(roomId: Long, checkIn: Date, checkOut: Date): void
+    }
+    
+    ENTITY Reservation {
+        - reservationId: Long
+        - userId: Long
+        - roomId: Long
+        - checkInDate: LocalDate
+        - checkOutDate: LocalDate
+        - guestCount: Integer
+        - specialRequests: String
+        - totalAmount: BigDecimal
+        - status: ReservationStatus
+        - createdAt: LocalDateTime
+        - updatedAt: LocalDateTime
+        + calculateNights(): Integer
+        + isValidDates(): boolean
+        + canBeCancelled(): boolean
+        + getStayDuration(): Period
+    }
+    
+    ENTITY ReservationRequest {
+        - roomId: Long
+        - userId: Long
+        - checkInDate: LocalDate
+        - checkOutDate: LocalDate
+        - guestCount: Integer
+        - specialRequests: String
+        - paymentInfo: PaymentInfo
+        + validate(): List<ValidationError>
+    }
+    
+    ENTITY ReservationResponse {
+        - reservationId: Long
+        - status: String
+        - message: String
+        - totalAmount: BigDecimal
+        - paymentStatus: String
+        - confirmationNumber: String
+    }
+    
+    ENTITY PaymentInfo {
+        - paymentMethod: PaymentMethod
+        - cardNumber: String
+        - cardHolderName: String
+        - expiryDate: String
+        - cvv: String
+        - billingAddress: Address
+    }
+    
+    enum ReservationStatus {
+        PENDING
+        CONFIRMED
+        CANCELLED
+        COMPLETED
+        EXPIRED
+    }
+    
+    enum PaymentMethod {
+        CREDIT_CARD
+        DEBIT_CARD
+        PAYPAL
+        BANK_TRANSFER
+    }
+}
+
+package "房间管理" {
+    INTERFACE RoomService {
+        + getRoomById(roomId: Long): Room
+        + checkRoomAvailability(roomId: Long, checkIn: Date, checkOut: Date): boolean
+        + getRoomPrice(roomId: Long): BigDecimal
+        + lockRoom(roomId: Long, checkIn: Date, checkOut: Date): void
+        + unlockRoom(roomId: Long, checkIn: Date, checkOut: Date): void
+    }
+    
+    ENTITY Room {
+        - roomId: Long
+        - roomNumber: String
+        - roomType: RoomType
+        - basePrice: BigDecimal
+        - maxOccupancy: Integer
+        - amenities: Set<Amenity>
+        - status: RoomStatus
+        + calculatePrice(checkIn: Date, checkOut: Date): BigDecimal
+        + isAvailableForDates(checkIn: Date, checkOut: Date): boolean
+    }
+    
+    ENTITY RoomAvailability {
+        - roomId: Long
+        - date: LocalDate
+        - status: AvailabilityStatus
+        - price: BigDecimal
+    }
+}
+
+package "支付处理" {
+    INTERFACE PaymentService {
+        + processPayment(paymentRequest: PaymentRequest): PaymentResult
+        + refundPayment(paymentId: Long): RefundResult
+        + getPaymentStatus(paymentId: Long): PaymentStatus
+    }
+    
+    ENTITY PaymentRequest {
+        - amount: BigDecimal
+        - currency: String
+        - paymentMethod: PaymentMethod
+        - paymentInfo: PaymentInfo
+        - orderId: String
+    }
+    
+    ENTITY PaymentResult {
+        - paymentId: Long
+        - transactionId: String
+        - status: PaymentStatus
+        - message: String
+        - processedAt: LocalDateTime
+    }
+}
+
+package "通知服务" {
+    INTERFACE NotificationService {
+        + sendReservationConfirmation(reservation: Reservation): void
+        + sendCancellationNotification(reservation: Reservation): void
+        + sendReminder(reservation: Reservation): void
+    }
+}
+
+ReservationServiceImpl ..|> ReservationService
+ReservationServiceImpl --> RoomService
+ReservationServiceImpl --> PaymentService
+ReservationServiceImpl --> NotificationService
+ReservationServiceImpl --> Reservation
+ReservationService --> ReservationRequest
+ReservationService --> ReservationResponse
+Reservation --> ReservationStatus
+ReservationRequest --> PaymentInfo
+PaymentInfo --> PaymentMethod
+RoomService --> Room
+PaymentService --> PaymentRequest
+PaymentService --> PaymentResult
+
+@enduml
