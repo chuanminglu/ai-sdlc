@@ -1,0 +1,99 @@
+
+@startuml
+!theme cerulean
+
+title 需求工程AI提示词库架构
+
+package "核心提示词库" {
+  package "业务建模层" as BM {
+    [业务流程分析] as BPA
+    [用户故事生成] as USG
+    [项目文档模板] as PDT
+    [干系人分析] as SHA
+  }
+  
+  package "需求分析层" as RA {
+    [需求范围界定] as RSC
+    [优先级评估] as PRE
+    [需求属性分析] as RAA
+    [冲突检测] as COD
+  }
+  
+  package "文档生成层" as DG {
+    [功能规格化] as FSP
+    [非功能检查] as NFC
+    [测试用例生成] as TCG
+    [追踪矩阵] as TRM
+  }
+  
+  package "质量保证层" as QA {
+    [评审清单] as RCL
+    [完整性检查] as CTC
+    [标准符合性] as SCM
+    [版本管理] as VER
+  }
+}
+
+package "支撑工具" as ST {
+  [模板管理器] as TM
+  [效果评估器] as EE
+  [学习优化器] as LO
+  [知识库] as KB
+}
+
+package "接口层" as IL {
+  [API接口] as API
+  [集成工具] as IT
+  [用户界面] as UI
+}
+
+' 垂直关系
+BM --> RA : 数据流转
+RA --> DG : 需求细化
+DG --> QA : 质量控制
+
+' 水平支撑关系
+ST --> BM : 支撑
+ST --> RA : 支撑
+ST --> DG : 支撑
+ST --> QA : 支撑
+
+' 接口关系
+IL --> BM : 调用
+IL --> RA : 调用
+IL --> DG : 调用
+IL --> QA : 调用
+
+' 内部连接
+BPA ..> USG : 关联
+USG ..> PDT : 生成
+RSC ..> PRE : 评估
+RAA ..> COD : 检测
+FSP ..> NFC : 补充
+TCG ..> TRM : 追踪
+
+note top of BM
+  业务理解和建模
+  输入：业务描述
+  输出：结构化模型
+end note
+
+note top of RA
+  需求分析和管理
+  输入：业务模型
+  输出：需求规格
+end note
+
+note top of DG
+  文档自动生成
+  输入：需求规格
+  输出：标准文档
+end note
+
+note top of QA
+  质量检查和保证
+  输入：需求文档
+  输出：质量报告
+end note
+
+@enduml

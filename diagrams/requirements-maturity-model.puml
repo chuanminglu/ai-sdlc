@@ -1,0 +1,95 @@
+@startuml 需求工程成熟度模型
+!theme vibrant
+
+title B端系统需求工程成熟度演进
+
+!define LEVEL1 #FFE6E6
+!define LEVEL2 #FFF4E6
+!define LEVEL3 #E6F3FF
+!define LEVEL4 #E6FFE6
+!define LEVEL5 #F0E6FF
+
+rectangle "Level 1: 初始级" as L1 LEVEL1 {
+  [手工文档]
+  [随意流程]
+  [经验驱动]
+  [质量不稳定]
+}
+
+rectangle "Level 2: 可重复级" as L2 LEVEL2 {
+  [标准模板]
+  [基础流程]
+  [工具支持]
+  [部分自动化]
+}
+
+rectangle "Level 3: 已定义级" as L3 LEVEL3 {
+  [规范流程]
+  [AI辅助分析]
+  [质量检查]
+  [知识积累]
+}
+
+rectangle "Level 4: 量化管理级" as L4 LEVEL4 {
+  [数据驱动]
+  [智能推荐]
+  [预测分析]
+  [持续优化]
+}
+
+rectangle "Level 5: 优化级" as L5 LEVEL5 {
+  [全流程自动化]
+  [自适应学习]
+  [智能决策]
+  [创新驱动]
+}
+
+L1 -right-> L2 : 标准化
+L2 -right-> L3 : AI介入
+L3 -right-> L4 : 智能化
+L4 -right-> L5 : 自动化
+
+note bottom of L1
+效率：低
+质量：不稳定
+成本：高
+风险：高
+end note
+
+note bottom of L2
+效率：中等
+质量：基本稳定
+成本：中等
+风险：中等
+end note
+
+note bottom of L3
+效率：较高
+质量：稳定
+成本：较低
+风险：较低
+<color:red>当前目标</color>
+end note
+
+note bottom of L4
+效率：高
+质量：高稳定
+成本：低
+风险：低
+end note
+
+note bottom of L5
+效率：极高
+质量：优秀
+成本：很低
+风险：很低
+<color:blue>未来愿景</color>
+end note
+
+' 添加AI能力增长线
+actor "AI能力" as AI
+AI ..> L3 : 开始显著影响
+AI ..> L4 : 成为核心驱动
+AI ..> L5 : 实现自主决策
+
+@enduml

@@ -1,0 +1,216 @@
+@startuml
+!theme materia
+
+title B端软件需求工程活动流程 - AI赋能全景图
+
+!define RECTANGLE class
+
+skinparam backgroundColor #FAFAFA
+skinparam defaultFontName "Microsoft YaHei"
+skinparam direction left to right
+
+start
+
+split
+partition "市场分析阶段" #F0F8FF {
+  :市场调研;
+  note right
+    🤖 AI核心能力
+    行业报告摘要生成
+    竞品功能对比分析
+    市场趋势数据解读
+    SWOT分析模板生成
+  end note
+  
+  :商业机会识别;
+  note right
+    🤖 AI核心能力
+    市场空白点识别
+    商业模式画布生成
+    价值主张设计
+    盈利模式分析
+  end note
+}
+
+split again
+partition "业务建模阶段" #E8F5E8 {
+  :业务现状分析;
+  note right
+    🤖 AI核心能力
+    业务流程自动梳理
+    价值链分析图生成
+    组织架构映射
+    业务痛点识别
+  end note
+  
+  :核心业务流程分析;
+  note right
+    🤖 AI核心能力
+    流程图智能绘制
+    业务规则提取
+    关键节点识别
+    优化建议生成
+  end note
+  
+  :生成用户故事清单;
+  note right
+    🤖 AI核心能力
+    业务需求转用户故事
+    INVEST原则自动检查
+    故事优先级智能排序
+    验收标准模板生成
+  end note
+}
+
+split again
+partition "业务需求阶段" #FCE4EC {
+  :确认产品目标;
+  note right
+    🤖 AI核心能力
+    ROI计算模板生成
+    目标量化指标设计
+    商业价值评估
+    投资回报分析
+  end note
+  
+  :定义项目范围;
+  note right
+    🤖 AI核心能力
+    功能边界自动识别
+    范围矩阵智能生成
+    依赖关系分析
+    排除项合理性检查
+  end note
+  
+  :业务需求确认;
+  note right
+    🤖 AI核心能力
+    需求属性标准化
+    业务规则提取
+    约束条件识别
+    业务价值量化
+  end note
+}
+
+split again
+partition "用户需求阶段" #E8F4FD {
+  :用户分类;
+  note right
+    🤖 AI核心能力
+    用户画像智能构建
+    角色权限矩阵生成
+    用户行为模式分析
+    使用场景识别
+  end note
+  
+  :确定用户代表;
+  note right
+    🤖 AI核心能力
+    代表性用户筛选
+    用户需求权重分析
+    冲突需求协调建议
+    用户反馈分类整理
+  end note
+  
+  :确定决策过程;
+  note right
+    🤖 AI核心能力
+    决策流程图生成
+    审批链路设计
+    决策标准制定
+    责任矩阵生成
+  end note
+  
+  :需求调研执行;
+  note right
+    🤖 AI核心能力
+    调研计划智能生成
+    问题设计和优化
+    调研结果数据分析
+    需求模式识别
+  end note
+  
+  :生成用户需求说明书;
+  note right
+    🤖 AI核心能力
+    文档模板自动生成
+    需求整理和分类
+    格式标准化检查
+    完整性验证
+  end note
+}
+
+split again
+partition "软件需求开发" #E1F5FE {
+  repeat
+    :需求开发;
+    note left
+      🤖 AI核心能力
+      需求文档标准化
+      功能规格自动生成
+      接口定义模板化
+      数据模型设计建议
+    end note
+    
+    fork
+      :功能需求定义;
+      note left
+        🤖 AI核心能力
+        术语库智能维护
+        功能描述标准化
+        用例图自动生成
+        流程图智能绘制
+      end note
+      
+    fork again
+      :非功能需求定义;
+      note right
+        🤖 AI核心能力
+        性能指标模板化
+        安全需求检查清单
+        可用性标准建议
+        兼容性矩阵生成
+      end note
+    end fork
+    
+    :需求冲突检测;
+    note right
+      🤖 AI核心能力
+      自动冲突识别
+      冲突严重程度评估
+      解决方案推荐
+    end note
+    
+    :需求评审;
+    note right
+      🤖 AI核心能力
+      评审清单自动生成
+      需求完整性检查
+      一致性冲突检测
+      可测试性评估
+    end note
+    
+  repeat while (评审通过?) is (否) not (是)
+  
+  :需求基线确立;
+  note right
+    🤖 AI核心能力
+    版本管理自动化
+    变更影响分析
+    基线质量评估
+  end note
+}
+
+:需求交付;
+note right
+  🤖 AI核心能力
+  交付物完整性检查
+  文档格式标准化
+  知识库自动更新
+end note
+
+end split
+stop
+
+
+@enduml
