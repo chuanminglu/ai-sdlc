@@ -1,8 +1,0 @@
-@startuml
-!theme materia
-title 测试活动图
-start
-:开始活动;
-:处理步骤;
-stop
-@enduml
